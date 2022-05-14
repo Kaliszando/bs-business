@@ -1,20 +1,15 @@
-package com.bts.bugstalker.core.user;
+package com.bts.bugstalker.dto;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Builder
-public class UserDto {
+public class UserDTO {
 
     private String username;
-
     private String firstName;
-
     private String lastName;
-
     private String email;
 
 }
