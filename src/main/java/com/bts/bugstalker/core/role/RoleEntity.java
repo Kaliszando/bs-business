@@ -1,33 +1,24 @@
-package com.bts.bugstalker.core.user;
+package com.bts.bugstalker.core.role;
 
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
-@Builder
+@Getter @Setter @Builder
 @Entity
+@Table(name = "ROLE")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-class User {
+public class RoleEntity {
 
+    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String username;
-
-    private String firstName;
-
-    private String lastName;
-
-    @NotBlank
-    private String email;
-
-    private String password;
-
-    private String salt;
+    @NotBlank @NotNull
+    private String name;
 
 }

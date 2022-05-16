@@ -15,20 +15,18 @@ class UserMapperTests {
     private static final String LAST_NAME = "Kowalski";
     private static final String EMAIL = "jakows@email.com";
     private static final String PASSWORD = "pass1234";
-    private static final String SALT = "1qaz";
 
     @Test
     void shouldMapToModel() {
-        User userModel = User.builder()
+        UserEntity userEntity = UserEntity.builder()
                 .username(USERNAME)
                 .firstName(FIRST_NAME)
                 .lastName(LAST_NAME)
                 .email(EMAIL)
                 .password(PASSWORD)
-                .salt(SALT)
                 .build();
 
-        UserDto userDTO = mapper.mapToDto(userModel);
+        UserDto userDTO = mapper.mapToDto(userEntity);
 
         assertAll(
                 () -> assertThat(userDTO.getUsername()).isEqualTo(USERNAME),

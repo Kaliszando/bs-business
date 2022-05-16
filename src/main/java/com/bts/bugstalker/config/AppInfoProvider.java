@@ -1,4 +1,4 @@
-package com.bts.bugstalker.util.context;
+package com.bts.bugstalker.config;
 
 public final class AppInfoProvider {
 
