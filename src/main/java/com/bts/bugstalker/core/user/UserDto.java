@@ -9,6 +9,8 @@ import lombok.Setter;
 @Builder
 public class UserDto {
 
+    private Long id;
+
     private String username;
 
     private String firstName;
@@ -16,5 +18,7 @@ public class UserDto {
     private String lastName;
 
     private String email;
+
+    private String password;
 
 }

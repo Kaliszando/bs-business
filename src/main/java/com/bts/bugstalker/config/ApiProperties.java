@@ -1,4 +1,4 @@
-package com.bts.bugstalker.util.property;
+package com.bts.bugstalker.config;
 
 import lombok.Getter;
 import lombok.Setter;
