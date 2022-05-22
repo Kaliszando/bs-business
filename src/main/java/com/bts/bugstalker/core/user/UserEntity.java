@@ -1,47 +1,71 @@
 package com.bts.bugstalker.core.user;
 
-import com.bts.bugstalker.core.role.RoleEntity;
+import com.bts.bugstalker.core.role.UserRoles;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
 
 @Getter @Setter @Builder
-@Entity
-@Table(name = "USER")
+@Entity @Table(name = "USER")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
     @Setter(AccessLevel.NONE)
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank @NotNull
-    private String username;
+    @NotBlank @NotNull private String username;
 
-    @NotBlank @NotNull
-    private String firstName;
+    @NotBlank @NotNull private String firstName;
 
-    @NotBlank @NotNull
-    private String lastName;
+    @NotBlank @NotNull private String lastName;
 
-    @NotBlank @NotNull
-    private String email;
+    @NotBlank @NotNull private String email;
 
-    @NotBlank @NotNull
-    private String password;
+    @NotBlank @NotNull private String password;
 
-    @ManyToMany
-    @JoinTable(name = "USER_ROLE",
-            joinColumns = @JoinColumn(name = "USER_ID",
-                    foreignKey = @ForeignKey(name = "FK_USER_ROLE__USER_ID")),
+    @Enumerated(EnumType.STRING) @NotNull
+    private UserRoles role;
 
-            inverseJoinColumns = @JoinColumn(name = "ROLE_ID",
-                    foreignKey = @ForeignKey(name = "FK_USER_ROLE__ROLE_ID")))
-    private List<RoleEntity> roles;
+//    @ManyToMany
+//    @JoinTable(name = "USER_ROLE",
+//            joinColumns = @JoinColumn(name = "USER_ID",
+//                    foreignKey = @ForeignKey(name = "FK_USER_ROLE__USER_ID")),
+//
+//            inverseJoinColumns = @JoinColumn(name = "ROLE_ID",
+//                    foreignKey = @ForeignKey(name = "FK_USER_ROLE__ROLE_ID")))
+//    private List<RoleEntity> roles;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority(role.getCode()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

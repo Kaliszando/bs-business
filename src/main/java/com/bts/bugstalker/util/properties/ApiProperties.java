@@ -1,4 +1,4 @@
-package com.bts.bugstalker.config;
+package com.bts.bugstalker.util.properties;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ public class ApiProperties {
 
     private String path;
 
-    private String exposed;
+    private String[] exposed;
 
     private String group;
 
