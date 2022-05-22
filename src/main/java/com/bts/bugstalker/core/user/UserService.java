@@ -1,6 +1,9 @@
 package com.bts.bugstalker.core.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -16,7 +19,7 @@ public class UserService {
 
     public UserEntity create(final UserEntity user) {
         if (!isEmailAvailable(user.getEmail())) {
-            throw UserExceptionFactory.createUserEmailIsTakenException(user.getEmail());
+            throw UserExceptionFactory.userEmailIsTakenException(user.getEmail());
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -25,7 +28,7 @@ public class UserService {
 
     public UserEntity getUser(final Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> UserExceptionFactory.createUserNotFoundException(userId));
+                .orElseThrow(() -> UserExceptionFactory.userNotFoundException(userId));
     }
 
     public UserEntity getUser(final String userId) {
@@ -40,4 +43,10 @@ public class UserService {
         return userRepository.findByEmail(email).isEmpty();
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        return userRepository.findByUsername(login)
+                .or(() -> userRepository.findByEmail(login))
+                .orElseThrow(() -> UserExceptionFactory.loginDoesNotMatchAnyUserException(login));
+    }
 }

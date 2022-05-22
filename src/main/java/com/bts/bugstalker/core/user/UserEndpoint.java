@@ -1,7 +1,7 @@
 package com.bts.bugstalker.core.user;
 
 import com.bts.bugstalker.api.api.UsersApi;
-import com.bts.bugstalker.config.AppInfoProvider;
+import com.bts.bugstalker.util.context.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(AppInfoProvider.API_V1_PATH)
+@RequestMapping(ApiPaths.API_ROOT)
 public class UserEndpoint implements UsersApi {
 
     private final UserService userService;
@@ -43,4 +43,5 @@ public class UserEndpoint implements UsersApi {
     public ResponseEntity<List<String>> usersGet() {
         return null;
     }
+
 }
