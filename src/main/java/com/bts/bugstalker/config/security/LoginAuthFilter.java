@@ -13,7 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class JsonAuthFilter extends UsernamePasswordAuthenticationFilter {
+public class LoginAuthFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ObjectMapper objectMapper;
 
@@ -26,10 +26,12 @@ public class JsonAuthFilter extends UsernamePasswordAuthenticationFilter {
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
+
             LoginCredentials authRequest = objectMapper.readValue(sb.toString(), LoginCredentials.class);
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     authRequest.getUsername(), authRequest.getPassword()
             );
+
             setDetails(request, token);
             return this.getAuthenticationManager().authenticate(token);
         } catch (IOException e) {

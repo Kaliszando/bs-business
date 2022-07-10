@@ -26,7 +26,11 @@ public class AuthorizationEndpoint {
         return ResponseEntity.ok("Hello secured");
     }
 
-    @PostMapping("/api/v1/auth/login")
-    public void login(@RequestBody LoginCredentials credentials) { }
+    @PostMapping("/api/v1/auth/sign-in")
+    public void signIn(@RequestBody LoginCredentials credentials) {
+        if(credentials != null) {
+            System.out.println("dupa");
+        }
+    }
 
 }

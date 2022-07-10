@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(ApiPaths.API_ROOT)
+@RequestMapping(ApiPaths.ROOT)
 public class UserEndpoint implements UsersApi {
 
     private final UserService userService;

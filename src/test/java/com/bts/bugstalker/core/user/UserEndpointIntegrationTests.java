@@ -14,7 +14,7 @@ class UserEndpointIntegrationTests {
     @Autowired
     private UserService userService;
 
-    private final static String ENDPOINT_PATH = ApiPaths.API_ROOT + "/role";
+    private final static String ENDPOINT_PATH = ApiPaths.ROOT + "/role";
 
     @Test
     void shouldSuccessfullyCreateUser() {

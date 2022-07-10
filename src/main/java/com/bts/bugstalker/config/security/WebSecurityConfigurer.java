@@ -1,25 +1,32 @@
 package com.bts.bugstalker.config.security;
 
+import com.bts.bugstalker.util.context.ApiPaths;
+import com.bts.bugstalker.util.properties.JwtProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
+
+    @Value("${bs.web.security.debug:false}")
+    boolean webSecurityDebug;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -30,6 +37,13 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     private final SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler;
 
     private final SimpleUrlAuthenticationFailureHandler authenticationFailureHandler;
+
+    private final JwtProperties jwtProperties;
+
+    @Override
+    public void configure(WebSecurity web) {
+        web.debug(webSecurityDebug);
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -43,12 +57,18 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers(ApiPaths.SIGN_IN).permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/v3/api-docs/**").permitAll()
                 .antMatchers("/h2/**").permitAll()
                 .anyRequest().authenticated()
+
                 .and()
-                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+                .and()
+                .addFilterBefore(loginAuthenticationFilter(), LoginAuthFilter.class)
+                .addFilter(new JwtAuthFilter(authenticationManager(), userDetailsService, jwtProperties))
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 
@@ -56,8 +76,9 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JsonAuthFilter authenticationFilter() throws Exception {
-        JsonAuthFilter filter = new JsonAuthFilter(objectMapper);
+    public LoginAuthFilter loginAuthenticationFilter() throws Exception {
+        LoginAuthFilter filter = new LoginAuthFilter(objectMapper);
+        filter.setFilterProcessesUrl(ApiPaths.SIGN_IN);
         filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         filter.setAuthenticationFailureHandler(authenticationFailureHandler);
         filter.setAuthenticationManager(super.authenticationManager());

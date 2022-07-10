@@ -7,19 +7,11 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 
 @Getter @RequiredArgsConstructor
 @ConstructorBinding
-@ConfigurationProperties(prefix = "bs.api")
-public final class ApiProperties {
+@ConfigurationProperties(prefix = "jwt")
+public final class JwtProperties {
 
-    private final String path;
+    private final String expirationTime;
 
-    private final String[] exposed;
-
-    private final String group;
-
-    private final String title;
-
-    private final String description;
-
-    private final String version;
+    private final String secret;
 
 }
