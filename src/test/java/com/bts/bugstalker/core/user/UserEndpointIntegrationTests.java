@@ -1,6 +1,6 @@
 package com.bts.bugstalker.core.user;
 
-import com.bts.bugstalker.util.context.ApiPaths;
+import com.bts.bugstalker.util.parameters.ApiPaths;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +14,7 @@ class UserEndpointIntegrationTests {
     @Autowired
     private UserService userService;
 
-    private final static String ENDPOINT_PATH = ApiPaths.ROOT + "/role";
+    private final static String ENDPOINT_PATH = ApiPaths.V1 + "/role";
 
     @Test
     void shouldSuccessfullyCreateUser() {

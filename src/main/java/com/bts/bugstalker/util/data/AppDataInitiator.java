@@ -16,7 +16,7 @@ public class AppDataInitiator implements CommandLineRunner {
     private final UserService userService;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         UserEntity user1 = userService.create(UserEntity.builder()
                 .username("jantes")
                 .firstName("Jan")
@@ -36,7 +36,7 @@ public class AppDataInitiator implements CommandLineRunner {
                 .build());
 
         UserEntity user3 = userService.create(UserEntity.builder()
-                .username("demo")
+                .username("demuse")
                 .firstName("Demo")
                 .lastName("User")
                 .email("demo@mail.com")
@@ -44,5 +44,4 @@ public class AppDataInitiator implements CommandLineRunner {
                 .role(UserRoles.DEMO)
                 .build());
     }
-
 }

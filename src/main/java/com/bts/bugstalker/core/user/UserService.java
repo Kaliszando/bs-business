@@ -31,9 +31,14 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> UserExceptionFactory.userNotFoundException(userId));
     }
 
-    public UserEntity getUser(final String userId) {
-        return getUser(Long.valueOf(userId));
+    public UserEntity getByUsername(final String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> UserExceptionFactory.userNotFoundException(username));
     }
+
+//    public UserEntity getUser(final String userId) {
+//        return getUser(Long.valueOf(userId));
+//    }
 
     public List<UserEntity> getUsers() {
         return userRepository.findAll();

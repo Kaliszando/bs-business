@@ -1,5 +1,6 @@
 package com.bts.bugstalker.core.user;
 
+import com.bts.bugstalker.api.model.UserInfoDto;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
@@ -17,7 +18,7 @@ class UserMapperTests {
     private static final String PASSWORD = "pass1234";
 
     @Test
-    void shouldMapToModel() {
+    void shouldMapToResponse() {
         UserEntity userEntity = UserEntity.builder()
                 .username(USERNAME)
                 .firstName(FIRST_NAME)
@@ -26,13 +27,13 @@ class UserMapperTests {
                 .password(PASSWORD)
                 .build();
 
-        UserDto userDTO = mapper.mapToDto(userEntity);
+        UserInfoDto response = mapper.mapToResponse(userEntity);
 
         assertAll(
-                () -> assertThat(userDTO.getUsername()).isEqualTo(USERNAME),
-                () -> assertThat(userDTO.getFirstName()).isEqualTo(FIRST_NAME),
-                () -> assertThat(userDTO.getLastName()).isEqualTo(LAST_NAME),
-                () -> assertThat(userDTO.getEmail()).isEqualTo(EMAIL)
+                () -> assertThat(response.getUsername()).isEqualTo(USERNAME),
+                () -> assertThat(response.getFirstName()).isEqualTo(FIRST_NAME),
+                () -> assertThat(response.getLastName()).isEqualTo(LAST_NAME),
+                () -> assertThat(response.getEmail()).isEqualTo(EMAIL)
         );
     }
 

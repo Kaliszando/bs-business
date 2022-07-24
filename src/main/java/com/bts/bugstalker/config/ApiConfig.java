@@ -3,10 +3,14 @@ package com.bts.bugstalker.config;
 import com.bts.bugstalker.util.properties.ApiProperties;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Configuration
@@ -16,10 +20,12 @@ public class ApiConfig {
 
     @Bean
     public OpenAPI openApiConfig() {
-        return new OpenAPI().info(new Info()
-                .title(apiProperties.getTitle())
-                .description(apiProperties.getDescription())
-                .version(apiProperties.getVersion())
+        return new OpenAPI()
+                .servers(provideServers())
+                .info(new Info()
+                    .title(apiProperties.getTitle())
+                    .description(apiProperties.getDescription())
+                    .version(apiProperties.getVersion())
         );
     }
 
@@ -32,4 +38,9 @@ public class ApiConfig {
                 .build();
     }
 
+    private List<Server> provideServers() {
+        return apiProperties.getServers().stream()
+                .map(serverUrl -> new Server().url(serverUrl))
+                .collect(Collectors.toList());
+    }
 }

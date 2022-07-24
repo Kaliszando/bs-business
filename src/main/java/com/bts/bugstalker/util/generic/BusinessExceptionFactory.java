@@ -15,5 +15,4 @@ public abstract class BusinessExceptionFactory {
             super(message);
         }
     }
-
 }

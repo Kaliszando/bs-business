@@ -1,4 +1,4 @@
-package com.bts.bugstalker.util.context;
+package com.bts.bugstalker.util.parameters;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -19,6 +19,10 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtProperties jwtProperties;
 
+    private final static String AUTH_HEADER_NAME = "Authorization";
+
+    private final static String AUTH_CONTENT_PREFIX = "Bearer ";
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {
@@ -26,8 +30,11 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         String token = JWT.create()
                 .withSubject(principal.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + Long.parseLong(jwtProperties.getExpirationTime())))
+                .withExpiresAt(new Date(System.currentTimeMillis() + Long.parseLong(jwtProperties.getExpirationTimeMillis())))
                 .sign(Algorithm.HMAC256(jwtProperties.getSecret()));
-        response.addHeader("Authorization", "Bearer " + token);
+
+        response.addHeader(AUTH_HEADER_NAME, AUTH_CONTENT_PREFIX + token);
+
+        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 }

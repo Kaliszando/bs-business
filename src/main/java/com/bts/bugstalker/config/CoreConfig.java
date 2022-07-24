@@ -13,11 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
         JwtProperties.class
 })
 @Configuration
-public class CommonsConfig {
+public class CoreConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

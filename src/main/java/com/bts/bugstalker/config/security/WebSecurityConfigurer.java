@@ -1,6 +1,7 @@
 package com.bts.bugstalker.config.security;
 
-import com.bts.bugstalker.util.context.ApiPaths;
+import com.bts.bugstalker.core.role.UserRoles;
+import com.bts.bugstalker.util.parameters.ApiPaths;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -56,18 +57,16 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers(ApiPaths.SIGN_IN).permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
-                .antMatchers("/v3/api-docs/**").permitAll()
-                .antMatchers("/h2/**").permitAll()
+                .antMatchers(ApiPaths.PUBLIC).permitAll()
+                .antMatchers(ApiPaths.ADMIN).hasAuthority(UserRoles.ADMIN.getCode())
+                .antMatchers(ApiPaths.PING).hasAuthority(UserRoles.ADMIN.getCode())
                 .anyRequest().authenticated()
 
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
-                .addFilterBefore(loginAuthenticationFilter(), LoginAuthFilter.class)
+                .addFilter(loginAuthenticationFilter())
                 .addFilter(new JwtAuthFilter(authenticationManager(), userDetailsService, jwtProperties))
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
@@ -84,5 +83,4 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         filter.setAuthenticationManager(super.authenticationManager());
         return filter;
     }
-
 }

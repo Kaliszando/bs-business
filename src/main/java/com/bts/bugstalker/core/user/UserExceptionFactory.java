@@ -7,12 +7,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 abstract class UserExceptionFactory extends BusinessExceptionFactory {
 
-    private static final String USER_NOT_FOUND_MSG = "No user with id \"%o\" found";
+    private static final String USER_NOT_FOUND_MSG = "No user with %s \"%s\" found";
     private static final String USER_EMAIL_TAKEN_MSG = "User with email \"%s\" already exists";
     private static final String INVALID_LOGIN_MSG = "No user with login \"%s\" found";
 
     public static UserNotFoundException userNotFoundException(Long id) {
-        return new UserNotFoundException(String.format(USER_NOT_FOUND_MSG, id));
+        return new UserNotFoundException(String.format(USER_NOT_FOUND_MSG, "id", id.toString()));
+    }
+
+    public static UserNotFoundException userNotFoundException(String username) {
+        return new UserNotFoundException(String.format(USER_NOT_FOUND_MSG, "username", username));
     }
 
     public static UserEmailIsTakenException userEmailIsTakenException(String email) {
@@ -43,5 +47,4 @@ abstract class UserExceptionFactory extends BusinessExceptionFactory {
             super(message);
         }
     }
-
 }

@@ -1,12 +1,12 @@
 package com.bts.bugstalker.core.user;
 
+import com.bts.bugstalker.api.model.UserInfoDto;
 import org.mapstruct.Mapper;
 
 @Mapper
+public
 interface UserMapper {
 
-    UserDto mapToDto(UserEntity user);
-
-    UserEntity mapToModel(UserDto userDto);
+    UserInfoDto mapToResponse(UserEntity user);
 
 }
