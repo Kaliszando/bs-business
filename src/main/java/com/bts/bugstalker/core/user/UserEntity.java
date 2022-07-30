@@ -1,6 +1,5 @@
 package com.bts.bugstalker.core.user;
 
-import com.bts.bugstalker.core.role.UserRoles;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +18,9 @@ import java.util.Collections;
 public class UserEntity implements UserDetails {
 
     @Setter(AccessLevel.NONE)
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
+    @SequenceGenerator(name="user_generator", sequenceName = "user_seq")
     private Long id;
 
     @NotBlank @NotNull private String username;
@@ -33,16 +34,7 @@ public class UserEntity implements UserDetails {
     @NotBlank @NotNull private String password;
 
     @Enumerated(EnumType.STRING) @NotNull
-    private UserRoles role;
-
-//    @ManyToMany
-//    @JoinTable(name = "USER_ROLE",
-//            joinColumns = @JoinColumn(name = "USER_ID",
-//                    foreignKey = @ForeignKey(name = "FK_USER_ROLE__USER_ID")),
-//
-//            inverseJoinColumns = @JoinColumn(name = "ROLE_ID",
-//                    foreignKey = @ForeignKey(name = "FK_USER_ROLE__ROLE_ID")))
-//    private List<RoleEntity> roles;
+    private UserRole role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

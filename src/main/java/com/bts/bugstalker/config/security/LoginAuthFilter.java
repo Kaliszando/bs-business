@@ -1,6 +1,6 @@
 package com.bts.bugstalker.config.security;
 
-import com.bts.bugstalker.core.common.model.LoginCredentials;
+import com.bts.bugstalker.core.common.LoginCredentials;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +29,7 @@ public class LoginAuthFilter extends UsernamePasswordAuthenticationFilter {
 
             LoginCredentials loginCredentials = objectMapper.readValue(sb.toString(), LoginCredentials.class);
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    loginCredentials.getEmail(), loginCredentials.getPassword()
+                    loginCredentials.email(), loginCredentials.password()
             );
 
             setDetails(request, token);

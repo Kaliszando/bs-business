@@ -1,6 +1,6 @@
 package com.bts.bugstalker.config.security;
 
-import com.bts.bugstalker.core.role.UserRoles;
+import com.bts.bugstalker.core.user.UserRole;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,8 +58,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(ApiPaths.PUBLIC).permitAll()
-                .antMatchers(ApiPaths.ADMIN).hasAuthority(UserRoles.ADMIN.getCode())
-                .antMatchers(ApiPaths.PING).hasAuthority(UserRoles.ADMIN.getCode())
+                .antMatchers(ApiPaths.ADMIN).hasAuthority(UserRole.ADMIN.getCode())
+                .antMatchers(ApiPaths.PING).hasAuthority(UserRole.ADMIN.getCode())
                 .anyRequest().authenticated()
 
                 .and()

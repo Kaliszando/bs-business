@@ -1,11 +1,11 @@
-package com.bts.bugstalker.core.role;
+package com.bts.bugstalker.core.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum UserRoles {
+public enum UserRole {
 
     ADMIN("ADMIN", "User admin role with additional privileges"),
     USER("USER", "Standard user role"),

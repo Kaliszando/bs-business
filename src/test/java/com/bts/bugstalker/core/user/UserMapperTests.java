@@ -27,13 +27,14 @@ class UserMapperTests {
                 .password(PASSWORD)
                 .build();
 
-        UserInfoDto response = mapper.mapToResponse(userEntity);
+        UserInfoDto response = mapper.mapToDto(userEntity);
 
         assertAll(
-                () -> assertThat(response.getUsername()).isEqualTo(USERNAME),
-                () -> assertThat(response.getFirstName()).isEqualTo(FIRST_NAME),
-                () -> assertThat(response.getLastName()).isEqualTo(LAST_NAME),
-                () -> assertThat(response.getEmail()).isEqualTo(EMAIL)
+            () -> assertThat(response.getUsername()).isEqualTo(USERNAME),
+            () -> assertThat(response.getFirstName()).isEqualTo(FIRST_NAME),
+            () -> assertThat(response.getLastName()).isEqualTo(LAST_NAME),
+            () -> assertThat(response.getEmail()).isEqualTo(EMAIL),
+            () -> assertThat(response.getId()).isEqualTo(userEntity.getId())
         );
     }
 

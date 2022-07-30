@@ -1,4 +1,4 @@
-package com.bts.bugstalker.feature.registration;
+package com.bts.bugstalker.feature.auth;
 
 import com.bts.bugstalker.core.user.UserEntity;
 import com.bts.bugstalker.core.user.UserService;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class RegistrationService {
+public class AuthManager {
 
     private final UserService userService;
 

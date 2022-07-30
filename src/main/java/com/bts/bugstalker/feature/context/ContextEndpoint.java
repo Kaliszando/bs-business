@@ -1,4 +1,4 @@
-package com.bts.bugstalker.core.context;
+package com.bts.bugstalker.feature.context;
 
 import com.bts.bugstalker.api.ContextApi;
 import com.bts.bugstalker.api.model.UserInfoDto;
@@ -27,6 +27,6 @@ public class ContextEndpoint implements ContextApi {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = userService.getByUsername(authentication.getName());
 
-        return ResponseEntity.ok(mapper.mapToResponse(user));
+        return ResponseEntity.ok(mapper.mapToDto(user));
     }
 }

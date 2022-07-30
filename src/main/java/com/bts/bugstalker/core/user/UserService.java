@@ -7,15 +7,29 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+
+    public UserEntity getByUsername(final String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> UserExceptionFactory.userNotFoundException(username));
+    }
+
+    public UserEntity getById(final Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> UserExceptionFactory.userNotFoundException(id));
+    }
 
     public UserEntity create(final UserEntity user) {
         if (!isEmailAvailable(user.getEmail())) {
@@ -26,22 +40,10 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public UserEntity getUser(final Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> UserExceptionFactory.userNotFoundException(userId));
-    }
-
-    public UserEntity getByUsername(final String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> UserExceptionFactory.userNotFoundException(username));
-    }
-
-//    public UserEntity getUser(final String userId) {
-//        return getUser(Long.valueOf(userId));
-//    }
-
-    public List<UserEntity> getUsers() {
-        return userRepository.findAll();
+    public List<UserEntity> queryByPhrase(final String query) {
+        return (query == null)
+                ? Collections.emptyList()
+                : userRepository.searchByQuery(query.toUpperCase().replaceAll("\\s+",""));
     }
 
     public boolean isEmailAvailable(final String email) {
