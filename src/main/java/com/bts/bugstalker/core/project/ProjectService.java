@@ -1,8 +1,6 @@
 package com.bts.bugstalker.core.project;
 
-import com.bts.bugstalker.core.member.MembershipEntity;
 import com.bts.bugstalker.core.member.MembershipService;
-import com.bts.bugstalker.feature.context.ContextProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +14,13 @@ public class ProjectService {
 
     private final MembershipService membershipService;
 
-    private final ContextProvider contextProvider;
+    public ProjectEntity save(ProjectEntity project) {
+        return projectRepository.save(project);
+    }
 
-    public ProjectEntity createProjectWithOwner(ProjectEntity project) {
-        ProjectEntity persistedProject = projectRepository.save(project);
-        membershipService.create(MembershipEntity.builder()
-                .user(contextProvider.getContextUser())
-                .project(persistedProject)
-                .build());
-        return persistedProject;
+    public ProjectEntity getById(Long id) {
+        return projectRepository.findById(id)
+                .orElseThrow();
     }
 
     public List<ProjectEntity> getAllByIds(List<Long> projectIds) {
@@ -33,11 +29,5 @@ public class ProjectService {
 
     public List<Long> getAllIdsByUserId(Long userId) {
         return membershipService.getAllProjectIdsByUserId(userId);
-    }
-
-    public List<ProjectEntity> getAllByContext() {
-        Long userId = contextProvider.getContextUser().getId();
-        List<Long> projectIds = getAllIdsByUserId(userId);
-        return getAllByIds(projectIds);
     }
 }

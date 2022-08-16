@@ -12,15 +12,15 @@ public class ContextProvider {
 
     private final UserService userService;
 
-    private UserEntity contextUser;
+    private UserEntity cachedUser;
 
-    public UserEntity getContextUser() {
+    public UserEntity getUser() {
         String contextUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (contextUser != null && contextUsername.equals(contextUser.getUsername())) {
-            return contextUser;
+        if (cachedUser != null && contextUsername.equals(cachedUser.getUsername())) {
+            return cachedUser;
         }
 
-        contextUser = userService.getByUsername(contextUsername);
-        return contextUser;
+        cachedUser = userService.getByUsername(contextUsername);
+        return cachedUser;
     }
 }

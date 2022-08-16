@@ -20,7 +20,6 @@ public class UserService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
-
     public UserEntity getByUsername(final String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> UserExceptionFactory.userNotFoundException(username));

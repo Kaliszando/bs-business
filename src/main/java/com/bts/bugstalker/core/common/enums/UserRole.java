@@ -1,4 +1,4 @@
-package com.bts.bugstalker.core.user;
+package com.bts.bugstalker.core.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,15 +1,12 @@
 package com.bts.bugstalker.core.user;
 
-import com.bts.bugstalker.fixtures.TestMocks;
-import org.junit.After;
-import org.junit.jupiter.api.BeforeEach;
+import com.bts.bugstalker.fixtures.EntityMocks;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
 
@@ -17,24 +14,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ActiveProfiles("test")
-@SpringBootTest
-@Transactional
-public class UserRepositoryTests {
+@Rollback
+@DataJpaTest
+public class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
 
     private void persistUsers() {
-        var user1 = TestMocks.prepareUserEntity();
+        var user1 = EntityMocks.USER.prepareUserEntity();
         user1.setEmail("user1@email.com");
         user1.setUsername("username1");
 
-        var user2 = TestMocks.prepareUserEntity();
+        var user2 = EntityMocks.USER.prepareUserEntity();
         user2.setEmail("user2@email.com");
         user2.setUsername("username2");
 
-        var user3 = TestMocks.prepareUserEntity();
+        var user3 = EntityMocks.USER.prepareUserEntity();
         user3.setEmail("user3@email.com");
         user3.setUsername("username3");
 
@@ -44,7 +40,7 @@ public class UserRepositoryTests {
     @Test
     void shouldSuccessfullyPersistUser() {
         long count = userRepository.count();
-        var user = TestMocks.prepareUserEntity();
+        var user = EntityMocks.USER.prepareUserEntity();
 
         userRepository.save(user);
 
@@ -52,8 +48,24 @@ public class UserRepositoryTests {
     }
 
     @Test
+    void shouldSuccessfullyUpdateEntityVersion() {
+        Long id = userRepository.save(EntityMocks.USER.prepareUserEntity()).getId();
+        var initial = userRepository.findById(id).orElseThrow();
+        var copy = userRepository.findById(id).orElseThrow();
+        assertThat(initial.getVersion()).isEqualTo(0);
+
+        initial.setLastName("last name updated");
+        userRepository.save(initial);
+
+        var updated = userRepository.findAll();
+        assertThat(updated).hasSize(1).allMatch(
+                userEntity -> userEntity.getVersion() == 1
+        );
+    }
+
+    @Test
     void shouldMapDataCorrectly() {
-        var user = TestMocks.prepareUserEntity();
+        var user = EntityMocks.USER.prepareUserEntity();
         var persisted = userRepository.save(user);
 
         assertAll(
@@ -97,7 +109,7 @@ public class UserRepositoryTests {
     @ParameterizedTest
     @ValueSource(strings = {"USERNAME", "USER@EMAIL.COM", "FIRSTNAME", "LASTNAME", "LASTNAMEFIRSTNAME"})
     void shouldFindByQuery(String query) {
-        var user = TestMocks.prepareUserEntity();
+        var user = EntityMocks.USER.prepareUserEntity();
         userRepository.save(user);
 
         var foundUsers = userRepository.searchByQuery(query);
@@ -108,7 +120,7 @@ public class UserRepositoryTests {
     @ParameterizedTest
     @ValueSource(strings = {"username", "@email", "name"})
     void shouldNotFindByQuery(String query) {
-        var user = TestMocks.prepareUserEntity();
+        var user = EntityMocks.USER.prepareUserEntity();
         userRepository.save(user);
 
         var foundUsers = userRepository.searchByQuery(query);

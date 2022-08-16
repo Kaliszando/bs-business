@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
  * @param <S> source class to convert from
  * @param <T> target class to convert to
  */
-public interface Converter<S, T> {
+public interface TwoWayConverter<S,T> extends Converter<S,T> {
 
-    T convert(S source);
+    S reverseConvert(T target);
 
-    default List<T> convert(List<S> sourceList) {
+    default List<S> reverseConvert(List<T> sourceList) {
         return sourceList.stream()
-                .map(this::convert)
+                .map(this::reverseConvert)
                 .collect(Collectors.toList());
     }
 }

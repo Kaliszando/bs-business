@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @SpringBootTest
-class UserEndpointIntegrationTests {
+class UserEndpointIntegrationTest {
 
     @Autowired
     private UserService userService;

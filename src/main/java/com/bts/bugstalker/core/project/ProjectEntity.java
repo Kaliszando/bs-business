@@ -1,6 +1,7 @@
 package com.bts.bugstalker.core.project;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -22,6 +23,6 @@ public class ProjectEntity {
 
     @NotBlank @NotNull private String tag;
 
+    @Length(max = 1000)
     private String description;
-
 }

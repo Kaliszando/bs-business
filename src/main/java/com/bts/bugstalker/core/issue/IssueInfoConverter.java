@@ -1,0 +1,37 @@
+package com.bts.bugstalker.core.issue;
+
+import com.bts.bugstalker.api.model.IssueInfoDto;
+import com.bts.bugstalker.core.user.UserMapper;
+import com.bts.bugstalker.util.generic.TwoWayConverter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@RequiredArgsConstructor
+@Component
+public class IssueInfoConverter implements TwoWayConverter<IssueInfoDto, IssueEntity> {
+
+    private final UserMapper userMapper;
+
+    @Override
+    public IssueEntity convert(IssueInfoDto dto) {
+        return null;
+    }
+
+    @Override
+    public IssueInfoDto reverseConvert(IssueEntity entity) {
+        var dto = new IssueInfoDto();
+        dto.setId(entity.getId());
+        dto.setIssueType(IssueInfoDto.IssueTypeEnum.valueOf(entity.getType().getCode()));
+        dto.setIssueSeverity(IssueInfoDto.IssueSeverityEnum.valueOf(entity.getSeverity().getCode()));
+        dto.projectId(entity.getProject().getId());
+        dto.tagId(entity.getProject().getTag().concat("-").concat(entity.getId().toString()));
+        dto.status(entity.getStatus());
+        dto.name(entity.getName());
+        dto.summary(entity.getSummary());
+        dto.labels(entity.getLabels());
+        dto.epicName(entity.getEpic() != null ? entity.getEpic().getName() : null);
+        dto.reporter(userMapper.mapToDto(entity.getReporter()));
+        dto.assignee(userMapper.mapToDto(entity.getAssignee()));
+        return dto;
+    }
+}

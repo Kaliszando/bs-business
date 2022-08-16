@@ -1,5 +1,7 @@
 package com.bts.bugstalker.core.user;
 
+import com.bts.bugstalker.core.common.audit.AuditBaseEntity;
+import com.bts.bugstalker.core.common.enums.UserRole;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,7 +17,7 @@ import java.util.Collections;
 @Entity @Table(name = "USER")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserEntity implements UserDetails {
+public class UserEntity extends AuditBaseEntity implements UserDetails {
 
     @Setter(AccessLevel.NONE)
     @Id

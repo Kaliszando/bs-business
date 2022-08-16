@@ -7,7 +7,7 @@ import org.mapstruct.factory.Mappers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class UserMapperTests {
+class UserMapperTest {
 
     private final UserMapper mapper = Mappers.getMapper(UserMapper.class);
 

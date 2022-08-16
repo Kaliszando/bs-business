@@ -4,13 +4,13 @@ import com.bts.bugstalker.core.member.MembershipEntity;
 import com.bts.bugstalker.core.member.MembershipRepository;
 import com.bts.bugstalker.core.project.ProjectRepository;
 import com.bts.bugstalker.core.user.UserRepository;
-import com.bts.bugstalker.fixtures.TestMocks;
+import com.bts.bugstalker.fixtures.EntityMocks;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ActiveProfiles("test")
-@SpringBootTest
-@Transactional
-public class MembershipRepositoryTests {
+@Rollback
+@DataJpaTest
+public class MembershipRepositoryTest {
 
     @Autowired
     private MembershipRepository membershipRepository;
@@ -35,8 +34,8 @@ public class MembershipRepositoryTests {
     private ProjectRepository projectRepository;
 
     private MembershipEntity persistMembership() {
-        var user = userRepository.save(TestMocks.prepareUserEntity());
-        var project = projectRepository.save(TestMocks.prepareProjectEntity());
+        var user = userRepository.save(EntityMocks.USER.prepareUserEntity());
+        var project = projectRepository.save(EntityMocks.PROJECT.prepareProjectEntity());
 
         return membershipRepository.save(MembershipEntity.builder()
                     .user(user)
@@ -58,12 +57,10 @@ public class MembershipRepositoryTests {
     void shouldFailToSaveMembershipWithReferenceToNonExistingEntity() {
         assertThat(membershipRepository.count()).isEqualTo(0);
 
-        assertThrows(Exception.class, () -> {
-            membershipRepository.save(MembershipEntity.builder()
-                    .project(null)
-                    .user(null)
-                    .build());
-        });
+        assertThrows(Exception.class, () -> membershipRepository.save(MembershipEntity.builder()
+                .project(null)
+                .user(null)
+                .build()));
 
         assertThat(membershipRepository.count()).isEqualTo(0);
     }
@@ -77,32 +74,32 @@ public class MembershipRepositoryTests {
             () -> assertThat(membership.getId()).isNotNull(),
 
             () -> assertThat(membership.getProject().getId()).isNotNull(),
-            () -> assertThat(membership.getProject().getName()).isEqualTo(TestMocks.PROJECT.NAME),
-            () -> assertThat(membership.getProject().getTag()).isEqualTo(TestMocks.PROJECT.TAG),
-            () -> assertThat(membership.getProject().getDescription()).isEqualTo(TestMocks.PROJECT.DESCRIPTION),
+            () -> assertThat(membership.getProject().getName()).isEqualTo(EntityMocks.PROJECT.NAME),
+            () -> assertThat(membership.getProject().getTag()).isEqualTo(EntityMocks.PROJECT.TAG),
+            () -> assertThat(membership.getProject().getDescription()).isEqualTo(EntityMocks.PROJECT.DESCRIPTION),
 
             () -> assertThat(membership.getUser().getId()).isNotNull(),
-            () -> assertThat(membership.getUser().getUsername()).isEqualTo(TestMocks.USER.USERNAME),
-            () -> assertThat(membership.getUser().getEmail()).isEqualTo(TestMocks.USER.EMAIL),
-            () -> assertThat(membership.getUser().getFirstName()).isEqualTo(TestMocks.USER.FIRST_NAME),
-            () -> assertThat(membership.getUser().getLastName()).isEqualTo(TestMocks.USER.LAST_NAME),
-            () -> assertThat(membership.getUser().getPassword()).isEqualTo(TestMocks.USER.PASSWORD),
-            () -> assertThat(membership.getUser().getRole()).isEqualTo(TestMocks.USER.ROLE)
+            () -> assertThat(membership.getUser().getUsername()).isEqualTo(EntityMocks.USER.USERNAME),
+            () -> assertThat(membership.getUser().getEmail()).isEqualTo(EntityMocks.USER.EMAIL),
+            () -> assertThat(membership.getUser().getFirstName()).isEqualTo(EntityMocks.USER.FIRST_NAME),
+            () -> assertThat(membership.getUser().getLastName()).isEqualTo(EntityMocks.USER.LAST_NAME),
+            () -> assertThat(membership.getUser().getPassword()).isEqualTo(EntityMocks.USER.PASSWORD),
+            () -> assertThat(membership.getUser().getRole()).isEqualTo(EntityMocks.USER.ROLE)
         );
     }
 
     private void persistMultipleMemberships() {
-        var user1 = TestMocks.prepareUserEntity();
-        var user2 = TestMocks.prepareUserEntity();
-        var user3 = TestMocks.prepareUserEntity();
+        var user1 = EntityMocks.USER.prepareUserEntity();
+        var user2 = EntityMocks.USER.prepareUserEntity();
+        var user3 = EntityMocks.USER.prepareUserEntity();
         user1.setUsername("user1");
         user2.setUsername("user2");
         user3.setUsername("user3");
         userRepository.saveAll(List.of(user1, user2, user3));
 
-        var project1 = TestMocks.prepareProjectEntity();
-        var project2 = TestMocks.prepareProjectEntity();
-        var project3 = TestMocks.prepareProjectEntity();
+        var project1 = EntityMocks.PROJECT.prepareProjectEntity();
+        var project2 = EntityMocks.PROJECT.prepareProjectEntity();
+        var project3 = EntityMocks.PROJECT.prepareProjectEntity();
         project1.setName("project1");
         project2.setName("project2");
         project2.setName("project3");

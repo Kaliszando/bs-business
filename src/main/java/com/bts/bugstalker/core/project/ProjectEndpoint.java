@@ -17,19 +17,19 @@ import java.util.List;
 @RequestMapping(ApiPaths.V1)
 public class ProjectEndpoint implements ProjectApi {
 
-    private final ProjectService projectService;
-
     private final ProjectMapper projectMapper;
+
+    private final ProjectRelationManager projectRelationManager;
 
     @Override
     public ResponseEntity<Void> createProject(@Valid ProjectInfoDto request) {
-        projectService.createProjectWithOwner(projectMapper.mapToEntity(request));
+        projectRelationManager.createProjectWithUserContext(projectMapper.mapToEntity(request));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
     public ResponseEntity<List<ProjectInfoDto>> getProjects() {
-        List<ProjectEntity> projects = projectService.getAllByContext();
+        List<ProjectEntity> projects = projectRelationManager.getAllByContext();
         return ResponseEntity.ok(projectMapper.mapToDto(projects));
     }
 }

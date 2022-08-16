@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface MembershipRepository extends JpaRepository<MembershipEntity, Long> {
 
-    @Query("SELECT m FROM MembershipEntity m WHERE m.user.id = ?1")
     List<MembershipEntity> findAllByUserId(Long userId);
 
     @Query("SELECT m.id FROM MembershipEntity m WHERE m.user.id = ?1")
@@ -17,5 +16,4 @@ public interface MembershipRepository extends JpaRepository<MembershipEntity, Lo
 
     @Query("SELECT m.project.id FROM MembershipEntity m WHERE m.user.id = ?1")
     List<Long> findAllProjectIdsByUserId(Long userId);
-
 }

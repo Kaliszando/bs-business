@@ -96,6 +96,12 @@
             <artifactId>java-jwt</artifactId>
             <version>${auth0-java-jwt.version}</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.30</version>
+        </dependency>
+
 
 
         <!-- dev utils -->

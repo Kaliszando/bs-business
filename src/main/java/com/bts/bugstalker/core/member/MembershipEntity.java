@@ -1,11 +1,14 @@
 package com.bts.bugstalker.core.member;
 
+import com.bts.bugstalker.core.common.audit.AuditBaseEntity;
+import com.bts.bugstalker.core.group.GroupEntity;
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.user.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Getter @Setter @Builder
 @Entity @Table(name = "MEMBERSHIP")
@@ -29,4 +32,10 @@ public class MembershipEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
+    @ManyToMany
+    @JoinTable(
+            name = "MEMBERSHIP_GROUP",
+            joinColumns = @JoinColumn(name = "membership_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    private Set<GroupEntity> groups;
 }
