@@ -1,6 +1,5 @@
-package com.bts.bugstalker.core.member;
+package com.bts.bugstalker.core.membership;
 
-import com.bts.bugstalker.core.common.audit.AuditBaseEntity;
 import com.bts.bugstalker.core.group.GroupEntity;
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.user.UserEntity;

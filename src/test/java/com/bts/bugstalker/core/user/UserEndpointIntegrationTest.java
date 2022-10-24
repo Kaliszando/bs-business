@@ -1,14 +1,15 @@
 package com.bts.bugstalker.core.user;
 
 import com.bts.bugstalker.util.parameters.ApiPaths;
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+//@SpringBootTest
 class UserEndpointIntegrationTest {
 
     @Autowired
@@ -18,6 +19,8 @@ class UserEndpointIntegrationTest {
 
     @Test
     void shouldSuccessfullyCreateUser() {
+        RestAssured.get("https://reqres.in/api/users?page=2");
+
 //        with().body("ROLE_NAME")
 //                .when()
 //                .request("POST", ENDPOINT_PATH)

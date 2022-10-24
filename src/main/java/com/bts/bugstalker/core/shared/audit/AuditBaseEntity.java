@@ -1,6 +1,7 @@
-package com.bts.bugstalker.core.common.audit;
+package com.bts.bugstalker.core.shared.audit;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -17,17 +18,18 @@ public class AuditBaseEntity {
 
     @Column(updatable = false)
     @CreatedDate
-    private LocalDateTime createdDate;
+    protected LocalDateTime createdDate;
 
     @LastModifiedDate
-    private LocalDateTime modifiedDate;
+    protected LocalDateTime modifiedDate;
 
     @CreatedBy
-    private String createdBy;
+    protected String createdBy;
 
     @LastModifiedBy
-    private String modifiedBy;
+    protected String modifiedBy;
 
+    @Setter
     @Version
-    private Long version;
+    protected Long version;
 }

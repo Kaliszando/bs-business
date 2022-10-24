@@ -1,8 +1,8 @@
 package com.bts.bugstalker.core.issue;
 
-import com.bts.bugstalker.core.common.audit.AuditBaseEntity;
-import com.bts.bugstalker.core.common.enums.IssueSeverity;
-import com.bts.bugstalker.core.common.enums.IssueType;
+import com.bts.bugstalker.core.shared.audit.AuditBaseEntity;
+import com.bts.bugstalker.core.shared.enums.IssueSeverity;
+import com.bts.bugstalker.core.shared.enums.IssueType;
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.user.UserEntity;
 import lombok.*;

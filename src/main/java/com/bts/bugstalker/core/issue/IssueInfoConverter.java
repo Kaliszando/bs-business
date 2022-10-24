@@ -32,6 +32,7 @@ public class IssueInfoConverter implements TwoWayConverter<IssueInfoDto, IssueEn
         dto.epicName(entity.getEpic() != null ? entity.getEpic().getName() : null);
         dto.reporter(userMapper.mapToDto(entity.getReporter()));
         dto.assignee(userMapper.mapToDto(entity.getAssignee()));
+        dto.backlogList(entity.getBacklogList());
         return dto;
     }
 }

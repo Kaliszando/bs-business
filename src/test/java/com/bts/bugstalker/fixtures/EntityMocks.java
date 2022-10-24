@@ -2,7 +2,7 @@ package com.bts.bugstalker.fixtures;
 
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.user.UserEntity;
-import com.bts.bugstalker.core.common.enums.UserRole;
+import com.bts.bugstalker.core.shared.enums.UserRole;
 
 public class EntityMocks {
 

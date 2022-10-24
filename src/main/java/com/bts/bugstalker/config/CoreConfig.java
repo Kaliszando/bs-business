@@ -1,6 +1,6 @@
 package com.bts.bugstalker.config;
 
-import com.bts.bugstalker.core.common.audit.AuditorAwareImpl;
+import com.bts.bugstalker.core.shared.audit.AuditorAwareImpl;
 import com.bts.bugstalker.util.properties.ApiProperties;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-//@EnableJpaAuditing
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 @EnableConfigurationProperties({
         ApiProperties.class,
@@ -25,12 +24,6 @@ public class CoreConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    AuditorAware<String> auditorProvider() {
-//        Authentication principal = SecurityContextHolder.getContext().getAuthentication();
-//        String auditor = (principal != null) ? principal.getName() : "SYSTEM";
-//        return () -> Optional.of(auditor);
-//    }
     @Bean
     AuditorAware<String> auditorProvider() {
         return new AuditorAwareImpl();

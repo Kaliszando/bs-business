@@ -1,16 +1,21 @@
 package com.bts.bugstalker.core.issue;
 
 import com.bts.bugstalker.api.model.IssueDetailsDto;
-import com.bts.bugstalker.api.model.IssueInfoDto;
-import com.bts.bugstalker.core.common.enums.IssueSeverity;
-import com.bts.bugstalker.core.common.enums.IssueType;
+import com.bts.bugstalker.core.shared.enums.IssueSeverity;
+import com.bts.bugstalker.core.shared.enums.IssueType;
 import com.bts.bugstalker.core.project.ProjectService;
+import com.bts.bugstalker.core.user.UserEntity;
 import com.bts.bugstalker.core.user.UserMapper;
+import com.bts.bugstalker.core.user.UserService;
 import com.bts.bugstalker.feature.context.ContextProvider;
 import com.bts.bugstalker.util.generic.TwoWayConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.threeten.bp.OffsetDateTime;
+
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Component
@@ -22,9 +27,12 @@ public class IssueDetailsConverter implements TwoWayConverter<IssueDetailsDto, I
 
     private final UserMapper userMapper;
 
+    private final UserService userService;
+
     @Override
     public IssueEntity convert(IssueDetailsDto dto) {
-        return IssueEntity.builder()
+        IssueEntity issue = IssueEntity.builder()
+                .id(dto.getId())
                 .project(projectService.getById(dto.getProjectId()))
                 .type(IssueType.valueOf(dto.getIssueType().toString()))
                 .severity(IssueSeverity.valueOf(dto.getIssueSeverity().toString()))
@@ -35,7 +43,19 @@ public class IssueDetailsConverter implements TwoWayConverter<IssueDetailsDto, I
                 .labels(dto.getLabels())
                 .reporter(contextProvider.getUser())
                 .backlogList(getDefaultBacklogList(dto.getLocation()))
+                .assignee(getAssignee(dto))
                 .build();
+
+        issue.setVersion(dto.getVersion());
+
+        return issue;
+    }
+
+    private UserEntity getAssignee(IssueDetailsDto dto) {
+        if (dto.getAssignee() != null && dto.getAssignee().getUsername() != null) {
+            return userService.getByUsername(dto.getAssignee().getUsername());
+        }
+        return null;
     }
 
     @Override
@@ -55,11 +75,12 @@ public class IssueDetailsConverter implements TwoWayConverter<IssueDetailsDto, I
                 .assignee(userMapper.mapToDto(entity.getAssignee()))
                 .description(entity.getDescription())
 
-                .daysOld(3)
-                .hoursSpent(12);
+                .daysOld((int) Duration.between(LocalDateTime.now(), entity.getCreatedDate()).toDays())
+                .hoursSpent(0);
 
-        issue.createdOn(OffsetDateTime.now().minusDays(3));
+        issue.createdOn(OffsetDateTime.now());
         issue.modifiedOn(OffsetDateTime.now());
+        issue.version(entity.getVersion());
 
         return issue;
     }

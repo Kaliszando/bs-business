@@ -19,7 +19,6 @@ public class ContextProvider {
         if (cachedUser != null && contextUsername.equals(cachedUser.getUsername())) {
             return cachedUser;
         }
-
         cachedUser = userService.getByUsername(contextUsername);
         return cachedUser;
     }

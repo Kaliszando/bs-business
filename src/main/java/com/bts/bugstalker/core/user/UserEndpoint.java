@@ -5,6 +5,7 @@ import com.bts.bugstalker.api.model.UserInfoDto;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

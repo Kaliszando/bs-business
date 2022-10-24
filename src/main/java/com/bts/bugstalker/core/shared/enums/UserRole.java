@@ -1,4 +1,4 @@
-package com.bts.bugstalker.core.common.enums;
+package com.bts.bugstalker.core.shared.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,5 +14,4 @@ public enum UserRole {
     private final String code;
 
     private final String description;
-
 }

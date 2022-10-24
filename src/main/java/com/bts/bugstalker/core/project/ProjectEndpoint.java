@@ -19,17 +19,17 @@ public class ProjectEndpoint implements ProjectApi {
 
     private final ProjectMapper projectMapper;
 
-    private final ProjectRelationManager projectRelationManager;
+    private final ProjectManager projectManager;
 
     @Override
     public ResponseEntity<Void> createProject(@Valid ProjectInfoDto request) {
-        projectRelationManager.createProjectWithUserContext(projectMapper.mapToEntity(request));
+        projectManager.createProjectWithUserContext(projectMapper.mapToEntity(request));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
     public ResponseEntity<List<ProjectInfoDto>> getProjects() {
-        List<ProjectEntity> projects = projectRelationManager.getAllByContext();
+        List<ProjectEntity> projects = projectManager.getAllByContext();
         return ResponseEntity.ok(projectMapper.mapToDto(projects));
     }
 }

@@ -1,6 +1,6 @@
 package com.bts.bugstalker.config.security;
 
-import com.bts.bugstalker.core.common.enums.UserRole;
+import com.bts.bugstalker.core.shared.enums.UserRole;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,6 +55,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.cors();
 
         http.authorizeRequests()
                 .antMatchers(ApiPaths.PUBLIC).permitAll()

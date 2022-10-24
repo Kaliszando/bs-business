@@ -1,6 +1,6 @@
 package com.bts.bugstalker.core.project;
 
-import com.bts.bugstalker.core.member.MembershipService;
+import com.bts.bugstalker.core.membership.MembershipService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

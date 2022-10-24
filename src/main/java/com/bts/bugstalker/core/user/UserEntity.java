@@ -1,7 +1,7 @@
 package com.bts.bugstalker.core.user;
 
-import com.bts.bugstalker.core.common.audit.AuditBaseEntity;
-import com.bts.bugstalker.core.common.enums.UserRole;
+import com.bts.bugstalker.core.shared.audit.AuditBaseEntity;
+import com.bts.bugstalker.core.shared.enums.UserRole;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

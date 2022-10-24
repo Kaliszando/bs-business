@@ -1,12 +1,12 @@
 package com.bts.bugstalker.util.data;
 
-import com.bts.bugstalker.core.common.enums.IssueSeverity;
-import com.bts.bugstalker.core.common.enums.IssueType;
-import com.bts.bugstalker.core.common.enums.UserRole;
+import com.bts.bugstalker.core.shared.enums.IssueSeverity;
+import com.bts.bugstalker.core.shared.enums.IssueType;
+import com.bts.bugstalker.core.shared.enums.UserRole;
 import com.bts.bugstalker.core.issue.IssueEntity;
 import com.bts.bugstalker.core.issue.IssueRepository;
-import com.bts.bugstalker.core.member.MembershipEntity;
-import com.bts.bugstalker.core.member.MembershipRepository;
+import com.bts.bugstalker.core.membership.MembershipEntity;
+import com.bts.bugstalker.core.membership.MembershipRepository;
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.project.ProjectRepository;
 import com.bts.bugstalker.core.user.UserEntity;
@@ -118,6 +118,7 @@ public class AppDataInitiator implements CommandLineRunner {
                 .description("API design is prone to errors, and it’s extremely difficult and time-consuming to spot and rectify mistakes when modeling APIs. Swagger Editor was the first editor built for designing APIs with the OpenAPI Specification (OAS), and has continued to meet the needs of developers building APIs with OAS. The Editor validates your design in real-time, checks for OAS compliancy, and provides visual feedback on the go.")
                 .epic(epic3)
                 .status("testing")
+                .backlogList("active")
                 .build();
         IssueEntity task2 = IssueEntity.builder()
                 .reporter(user1)
@@ -129,6 +130,7 @@ public class AppDataInitiator implements CommandLineRunner {
                 .name("ng-open-api")
                 .epic(epic3)
                 .status("in progress")
+                .backlogList("active")
                 .build();
         IssueEntity task3 = IssueEntity.builder()
                 .reporter(user1)
@@ -140,6 +142,7 @@ public class AppDataInitiator implements CommandLineRunner {
                 .name("Frontend API module")
                 .epic(epic3)
                 .status("in progress")
+                .backlogList("active")
                 .build();
         IssueEntity task4 = IssueEntity.builder()
                 .reporter(user1)
@@ -151,6 +154,7 @@ public class AppDataInitiator implements CommandLineRunner {
                 .summary("This is the summary section, presenting in a concise form the key issues this task addresses")
                 .epic(epic3)
                 .status("to do")
+                .backlogList("active")
                 .build();
         IssueEntity task5 = IssueEntity.builder()
                 .reporter(user1)
@@ -161,6 +165,7 @@ public class AppDataInitiator implements CommandLineRunner {
                 .name("API gen verification")
                 .epic(epic3)
                 .status("to do")
+                .backlogList("active")
                 .build();
 
         IssueEntity issue1 = IssueEntity.builder()
@@ -173,6 +178,7 @@ public class AppDataInitiator implements CommandLineRunner {
                 .labels(List.of("dev", "performance"))
                 .name("Report export is slow")
                 .status("in progress")
+                .backlogList("active")
                 .build();
         IssueEntity issue2 = IssueEntity.builder()
                 .reporter(user1)
@@ -183,6 +189,7 @@ public class AppDataInitiator implements CommandLineRunner {
                 .labels(List.of("server", "devops"))
                 .name("500 on login page")
                 .status("done")
+                .backlogList("active")
                 .build();
         IssueEntity issue3 = IssueEntity.builder()
                 .reporter(user1)
@@ -193,6 +200,7 @@ public class AppDataInitiator implements CommandLineRunner {
                 .labels(List.of("ux", "ui", "BSK"))
                 .name("Type select placeholder name")
                 .status("to do")
+                .backlogList("active")
                 .build();
         IssueEntity issue4 = IssueEntity.builder()
                 .reporter(user1)
@@ -202,7 +210,8 @@ public class AppDataInitiator implements CommandLineRunner {
                 .severity(IssueSeverity.NORMAL)
                 .labels(List.of("api", "dev"))
                 .name("Changes in API are not applied")
-                .status("in progress    ")
+                .status("in progress")
+                .backlogList("active")
                 .build();
 
 

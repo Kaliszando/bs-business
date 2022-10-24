@@ -51,7 +51,6 @@ public class UserRepositoryTest {
     void shouldSuccessfullyUpdateEntityVersion() {
         Long id = userRepository.save(EntityMocks.USER.prepareUserEntity()).getId();
         var initial = userRepository.findById(id).orElseThrow();
-        var copy = userRepository.findById(id).orElseThrow();
         assertThat(initial.getVersion()).isEqualTo(0);
 
         initial.setLastName("last name updated");

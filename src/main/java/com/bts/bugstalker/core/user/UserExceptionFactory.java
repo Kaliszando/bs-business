@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-abstract class UserExceptionFactory extends BusinessExceptionFactory {
+final class UserExceptionFactory extends BusinessExceptionFactory {
 
     private static final String USER_NOT_FOUND_MSG = "No user with %s \"%s\" found";
     private static final String USER_EMAIL_TAKEN_MSG = "User with email \"%s\" already exists";

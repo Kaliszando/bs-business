@@ -1,7 +1,5 @@
 package com.bts.bugstalker.core.membership;
 
-import com.bts.bugstalker.core.member.MembershipEntity;
-import com.bts.bugstalker.core.member.MembershipRepository;
 import com.bts.bugstalker.core.project.ProjectRepository;
 import com.bts.bugstalker.core.user.UserRepository;
 import com.bts.bugstalker.fixtures.EntityMocks;
