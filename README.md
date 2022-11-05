@@ -14,11 +14,10 @@ streamlining the methods of presenting the status of issues, managing a large nu
 of labor and responsibilities. The system was implemented as a web application in a client-server architecture.
 </p>
 
-BugStalker consists of three separate projects:
-- [bs-business](https://github.com/Kaliszando/bs-business) backend
-- [bs-web-client](https://github.com/Kaliszando/bs-web-client) frontend
-- [bs-api-specification](https://github.com/Kaliszando/bs-api-specification) API specification and generation tool
-
+BugStalker consists of three, separate projects:
+* [bs-business](https://github.com/Kaliszando/bs-business) backend (current project)
+* [bs-web-client](https://github.com/Kaliszando/bs-web-client) frontend
+* [bs-api-specification](https://github.com/Kaliszando/bs-api-specification) API specification and generation tool
 
 
 <!-- TABLE OF CONTENTS -->
