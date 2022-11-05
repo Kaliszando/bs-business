@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<h3><img src="https://github.com/Kaliszando/bs-web-client/blob/main/src/assets/img/favicon-19x19.png" alt="Logo" width="19" height="19"> BugStalker</h3>
+<h3><img src="https://github.com/Kaliszando/bs-web-client/blob/main/src/assets/img/favicon-16x16.png" alt="Logo" width="16" height="16"> BugStalker</h3>
 </div>
 
 <p>
