@@ -65,6 +65,12 @@ Endpoint definitions (interfaces for Spring controllers) and DTOs are generated 
 ![JWT][JWT]
 ![Maven][Maven]
 
+### Additional Dependencies
+* Lombok
+* JUnit 5, Rest Assured, Mockito
+* MapStruct
+* Swagger
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
