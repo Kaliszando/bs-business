@@ -27,6 +27,8 @@ BugStalker consists of three, separate projects:
       <ul>
         <li><a href="#built-with">Built With</a></li>
         <li><a href="#additional-libraries">Additional Libraries</a></li>
+        <li><a href="#technologica-challenges">Technological Challenges</a></li>
+        <li><a href="#uml-diagrams">UML diagrams</a></li>
       </ul>
     </li>
     <li>
@@ -67,11 +69,30 @@ Endpoint definitions (interfaces for Spring controllers) and DTOs are generated 
 
 ### Additional Dependencies
 * Lombok
-* JUnit 5, Rest Assured, Mockito
+* JUnit 5, AssertJ, Rest Assured, Mockito
 * MapStruct
 * Swagger
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### Technological Challenges
+* JWT authorization
+* N+1 problem
+* Optimistic locking
+* AOP
+* Security (password encryption, user context, endpoint authorization)
+* Deployment on AWS platform
+
+### UML Diagrams
+
+Vertical cross-section of the ```issue``` domain
+
+![IssueDomain](src/main/resources/static/issue_package.png)
+
+Entity relationship diagram
+
+![ERD](src/main/resources/static/ERD.png)
+
+
+<p align="right">(<a href="#-bugstalker">back to top</a>)</p>
 
 
 
@@ -91,16 +112,15 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
    git clone https://github.com/github_username/repo_name.git
    ```
-3. Install NPM packages
+2. Build project
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
+3. Run backend application
    ```js
    const API_KEY = 'ENTER YOUR API';
    ```
