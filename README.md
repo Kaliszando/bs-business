@@ -26,8 +26,8 @@ BugStalker consists of three, separate projects:
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
-        <li><a href="#additional-libraries">Additional Libraries</a></li>
-        <li><a href="#technologica-challenges">Technological Challenges</a></li>
+        <li><a href="#additional-dependencies">Additional Dependencies</a></li>
+        <li><a href="#technological-challenges">Technological Challenges</a></li>
         <li><a href="#uml-diagrams">UML diagrams</a></li>
       </ul>
     </li>
