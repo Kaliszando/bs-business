@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class UserRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepositoryImpl userRepository;
 
     private void persistUsers() {
         var user1 = EntityMocks.USER.prepareUserEntity();
@@ -68,14 +68,14 @@ public class UserRepositoryTest {
         var persisted = userRepository.save(user);
 
         assertAll(
-            () -> assertThat(persisted).isNotNull(),
-            () -> assertThat(persisted.getId()).isNotNull(),
-            () -> assertThat(persisted.getUsername()).isEqualTo(user.getUsername()),
-            () -> assertThat(persisted.getFirstName()).isEqualTo(user.getFirstName()),
-            () -> assertThat(persisted.getLastName()).isEqualTo(user.getLastName()),
-            () -> assertThat(persisted.getEmail()).isEqualTo(user.getEmail()),
-            () -> assertThat(persisted.getRole()).isEqualTo(user.getRole()),
-            () -> assertThat(persisted.getPassword()).isEqualTo(user.getPassword())
+                () -> assertThat(persisted).isNotNull(),
+                () -> assertThat(persisted.getId()).isNotNull(),
+                () -> assertThat(persisted.getUsername()).isEqualTo(user.getUsername()),
+                () -> assertThat(persisted.getFirstName()).isEqualTo(user.getFirstName()),
+                () -> assertThat(persisted.getLastName()).isEqualTo(user.getLastName()),
+                () -> assertThat(persisted.getEmail()).isEqualTo(user.getEmail()),
+                () -> assertThat(persisted.getRole()).isEqualTo(user.getRole()),
+                () -> assertThat(persisted.getPassword()).isEqualTo(user.getPassword())
         );
     }
 
@@ -87,8 +87,8 @@ public class UserRepositoryTest {
         var user = userRepository.findByEmail(email);
 
         assertAll(
-            () -> assertTrue(user.isPresent()),
-            () -> assertThat(user.orElseThrow().getEmail()).isEqualTo(email)
+                () -> assertTrue(user.isPresent()),
+                () -> assertThat(user.orElseThrow().getEmail()).isEqualTo(email)
         );
     }
 
@@ -106,7 +106,7 @@ public class UserRepositoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"USERNAME", "USER@EMAIL.COM", "FIRSTNAME", "LASTNAME", "LASTNAMEFIRSTNAME"})
+    @ValueSource(strings = {"USERNAME", "USER@EMAIL.COM", "FIRSTNAME", "LASTNAME", "LASTNAMEFIRSTNAME", "FIRSTNAMELASTNAME"})
     void shouldFindByQuery(String query) {
         var user = EntityMocks.USER.prepareUserEntity();
         userRepository.save(user);
@@ -117,7 +117,7 @@ public class UserRepositoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"username", "@email", "name"})
+    @ValueSource(strings = {"username_1", "@email.pl", "name_1"})
     void shouldNotFindByQuery(String query) {
         var user = EntityMocks.USER.prepareUserEntity();
         userRepository.save(user);

@@ -1,4 +1,4 @@
-package com.bts.bugstalker.core.shared.audit;
+package com.bts.bugstalker.core.common.audit;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;

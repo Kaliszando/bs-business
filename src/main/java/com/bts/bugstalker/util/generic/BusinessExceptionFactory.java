@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public abstract class BusinessExceptionFactory {
 
-    public static BusinessException createGeneralException(String message) {
+    protected static BusinessException createGeneralException(String message) {
         return new BusinessException(message);
     }
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    protected static class BusinessException extends RuntimeException {
+    public static class BusinessException extends RuntimeException {
         protected BusinessException(String message) {
             super(message);
         }

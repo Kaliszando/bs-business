@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 public class ProjectRepositoryTest {
 
     @Autowired
-    private ProjectRepository projectRepository;
+    private ProjectRepositoryImpl projectRepository;
 
     @Test
     void shouldSuccessfullyPersistProject() {

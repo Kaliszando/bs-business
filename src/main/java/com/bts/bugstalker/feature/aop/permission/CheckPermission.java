@@ -1,6 +1,6 @@
 package com.bts.bugstalker.feature.aop.permission;
 
-import com.bts.bugstalker.core.shared.enums.Permission;
+import com.bts.bugstalker.core.common.enums.Permission;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

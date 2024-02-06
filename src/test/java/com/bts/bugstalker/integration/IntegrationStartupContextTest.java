@@ -1,9 +1,9 @@
 package com.bts.bugstalker.integration;
 
 import com.bts.bugstalker.api.model.ProjectInfoDto;
+import com.bts.bugstalker.core.common.enums.Permission;
 import com.bts.bugstalker.core.permission.PermissionService;
-import com.bts.bugstalker.core.project.ProjectRepository;
-import com.bts.bugstalker.core.shared.enums.Permission;
+import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.feature.auth.AuthEndpoint;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +29,7 @@ public class IntegrationStartupContextTest {
     private MockMvc mvc;
 
     @Autowired
-    private ProjectRepository projectRepository;
+    private ProjectRepositoryImpl projectRepository;
 
     @Mock
     private PermissionService permissionService;

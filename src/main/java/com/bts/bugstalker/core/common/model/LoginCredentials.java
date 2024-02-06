@@ -1,3 +1,3 @@
-package com.bts.bugstalker.core.shared.model;
+package com.bts.bugstalker.core.common.model;
 
 public record LoginCredentials(String email, String password) { }

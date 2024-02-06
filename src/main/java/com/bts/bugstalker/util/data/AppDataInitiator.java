@@ -1,14 +1,14 @@
 package com.bts.bugstalker.util.data;
 
-import com.bts.bugstalker.core.shared.enums.IssueSeverity;
-import com.bts.bugstalker.core.shared.enums.IssueType;
-import com.bts.bugstalker.core.shared.enums.UserRole;
+import com.bts.bugstalker.core.common.enums.IssueSeverity;
+import com.bts.bugstalker.core.common.enums.IssueType;
+import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.core.issue.IssueEntity;
 import com.bts.bugstalker.core.issue.IssueRepository;
 import com.bts.bugstalker.core.membership.MembershipEntity;
 import com.bts.bugstalker.core.membership.MembershipRepository;
 import com.bts.bugstalker.core.project.ProjectEntity;
-import com.bts.bugstalker.core.project.ProjectRepository;
+import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.core.user.UserEntity;
 import com.bts.bugstalker.core.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class AppDataInitiator implements CommandLineRunner {
 
     private final UserService userService;
 
-    private final ProjectRepository projectRepository;
+    private final ProjectRepositoryImpl projectRepository;
 
     private final MembershipRepository membershipRepository;
 

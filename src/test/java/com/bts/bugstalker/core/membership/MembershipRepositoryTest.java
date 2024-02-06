@@ -1,7 +1,7 @@
 package com.bts.bugstalker.core.membership;
 
-import com.bts.bugstalker.core.project.ProjectRepository;
-import com.bts.bugstalker.core.user.UserRepository;
+import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
+import com.bts.bugstalker.core.user.UserRepositoryImpl;
 import com.bts.bugstalker.fixtures.EntityMocks;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,19 +26,19 @@ public class MembershipRepositoryTest {
     private MembershipRepository membershipRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepositoryImpl userRepository;
 
     @Autowired
-    private ProjectRepository projectRepository;
+    private ProjectRepositoryImpl projectRepository;
 
     private MembershipEntity persistMembership() {
         var user = userRepository.save(EntityMocks.USER.prepareUserEntity());
         var project = projectRepository.save(EntityMocks.PROJECT.prepareProjectEntity());
 
         return membershipRepository.save(MembershipEntity.builder()
-                    .user(user)
-                    .project(project)
-                    .build());
+                .user(user)
+                .project(project)
+                .build());
     }
 
     @Test
@@ -68,21 +68,21 @@ public class MembershipRepositoryTest {
         var membership = persistMembership();
 
         assertAll(
-            () -> assertThat(membership).isNotNull(),
-            () -> assertThat(membership.getId()).isNotNull(),
+                () -> assertThat(membership).isNotNull(),
+                () -> assertThat(membership.getId()).isNotNull(),
 
-            () -> assertThat(membership.getProject().getId()).isNotNull(),
-            () -> assertThat(membership.getProject().getName()).isEqualTo(EntityMocks.PROJECT.NAME),
-            () -> assertThat(membership.getProject().getTag()).isEqualTo(EntityMocks.PROJECT.TAG),
-            () -> assertThat(membership.getProject().getDescription()).isEqualTo(EntityMocks.PROJECT.DESCRIPTION),
+                () -> assertThat(membership.getProject().getId()).isNotNull(),
+                () -> assertThat(membership.getProject().getName()).isEqualTo(EntityMocks.PROJECT.NAME),
+                () -> assertThat(membership.getProject().getTag()).isEqualTo(EntityMocks.PROJECT.TAG),
+                () -> assertThat(membership.getProject().getDescription()).isEqualTo(EntityMocks.PROJECT.DESCRIPTION),
 
-            () -> assertThat(membership.getUser().getId()).isNotNull(),
-            () -> assertThat(membership.getUser().getUsername()).isEqualTo(EntityMocks.USER.USERNAME),
-            () -> assertThat(membership.getUser().getEmail()).isEqualTo(EntityMocks.USER.EMAIL),
-            () -> assertThat(membership.getUser().getFirstName()).isEqualTo(EntityMocks.USER.FIRST_NAME),
-            () -> assertThat(membership.getUser().getLastName()).isEqualTo(EntityMocks.USER.LAST_NAME),
-            () -> assertThat(membership.getUser().getPassword()).isEqualTo(EntityMocks.USER.PASSWORD),
-            () -> assertThat(membership.getUser().getRole()).isEqualTo(EntityMocks.USER.ROLE)
+                () -> assertThat(membership.getUser().getId()).isNotNull(),
+                () -> assertThat(membership.getUser().getUsername()).isEqualTo(EntityMocks.USER.USERNAME),
+                () -> assertThat(membership.getUser().getEmail()).isEqualTo(EntityMocks.USER.EMAIL),
+                () -> assertThat(membership.getUser().getFirstName()).isEqualTo(EntityMocks.USER.FIRST_NAME),
+                () -> assertThat(membership.getUser().getLastName()).isEqualTo(EntityMocks.USER.LAST_NAME),
+                () -> assertThat(membership.getUser().getPassword()).isEqualTo(EntityMocks.USER.PASSWORD),
+                () -> assertThat(membership.getUser().getRole()).isEqualTo(EntityMocks.USER.ROLE)
         );
     }
 
@@ -112,7 +112,7 @@ public class MembershipRepositoryTest {
                 MembershipEntity.builder().project(project2).user(user2).build(),
 
                 MembershipEntity.builder().project(project3).user(user1).build()
-                ));
+        ));
 
         assertThat(userRepository.count()).isEqualTo(3);
         assertThat(projectRepository.count()).isEqualTo(3);
@@ -155,9 +155,9 @@ public class MembershipRepositoryTest {
                 .map(MembershipEntity::getId)
                 .toList();
         assertAll(
-            () -> assertThat(membershipIds).hasSize(membershipCounts),
-            () -> assertThat(membershipIds).hasSize(membershipIdsFromEntities.size()),
-            () -> assertThat(membershipIds).hasSameElementsAs(membershipIdsFromEntities)
+                () -> assertThat(membershipIds).hasSize(membershipCounts),
+                () -> assertThat(membershipIds).hasSize(membershipIdsFromEntities.size()),
+                () -> assertThat(membershipIds).hasSameElementsAs(membershipIdsFromEntities)
         );
     }
 }

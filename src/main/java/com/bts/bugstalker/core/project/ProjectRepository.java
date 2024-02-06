@@ -1,9 +1,6 @@
 package com.bts.bugstalker.core.project;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.bts.bugstalker.core.common.repository.BaseRepository;
 
-@Repository
-public interface ProjectRepository extends JpaRepository<ProjectEntity, Long> {
-
+interface ProjectRepository extends BaseRepository<ProjectEntity, Long> {
 }

@@ -2,7 +2,7 @@ package com.bts.bugstalker.fixtures;
 
 import com.bts.bugstalker.api.model.IssueDetailsDto;
 import com.bts.bugstalker.api.model.UserInfoDto;
-import com.bts.bugstalker.core.shared.enums.UserRole;
+import com.bts.bugstalker.core.common.enums.UserRole;
 
 import java.util.List;
 
