@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class MembershipService {
 
-    private final MembershipRepository membershipRepository;
+    private final MembershipRepositoryImpl membershipRepository;
 
     public List<MembershipEntity> getAllByUserId(Long userId) {
         return membershipRepository.findAllByUserId(userId);

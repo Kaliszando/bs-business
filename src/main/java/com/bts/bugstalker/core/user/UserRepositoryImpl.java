@@ -35,7 +35,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<UserEntity, Long> imp
     }
 
     public List<UserEntity> searchByQuery(String query) {
-        String sqlQuery = "%".concat(query).concat("%");
+        String sqlQuery = wrapWithWildcards(query);
         return queryFactory
                 .select(user)
                 .from(user)
@@ -46,5 +46,9 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<UserEntity, Long> imp
                         .or(user.lastName.concat(user.firstName).concat(user.lastName).likeIgnoreCase(sqlQuery))
                         ))))
                 .fetch();
+    }
+
+    private static String wrapWithWildcards(String query) {
+        return "%".concat(query).concat("%");
     }
 }

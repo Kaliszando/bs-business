@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class MembershipRepositoryTest {
 
     @Autowired
-    private MembershipRepository membershipRepository;
+    private MembershipRepositoryImpl membershipRepository;
 
     @Autowired
     private UserRepositoryImpl userRepository;
