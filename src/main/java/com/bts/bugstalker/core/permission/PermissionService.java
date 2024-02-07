@@ -1,6 +1,6 @@
 package com.bts.bugstalker.core.permission;
 
-import com.bts.bugstalker.core.shared.enums.Permission;
+import com.bts.bugstalker.core.common.enums.Permission;
 import org.springframework.stereotype.Service;
 
 @Service

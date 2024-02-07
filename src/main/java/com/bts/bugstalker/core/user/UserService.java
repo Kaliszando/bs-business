@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserRepositoryImpl userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -42,7 +42,7 @@ public class UserService implements UserDetailsService {
     public List<UserEntity> queryByPhrase(final String query) {
         return (query == null)
                 ? Collections.emptyList()
-                : userRepository.searchByQuery(query.toUpperCase().replaceAll("\\s+",""));
+                : userRepository.searchByQuery(query);
     }
 
     public boolean isEmailAvailable(final String email) {

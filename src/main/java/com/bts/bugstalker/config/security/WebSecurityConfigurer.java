@@ -1,6 +1,6 @@
 package com.bts.bugstalker.config.security;
 
-import com.bts.bugstalker.core.shared.enums.UserRole;
+import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;

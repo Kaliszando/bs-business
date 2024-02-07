@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class ProjectService {
 
-    private final ProjectRepository projectRepository;
+    private final ProjectRepositoryImpl projectRepository;
 
     private final MembershipService membershipService;
 

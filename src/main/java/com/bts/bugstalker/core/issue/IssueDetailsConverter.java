@@ -1,8 +1,8 @@
 package com.bts.bugstalker.core.issue;
 
 import com.bts.bugstalker.api.model.IssueDetailsDto;
-import com.bts.bugstalker.core.shared.enums.IssueSeverity;
-import com.bts.bugstalker.core.shared.enums.IssueType;
+import com.bts.bugstalker.core.common.enums.IssueSeverity;
+import com.bts.bugstalker.core.common.enums.IssueType;
 import com.bts.bugstalker.core.project.ProjectService;
 import com.bts.bugstalker.core.user.UserEntity;
 import com.bts.bugstalker.core.user.UserMapper;
@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.threeten.bp.OffsetDateTime;
 
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 

@@ -4,7 +4,7 @@ import com.bts.bugstalker.api.IssueApi;
 import com.bts.bugstalker.api.model.IssueDetailsDto;
 import com.bts.bugstalker.api.model.IssueInfoDto;
 import com.bts.bugstalker.api.model.IssuePartialUpdate;
-import com.bts.bugstalker.core.shared.enums.Permission;
+import com.bts.bugstalker.core.common.enums.Permission;
 import com.bts.bugstalker.feature.aop.permission.CheckPermission;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import lombok.RequiredArgsConstructor;

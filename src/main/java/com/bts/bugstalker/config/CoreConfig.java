@@ -1,6 +1,6 @@
 package com.bts.bugstalker.config;
 
-import com.bts.bugstalker.core.shared.audit.AuditorAwareImpl;
+import com.bts.bugstalker.core.common.audit.AuditorAwareImpl;
 import com.bts.bugstalker.util.properties.ApiProperties;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
