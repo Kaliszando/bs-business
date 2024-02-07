@@ -10,7 +10,7 @@ import java.util.Objects;
 @Service
 public class IssueService {
 
-    private final IssueRepository repository;
+    private final IssueRepositoryImpl repository;
 
     public IssueEntity save(IssueEntity issue) {
         return repository.save(issue);
