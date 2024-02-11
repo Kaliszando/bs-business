@@ -29,7 +29,7 @@ public class IssueRepositoryImpl extends BaseRepositoryImpl<IssueEntity, Long> i
         return queryFactory
                 .select(issue)
                 .from(issue)
-                .where(issue.project.tag.eq(tag).and(issue.project.id.eq(id)))
+                .where(issue.project.tag.eq(tag).and(issue.id.eq(id)))
                 .fetchOne();
     }
 }
