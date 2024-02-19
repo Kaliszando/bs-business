@@ -1,5 +1,8 @@
 package com.bts.bugstalker.fixtures;
 
+import com.bts.bugstalker.core.common.enums.IssueSeverity;
+import com.bts.bugstalker.core.common.enums.IssueType;
+import com.bts.bugstalker.core.issue.IssueEntity;
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.user.UserEntity;
 import com.bts.bugstalker.core.common.enums.UserRole;
@@ -14,7 +17,7 @@ public class EntityMocks {
         public static final String PASSWORD = "password";
         public static final UserRole ROLE = UserRole.ADMIN;
 
-        public static UserEntity prepareUserEntity() {
+        public static UserEntity prepare() {
             return UserEntity.builder()
                     .email(USER.EMAIL)
                     .username(USER.USERNAME)
@@ -31,11 +34,25 @@ public class EntityMocks {
         public static final String TAG = "tag";
         public static final String DESCRIPTION = "description";
 
-        public static ProjectEntity prepareProjectEntity() {
+        public static ProjectEntity prepare() {
             return ProjectEntity.builder()
                     .name(PROJECT.NAME)
                     .tag(PROJECT.TAG)
                     .description(PROJECT.DESCRIPTION)
+                    .build();
+        }
+    }
+
+    public static class ISSUE {
+        public static final String NAME = "issue name";
+        public static final String STATUS = "to do";
+
+        public static IssueEntity prepare() {
+            return IssueEntity.builder()
+                    .type(IssueType.TASK)
+                    .status(STATUS)
+                    .severity(IssueSeverity.NORMAL)
+                    .name(ISSUE.NAME)
                     .build();
         }
     }

@@ -1,8 +1,9 @@
-package com.bts.bugstalker.core.issue;
+package com.bts.bugstalker.core.issue.converter;
 
 import com.bts.bugstalker.api.model.IssueDetailsDto;
 import com.bts.bugstalker.core.common.enums.IssueSeverity;
 import com.bts.bugstalker.core.common.enums.IssueType;
+import com.bts.bugstalker.core.issue.IssueEntity;
 import com.bts.bugstalker.core.project.ProjectService;
 import com.bts.bugstalker.core.user.UserEntity;
 import com.bts.bugstalker.core.user.UserMapper;

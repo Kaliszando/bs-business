@@ -19,7 +19,7 @@ public class ProjectRepositoryTest {
     @Test
     void shouldSuccessfullyPersistProject() {
         long count = projectRepository.count();
-        var project = EntityMocks.PROJECT.prepareProjectEntity();
+        var project = EntityMocks.PROJECT.prepare();
 
         projectRepository.save(project);
 
@@ -28,7 +28,7 @@ public class ProjectRepositoryTest {
 
     @Test
     void shouldMapDataCorrectly() {
-        var project = EntityMocks.PROJECT.prepareProjectEntity();
+        var project = EntityMocks.PROJECT.prepare();
         var persisted = projectRepository.save(project);
 
         assertAll(

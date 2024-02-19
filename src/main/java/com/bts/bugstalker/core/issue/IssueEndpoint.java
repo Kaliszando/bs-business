@@ -1,14 +1,15 @@
 package com.bts.bugstalker.core.issue;
 
 import com.bts.bugstalker.api.IssueApi;
-import com.bts.bugstalker.api.model.IssueDetailsDto;
-import com.bts.bugstalker.api.model.IssueInfoDto;
-import com.bts.bugstalker.api.model.IssuePartialUpdate;
+import com.bts.bugstalker.api.model.*;
 import com.bts.bugstalker.core.common.enums.Permission;
+import com.bts.bugstalker.core.issue.converter.IssueDetailsConverter;
+import com.bts.bugstalker.core.issue.converter.IssueInfoConverter;
 import com.bts.bugstalker.feature.aop.permission.CheckPermission;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +44,17 @@ public class IssueEndpoint implements IssueApi {
     public ResponseEntity<List<IssueInfoDto>> getAllIssuesByProjectId(@NotNull @Valid Long projectId) {
         List<IssueEntity> issues = issueService.getAllByProjectId(projectId);
         return ResponseEntity.ok(issueInfoConverter.reverseConvert(issues));
+    }
+
+    @Override
+    public ResponseEntity<IssuePageResponse> getIssuePage(@Valid IssuePageRequest request) {
+        Page<IssueEntity> page = issueService.getIssuesPaged(request.getProjectId(), request.getPage(), request.getPageSize());
+        //TODO mapper/converter
+        IssuePageResponse response = new IssuePageResponse();
+        response.setIssues(issueInfoConverter.reverseConvert(page.getContent()));
+        response.setTotalElements(page.getTotalElements());
+        response.setTotalPages(page.getTotalPages());
+        return ResponseEntity.ok(response);
     }
 
     @Override

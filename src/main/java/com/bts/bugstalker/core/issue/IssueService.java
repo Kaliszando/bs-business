@@ -1,6 +1,7 @@
 package com.bts.bugstalker.core.issue;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,10 @@ public class IssueService {
 
     public List<IssueEntity> getAllByProjectId(Long projectId) {
         return repository.getAllByProjectId(projectId);
+    }
+
+    public Page<IssueEntity> getIssuesPaged(Long projectId, int page, int pageSize) {
+        return repository.getAllByProjectIdPaged(projectId, page, pageSize);
     }
 
     public IssueEntity getByTagId(String tagId) {

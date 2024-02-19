@@ -45,6 +45,7 @@ public class IntegrationStartupContextTest {
         RestAssuredMockMvc.mockMvc(mvc);
     }
 
+    //FIXME
     @Test
     @WithMockUser(value = TEST_USERNAME, authorities = { ADMIN_ROLE })
     void shouldCreateNewProject() {
