@@ -10,6 +10,7 @@ public class ProjectEndpointIntegrationTest {
 
     @Test
     @WithMockUser(value = "jantes", authorities = {"ADMIN"})
+    //FIXME
     public void shouldPingEndpoint() {
 //        var credentials = new LoginCredentialsDto().email("dupa").password("jantes");
 //

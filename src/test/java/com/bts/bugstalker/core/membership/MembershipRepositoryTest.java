@@ -32,8 +32,8 @@ public class MembershipRepositoryTest {
     private ProjectRepositoryImpl projectRepository;
 
     private MembershipEntity persistMembership() {
-        var user = userRepository.save(EntityMocks.USER.prepareUserEntity());
-        var project = projectRepository.save(EntityMocks.PROJECT.prepareProjectEntity());
+        var user = userRepository.save(EntityMocks.USER.prepare());
+        var project = projectRepository.save(EntityMocks.PROJECT.prepare());
 
         return membershipRepository.save(MembershipEntity.builder()
                 .user(user)
@@ -87,17 +87,17 @@ public class MembershipRepositoryTest {
     }
 
     private void persistMultipleMemberships() {
-        var user1 = EntityMocks.USER.prepareUserEntity();
-        var user2 = EntityMocks.USER.prepareUserEntity();
-        var user3 = EntityMocks.USER.prepareUserEntity();
+        var user1 = EntityMocks.USER.prepare();
+        var user2 = EntityMocks.USER.prepare();
+        var user3 = EntityMocks.USER.prepare();
         user1.setUsername("user1");
         user2.setUsername("user2");
         user3.setUsername("user3");
         userRepository.saveAll(List.of(user1, user2, user3));
 
-        var project1 = EntityMocks.PROJECT.prepareProjectEntity();
-        var project2 = EntityMocks.PROJECT.prepareProjectEntity();
-        var project3 = EntityMocks.PROJECT.prepareProjectEntity();
+        var project1 = EntityMocks.PROJECT.prepare();
+        var project2 = EntityMocks.PROJECT.prepare();
+        var project3 = EntityMocks.PROJECT.prepare();
         project1.setName("project1");
         project2.setName("project2");
         project2.setName("project3");

@@ -1,7 +1,6 @@
 package com.bts.bugstalker.util.generic;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Converter interface for mappings between objects,
@@ -17,6 +16,6 @@ public interface Converter<S, T> {
     default List<T> convert(List<S> sourceList) {
         return sourceList.stream()
                 .map(this::convert)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
