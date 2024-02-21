@@ -1,5 +1,6 @@
 package com.bts.bugstalker.core.issue;
 
+import com.bts.bugstalker.core.issue.exception.IssueOptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class IssueService {
         IssueEntity origin = repository.getByProjectTagAndId(issue.getProject().getTag(), issue.getId());
 
         if (!Objects.equals(origin.getVersion(), issue.getVersion())) {
-            throw IssueExceptionFactory.issueUpdateOptimisticLockException();
+            throw new IssueOptimisticLockException(issue.getId());
         }
 
         origin.setName(issue.getName());

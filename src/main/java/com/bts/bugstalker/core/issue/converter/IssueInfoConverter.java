@@ -3,7 +3,7 @@ package com.bts.bugstalker.core.issue.converter;
 import com.bts.bugstalker.api.model.IssueInfoDto;
 import com.bts.bugstalker.core.issue.IssueEntity;
 import com.bts.bugstalker.core.user.UserMapper;
-import com.bts.bugstalker.util.generic.TwoWayConverter;
+import com.bts.bugstalker.core.common.generic.TwoWayConverter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Component;

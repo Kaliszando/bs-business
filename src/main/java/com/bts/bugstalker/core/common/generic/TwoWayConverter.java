@@ -1,4 +1,4 @@
-package com.bts.bugstalker.util.generic;
+package com.bts.bugstalker.core.common.generic;
 
 import java.util.List;
 

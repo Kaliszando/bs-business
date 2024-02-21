@@ -9,7 +9,7 @@ import com.bts.bugstalker.core.user.UserEntity;
 import com.bts.bugstalker.core.user.UserMapper;
 import com.bts.bugstalker.core.user.UserService;
 import com.bts.bugstalker.feature.context.ContextProvider;
-import com.bts.bugstalker.util.generic.TwoWayConverter;
+import com.bts.bugstalker.core.common.generic.TwoWayConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.threeten.bp.OffsetDateTime;
