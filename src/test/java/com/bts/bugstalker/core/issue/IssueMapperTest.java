@@ -9,11 +9,11 @@ public class IssueMapperTest {
 
     private final IssueMapper mapper = Mappers.getMapper(IssueMapper.class);
 
+    //TODO add mapper tests
     @Test
     void shouldMapDtoToEntityCorrectly() {
         var dto = DtoMocks.ISSUE_DETAILS.prepareIssueDetailsDto();
 
         mapper.mapToDetailDto(IssueEntity.builder().build());
-
     }
 }

@@ -1,6 +1,6 @@
 package com.bts.bugstalker.core.common.repository;
 
-import com.bts.bugstalker.core.common.exception.CommonExceptions;
+import com.bts.bugstalker.core.common.exception.MandatoryEntityNotFoundException;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
@@ -19,9 +19,9 @@ public abstract class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, I
     }
 
     @Override
-    public T findByIdMandatory(ID id) throws CommonExceptions.DbQueryResultNotFound {
+    public T findByIdMandatory(ID id) throws MandatoryEntityNotFoundException {
         return findById(id).orElseThrow(
-                () -> new CommonExceptions.DbQueryResultNotFound(getDomainClass().getSimpleName(), id.toString()));
+                () -> new MandatoryEntityNotFoundException(getDomainClass().getSimpleName(), id.toString()));
     }
 
     @Override

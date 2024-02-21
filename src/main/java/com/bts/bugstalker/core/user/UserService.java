@@ -1,5 +1,8 @@
 package com.bts.bugstalker.core.user;
 
+import com.bts.bugstalker.core.user.exception.UserLoginDoesNotMatchAnyResultException;
+import com.bts.bugstalker.core.user.exception.UserEmailAlreadyTakenException;
+import com.bts.bugstalker.core.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,17 +25,17 @@ public class UserService implements UserDetailsService {
 
     public UserEntity getByUsername(final String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> UserExceptionFactory.userNotFoundException(username));
+                .orElseThrow(() -> new UserNotFoundException(username));
     }
 
     public UserEntity getById(final Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> UserExceptionFactory.userNotFoundException(id));
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     public UserEntity create(final UserEntity user) {
         if (!isEmailAvailable(user.getEmail())) {
-            throw UserExceptionFactory.userEmailIsTakenException(user.getEmail());
+            throw new UserEmailAlreadyTakenException(user.getEmail());
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -53,6 +56,6 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         return userRepository.findByUsername(login)
                 .or(() -> userRepository.findByEmail(login))
-                .orElseThrow(() -> UserExceptionFactory.loginDoesNotMatchAnyUserException(login));
+                .orElseThrow(() -> new UserLoginDoesNotMatchAnyResultException(login));
     }
 }
