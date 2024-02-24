@@ -8,7 +8,7 @@ public final class ApiPaths {
 
     public static final String SIGN_IN = "/api/v1/auth/sign-in";
 
-    public static final String SIGN_UP = "/api/v1/auth/\sign-up";
+    public static final String SIGN_UP = "/api/v1/auth/sign-up";
 
     public static final String PING = "/api/v1/auth/ping";
 
