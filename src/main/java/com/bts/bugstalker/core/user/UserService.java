@@ -4,6 +4,7 @@ import com.bts.bugstalker.core.user.exception.UserLoginDoesNotMatchAnyResultExce
 import com.bts.bugstalker.core.user.exception.UserEmailAlreadyTakenException;
 import com.bts.bugstalker.core.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -43,7 +44,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<UserEntity> queryByPhrase(final String query) {
-        return (query == null)
+        return (StringUtils.isBlank(query))
                 ? Collections.emptyList()
                 : userRepository.searchByQuery(query);
     }
