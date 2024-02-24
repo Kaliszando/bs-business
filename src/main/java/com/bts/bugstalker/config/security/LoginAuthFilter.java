@@ -1,8 +1,10 @@
 package com.bts.bugstalker.config.security;
 
 import com.bts.bugstalker.core.common.model.LoginCredentials;
+import com.bts.bugstalker.feature.auth.exception.AuthInvalidSignInRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -28,8 +30,11 @@ public class LoginAuthFilter extends UsernamePasswordAuthenticationFilter {
             }
 
             LoginCredentials loginCredentials = objectMapper.readValue(sb.toString(), LoginCredentials.class);
+            if (StringUtils.isBlank(loginCredentials.email()) || StringUtils.isBlank(loginCredentials.password())) {
+                throw new AuthInvalidSignInRequest(loginCredentials.toString());
+            }
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    loginCredentials.email(), loginCredentials.password()
+                    loginCredentials.email().trim(), loginCredentials.password().trim()
             );
 
             setDetails(request, token);

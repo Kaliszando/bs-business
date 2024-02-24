@@ -58,8 +58,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.cors();
 
         http.authorizeRequests()
-                .antMatchers(ApiPaths.ADMIN).hasAuthority(UserRole.ADMIN.getCode())
-                .antMatchers(ApiPaths.PING).hasAuthority(UserRole.ADMIN.getCode())
+                .antMatchers(ApiPaths.PUBLIC).permitAll()
+                .antMatchers(ApiPaths.ADMIN, ApiPaths.PING).hasAuthority(UserRole.ADMIN.getCode())
                 .anyRequest().authenticated()
 
                 .and()
