@@ -9,7 +9,7 @@ public enum UserRole {
 
     ADMIN("ADMIN", "User admin role with additional privileges"),
     USER("USER", "Standard user role"),
-    DEMO("DEMO", "Preview role for demo purposes");
+    GUEST("GUEST", "Preview role for demo purposes");
 
     private final String code;
 

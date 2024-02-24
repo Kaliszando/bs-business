@@ -21,7 +21,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final static String AUTH_HEADER_NAME = "Authorization";
 
-    private final static String AUTH_CONTENT_PREFIX = "Bearer ";
+    private final static String AUTH_TOKEN_PREFIX = "Bearer ";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -33,7 +33,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 .withExpiresAt(new Date(System.currentTimeMillis() + Long.parseLong(jwtProperties.getExpirationTimeMillis())))
                 .sign(Algorithm.HMAC256(jwtProperties.getSecret()));
 
-        response.addHeader(AUTH_HEADER_NAME, AUTH_CONTENT_PREFIX + token);
+        response.addHeader(AUTH_HEADER_NAME, AUTH_TOKEN_PREFIX + token);
 
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }

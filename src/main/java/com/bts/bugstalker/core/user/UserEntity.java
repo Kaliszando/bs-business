@@ -13,8 +13,12 @@ import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Collections;
 
-@Getter @Setter @Builder
-@Entity @Table(name = "USER")
+@Getter
+@Setter
+@Builder
+@ToString
+@Entity
+@Table(name = "USER")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity extends AuditBaseEntity implements UserDetails {
@@ -22,20 +26,32 @@ public class UserEntity extends AuditBaseEntity implements UserDetails {
     @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
-    @SequenceGenerator(name="user_generator", sequenceName = "user_seq")
+    @SequenceGenerator(name = "user_generator", sequenceName = "user_seq")
     private Long id;
 
-    @NotBlank @NotNull private String username;
+    @NotBlank
+    @NotNull
+    private String username;
 
-    @NotBlank @NotNull private String firstName;
+    @NotBlank
+    @NotNull
+    private String firstName;
 
-    @NotBlank @NotNull private String lastName;
+    @NotBlank
+    @NotNull
+    private String lastName;
 
-    @NotBlank @NotNull private String email;
+    @NotBlank
+    @NotNull
+    private String email;
 
-    @NotBlank @NotNull private String password;
+    @NotBlank
+    @NotNull
+    @ToString.Exclude
+    private String password;
 
-    @Enumerated(EnumType.STRING) @NotNull
+    @Enumerated(EnumType.STRING)
+    @NotNull
     private UserRole role;
 
     @Override

@@ -22,6 +22,8 @@ public class UserRepositoryTest {
     private UserRepositoryImpl userRepository;
 
     private void persistUsers() {
+        assertThat(userRepository.count()).isEqualTo(0);
+
         var user1 = EntityMocks.USER.prepare();
         user1.setEmail("user1@email.com");
         user1.setUsername("username1");

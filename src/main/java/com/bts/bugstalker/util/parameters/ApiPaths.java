@@ -14,8 +14,7 @@ public final class ApiPaths {
 
     public static final String[] PUBLIC = {
             SIGN_IN, SIGN_UP,
-            "/swagger-ui/**", "/v3/api-docs/**", "/h2/**", "/error", "/", "/favicon.ico",
-            "/api/v1/**"
+            "/swagger-ui/**", "/v3/api-docs/**", "/h2/**", "/error", "/", "/favicon.ico"
     };
 
 }

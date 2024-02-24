@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Profile;
 
 import java.util.List;
 
-@Profile("!test")
+@Profile("dev-local")
 @RequiredArgsConstructor
 @Configuration
 public class AppDataInitiator implements CommandLineRunner {
@@ -57,7 +57,7 @@ public class AppDataInitiator implements CommandLineRunner {
                 .lastName("User")
                 .email("demo@mail.com")
                 .password("password")
-                .role(UserRole.DEMO)
+                .role(UserRole.GUEST)
                 .build());
 
         ProjectEntity project1 = projectRepository.save(ProjectEntity.builder()
