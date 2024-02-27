@@ -35,7 +35,7 @@ public class UserIntegrationTest {
     @ValueSource(strings = {"John", "Doe", "JohnDoe", "334", "john", "doe", "johndoe"})
     void shouldGetUsersByQuery(String query) {
         var response = given().queryParam("query", query)
-                .header(headerMockTool.prepare(UserRole.ADMIN))
+                .header(headerMockTool.prepare(UserRole.USER))
                 .get("/api/v1/user")
 
                 .then()
@@ -52,7 +52,7 @@ public class UserIntegrationTest {
     @Test
     void shouldNotReturnUsersWhenEmptyQuery() {
         given().queryParam("query", "")
-                .header(headerMockTool.prepare(UserRole.ADMIN))
+                .header(headerMockTool.prepare(UserRole.USER))
                 .get("/api/v1/user")
 
                 .then()
@@ -62,7 +62,7 @@ public class UserIntegrationTest {
 
     @Test
     void shouldNotReturnUsersWhenNoQueryParam() {
-        given().header(headerMockTool.prepare(UserRole.ADMIN))
+        given().header(headerMockTool.prepare(UserRole.USER))
                 .get("/api/v1/user")
 
                 .then()

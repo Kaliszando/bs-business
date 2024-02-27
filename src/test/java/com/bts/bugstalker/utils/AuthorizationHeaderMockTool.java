@@ -25,6 +25,10 @@ public class AuthorizationHeaderMockTool {
 
     private final JwtProperties jwtProperties;
 
+    public static boolean isJwtToken(String token) {
+        return JWT_TOKEN.matcher(token).matches();
+    }
+
     public Header prepare(String username) {
         String token = AUTH_TOKEN_PREFIX.concat(JWT.create()
                 .withSubject(username)
@@ -32,10 +36,6 @@ public class AuthorizationHeaderMockTool {
                 .sign(Algorithm.HMAC256(jwtProperties.getSecret())));
         assertThat(isJwtToken(token)).isTrue();
         return new Header(AUTH_HEADER_NAME, token);
-    }
-
-    public static boolean isJwtToken(String token) {
-        return JWT_TOKEN.matcher(token).matches();
     }
 
     public Header prepare(UserRole role) {
