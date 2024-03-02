@@ -22,8 +22,8 @@ public class IssueService {
         return repository.getAllByProjectId(projectId);
     }
 
-    public Page<IssueEntity> getIssuesPaged(Long projectId, int page, int pageSize) {
-        return repository.getAllByProjectIdPaged(projectId, page, pageSize);
+    public Page<IssueEntity> getIssuesPaged(Long projectId, int page, int pageSize, String sortBy) {
+        return repository.getAllByProjectIdPaged(projectId, page, pageSize, sortBy);
     }
 
     public IssueEntity getByTagId(String tagId) {

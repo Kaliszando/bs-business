@@ -11,7 +11,6 @@ public class MembershipRepositoryImpl extends BaseRepositoryImpl<MembershipEntit
 
     private final QMembershipEntity membership = QMembershipEntity.membershipEntity;
 
-
     public MembershipRepositoryImpl(EntityManager em) {
         super(MembershipEntity.class, em);
     }

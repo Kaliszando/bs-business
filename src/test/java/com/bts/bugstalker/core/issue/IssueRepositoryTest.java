@@ -36,8 +36,8 @@ class IssueRepositoryTest {
 
     @Test
     void shouldDoBasicPaging() {
-        Page<IssueEntity> page1 = issueRepository.getAllByProjectIdPaged(projectId, 0, 20);
-        Page<IssueEntity> page2 = issueRepository.getAllByProjectIdPaged(projectId, 1, 20);
+        Page<IssueEntity> page1 = issueRepository.getAllByProjectIdPaged(projectId, 0, 20, "id");
+        Page<IssueEntity> page2 = issueRepository.getAllByProjectIdPaged(projectId, 1, 20, "id");
         List<String> issueNamesPage1 = getDistinctIssueNames(page1);
         List<String> issueNamesPage2 = getDistinctIssueNames(page2);
 
@@ -54,8 +54,8 @@ class IssueRepositoryTest {
 
     @Test
     void shouldChangePageSize() {
-        Page<IssueEntity> page1 = issueRepository.getAllByProjectIdPaged(projectId, 0, 50);
-        Page<IssueEntity> page2 = issueRepository.getAllByProjectIdPaged(projectId, 0, 40);
+        Page<IssueEntity> page1 = issueRepository.getAllByProjectIdPaged(projectId, 0, 50, "id");
+        Page<IssueEntity> page2 = issueRepository.getAllByProjectIdPaged(projectId, 0, 40, "id");
 
         assertThat(page1.getTotalElements()).isEqualTo(TOTAL_ELEMENTS);
         assertThat(page1.getTotalPages()).isEqualTo(2);
