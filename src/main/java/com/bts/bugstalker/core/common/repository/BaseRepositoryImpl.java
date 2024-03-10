@@ -1,10 +1,16 @@
 package com.bts.bugstalker.core.common.repository;
 
+import com.bts.bugstalker.api.model.PageRequest;
 import com.bts.bugstalker.core.common.exception.MandatoryEntityNotFoundException;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public abstract class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implements BaseRepository<T, ID> {
 
@@ -32,5 +38,19 @@ public abstract class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, I
     @Override
     public void detach(T entity) {
         em.detach(entity);
+    }
+
+    protected String addWildcards(String prompt) {
+        return "%".concat(prompt).concat("%");
+    }
+
+    protected Page<T> executePaging(PageRequest request, JPAQuery<T> query) {
+        long totalElements = query.fetchCount();
+        List<T> issues = query
+                .limit(request.getPageSize())
+                .offset((long) request.getPage() * request.getPageSize())
+                .fetch();
+        Pageable pageable = Pageable.ofSize(request.getPageSize());
+        return new PageImpl<>(issues, pageable, totalElements);
     }
 }

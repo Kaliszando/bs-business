@@ -18,7 +18,7 @@ import java.util.Collections;
 @Builder
 @ToString
 @Entity
-@Table(name = "USER")
+@Table(name = "USER_")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity extends AuditBaseEntity implements UserDetails {

@@ -48,7 +48,8 @@ public class IssueEndpoint implements IssueApi {
 
     @Override
     public ResponseEntity<IssuePageResponse> getIssuePage(@Valid IssuePageRequest request) {
-        Page<IssueEntity> page = issueService.getIssuesPaged(request.getProjectId(), request.getPage(), request.getPageSize(), request.getSortBy());
+        //TODO add IssuePageParam, converter, convert enums, convert filter values to optional
+        Page<IssueEntity> page = issueService.getIssuesPaged(request);
         //TODO mapper/converter
         IssuePageResponse response = new IssuePageResponse();
         response.setIssues(issueInfoConverter.reverseConvert(page.getContent()));

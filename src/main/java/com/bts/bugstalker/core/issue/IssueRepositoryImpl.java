@@ -1,15 +1,20 @@
 package com.bts.bugstalker.core.issue;
 
+import com.bts.bugstalker.api.model.IssuePageFilter;
+import com.bts.bugstalker.api.model.IssuePageRequest;
+import com.bts.bugstalker.core.common.enums.IssueSeverity;
+import com.bts.bugstalker.core.common.enums.IssueType;
 import com.bts.bugstalker.core.common.repository.BaseRepositoryImpl;
+import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -38,20 +43,52 @@ public class IssueRepositoryImpl extends BaseRepositoryImpl<IssueEntity, Long> i
                 .fetchOne();
     }
 
-    Page<IssueEntity> getAllByProjectIdPaged(Long projectId, int page, int pageSize, String orderBy) {
+    Page<IssueEntity> getAllByProjectIdPaged(IssuePageRequest request) {
+        JPAQuery<IssueEntity> query = prepareBasePageQuery(request);
+        addFilter(request.getFilter(), query.getMetadata());
+        return executePaging(request, query);
+    }
+
+    private JPAQuery<IssueEntity> prepareBasePageQuery(IssuePageRequest request) {
         JPAQuery<IssueEntity> query = queryFactory
                 .select(issue)
                 .from(issue)
-                .where(issue.project.id.eq(projectId));
+                .where(issue.project.id.eq(request.getProjectId()))
+                .orderBy(extractSortBy(request.getSortBy()));
+        return query;
+    }
 
-        long totalElements = query.fetchCount();
-        List<IssueEntity> issues = query
-                .orderBy(extractSortBy(orderBy))
-                .limit(pageSize)
-                .offset((long) page * pageSize)
-                .fetch();
-        Pageable pageable = Pageable.ofSize(pageSize);
-        return new PageImpl<>(issues, pageable, totalElements);
+    private void addFilter(IssuePageFilter filter, QueryMetadata metadata) {
+        if (filter == null) {
+            return;
+        }
+
+        if (StringUtils.isNotBlank(filter.getQuery())) {
+            metadata.addWhere(issue.name.likeIgnoreCase(addWildcards(filter.getQuery()))
+                    .or(issue.project.tag.concat("-").concat(issue.id.stringValue())
+                            .likeIgnoreCase(addWildcards(filter.getQuery()))));
+        }
+        if (filter.getIssueType() != null) {
+            metadata.addWhere(issue.type.eq(IssueType.valueOf(filter.getIssueType().name())));
+        }
+        if (filter.getIssueSeverity() != null) {
+            metadata.addWhere(issue.severity.eq(IssueSeverity.valueOf(filter.getIssueSeverity().name())));
+        }
+        if (StringUtils.isNotBlank(filter.getStatus())) {
+            metadata.addWhere(issue.status.eq(filter.getStatus()));
+        }
+        if (filter.getReporterId() != null) {
+            metadata.addWhere(issue.reporter.id.eq(filter.getReporterId()));
+        }
+        if (filter.getAssigneeId() != null) {
+            metadata.addWhere(issue.assignee.id.eq(filter.getAssigneeId()));
+        }
+        if (filter.getStartDate() != null || filter.getEndDate() != null) {
+            metadata.addWhere(issue.createdDate.between(
+                    LocalDate.parse(filter.getStartDate()).atStartOfDay(),
+                    LocalDate.parse(filter.getEndDate()).atStartOfDay().plusDays(1))
+            );
+        }
     }
 
     private OrderSpecifier<?> extractSortBy(String orderBy) {

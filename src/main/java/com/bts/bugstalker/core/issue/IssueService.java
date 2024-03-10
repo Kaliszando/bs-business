@@ -1,5 +1,6 @@
 package com.bts.bugstalker.core.issue;
 
+import com.bts.bugstalker.api.model.IssuePageRequest;
 import com.bts.bugstalker.core.issue.exception.IssueOptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,8 +23,8 @@ public class IssueService {
         return repository.getAllByProjectId(projectId);
     }
 
-    public Page<IssueEntity> getIssuesPaged(Long projectId, int page, int pageSize, String sortBy) {
-        return repository.getAllByProjectIdPaged(projectId, page, pageSize, sortBy);
+    public Page<IssueEntity> getIssuesPaged(IssuePageRequest request) {
+        return repository.getAllByProjectIdPaged(request);
     }
 
     public IssueEntity getByTagId(String tagId) {

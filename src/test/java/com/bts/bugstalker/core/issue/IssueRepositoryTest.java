@@ -1,5 +1,6 @@
 package com.bts.bugstalker.core.issue;
 
+import com.bts.bugstalker.api.model.IssuePageRequest;
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.fixtures.EntityMocks;
@@ -36,8 +37,8 @@ class IssueRepositoryTest {
 
     @Test
     void shouldDoBasicPaging() {
-        Page<IssueEntity> page1 = issueRepository.getAllByProjectIdPaged(projectId, 0, 20, "id");
-        Page<IssueEntity> page2 = issueRepository.getAllByProjectIdPaged(projectId, 1, 20, "id");
+        Page<IssueEntity> page1 = issueRepository.getAllByProjectIdPaged(prepareRequest(projectId, 0, 20, "id"));
+        Page<IssueEntity> page2 = issueRepository.getAllByProjectIdPaged(prepareRequest(projectId, 1, 20, "id"));
         List<String> issueNamesPage1 = getDistinctIssueNames(page1);
         List<String> issueNamesPage2 = getDistinctIssueNames(page2);
 
@@ -52,10 +53,19 @@ class IssueRepositoryTest {
         assertThat(issueNamesPage2).contains("issue no. 20", "issue no. 39");
     }
 
+    private IssuePageRequest prepareRequest(Long projectId, int page, int pageSize, String sortBy) {
+        IssuePageRequest request = new IssuePageRequest();
+        request.projectId(projectId);
+        request.page(page);
+        request.pageSize(pageSize);
+        request.sortBy(sortBy);
+        return request;
+    }
+
     @Test
     void shouldChangePageSize() {
-        Page<IssueEntity> page1 = issueRepository.getAllByProjectIdPaged(projectId, 0, 50, "id");
-        Page<IssueEntity> page2 = issueRepository.getAllByProjectIdPaged(projectId, 0, 40, "id");
+        Page<IssueEntity> page1 = issueRepository.getAllByProjectIdPaged(prepareRequest(projectId, 0, 50, "id"));
+        Page<IssueEntity> page2 = issueRepository.getAllByProjectIdPaged(prepareRequest(projectId, 0, 40, "id"));
 
         assertThat(page1.getTotalElements()).isEqualTo(TOTAL_ELEMENTS);
         assertThat(page1.getTotalPages()).isEqualTo(2);
