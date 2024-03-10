@@ -1,6 +1,7 @@
 package com.bts.bugstalker.core.user;
 
 import com.bts.bugstalker.core.common.repository.BaseRepositoryImpl;
+import com.bts.bugstalker.core.membership.QMembershipEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -11,6 +12,8 @@ import java.util.Optional;
 public class UserRepositoryImpl extends BaseRepositoryImpl<UserEntity, Long> implements UserRepository {
 
     private final QUserEntity user = QUserEntity.userEntity;
+
+    private final QMembershipEntity membership = QMembershipEntity.membershipEntity;
 
     public UserRepositoryImpl(EntityManager em) {
         super(UserEntity.class, em);
@@ -35,7 +38,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<UserEntity, Long> imp
     }
 
     public List<UserEntity> searchByQuery(String query) {
-        String sqlQuery = wrapWithWildcards(query);
+        String sqlQuery = addWildcards(query);
         return queryFactory
                 .select(user)
                 .from(user)
@@ -48,7 +51,13 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<UserEntity, Long> imp
                 .fetch();
     }
 
-    private static String wrapWithWildcards(String query) {
-        return "%".concat(query).concat("%");
+    public List<UserEntity> findByProjectId(Long projectId) {
+        return queryFactory
+                .select(user)
+                .from(user)
+                .innerJoin(membership)
+                .on(membership.user.id.eq(user.id))
+                .where(membership.project.id.eq(projectId))
+                .fetch();
     }
 }

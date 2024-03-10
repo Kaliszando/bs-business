@@ -5,7 +5,6 @@ import com.bts.bugstalker.api.model.UserInfoDto;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +21,7 @@ public class UserEndpoint implements UserApi {
     private final UserMapper userMapper;
 
     @Override
-    public ResponseEntity<List<UserInfoDto>> getUserByPhrase(@Valid String query) {
-        return ResponseEntity.ok(userMapper.mapToDto(userService.queryByPhrase(query)));
+    public ResponseEntity<List<UserInfoDto>> getUsersByParam(@Valid String query, @Valid Long projectId) {
+        return ResponseEntity.ok(userMapper.mapToDto(userService.queryByParam(query, projectId)));
     }
 }
