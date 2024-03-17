@@ -4,11 +4,13 @@ import com.bts.bugstalker.api.model.ProjectInfoDto;
 import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.transaction.Transactional;
@@ -18,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProjectIntegrationTest {
 
     @Autowired
@@ -30,8 +32,12 @@ public class ProjectIntegrationTest {
     @Autowired
     private MembershipRepositoryImpl membershipRepository;
 
+    @LocalServerPort
+    private int port;
+
     @BeforeEach
     void init() {
+        RestAssured.port = port;
         membershipRepository.deleteAll();
         projectRepository.deleteAll();
         assertThat(projectRepository.count()).isEqualTo(0);

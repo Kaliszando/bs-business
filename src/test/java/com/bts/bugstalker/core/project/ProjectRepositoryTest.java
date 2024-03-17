@@ -18,12 +18,12 @@ public class ProjectRepositoryTest {
 
     @Test
     void shouldSuccessfullyPersistProject() {
-        long count = projectRepository.count();
+        assertThat(projectRepository.count()).isEqualTo(0);
         var project = EntityMocks.PROJECT.prepare();
 
         projectRepository.save(project);
 
-        assertThat(projectRepository.count()).isEqualTo(count + 1);
+        assertThat(projectRepository.count()).isEqualTo(1);
     }
 
     @Test
