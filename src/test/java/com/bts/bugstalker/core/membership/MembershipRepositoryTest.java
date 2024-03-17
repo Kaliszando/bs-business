@@ -70,6 +70,7 @@ public class MembershipRepositoryTest {
         assertAll(
                 () -> assertThat(membership).isNotNull(),
                 () -> assertThat(membership.getId()).isNotNull(),
+                () -> assertThat(membership.getGroups()).isNull(),
 
                 () -> assertThat(membership.getProject().getId()).isNotNull(),
                 () -> assertThat(membership.getProject().getName()).isEqualTo(EntityMocks.PROJECT.NAME),

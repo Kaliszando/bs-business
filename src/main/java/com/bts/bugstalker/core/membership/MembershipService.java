@@ -11,14 +11,6 @@ public class MembershipService {
 
     private final MembershipRepositoryImpl membershipRepository;
 
-    public List<MembershipEntity> getAllByUserId(Long userId) {
-        return membershipRepository.findAllByUserId(userId);
-    }
-
-    public List<Long> getAllIdsByUserId(Long userId) {
-        return membershipRepository.findAllIdsByUserId(userId);
-    }
-
     public List<Long> getAllProjectIdsByUserId(Long userId) {
         return membershipRepository.findAllProjectIdsByUserId(userId);
     }
