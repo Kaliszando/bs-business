@@ -25,9 +25,7 @@ public class ProjectServiceTest {
 
     @Test
     void shouldThrowExceptionWhenProjectNotFound() {
-        assertThrows(NoSuchElementException.class, () -> {
-            projectService.getById(0L);
-        });
+        assertThrows(NoSuchElementException.class, () -> projectService.getById(0L));
     }
 
     @Test

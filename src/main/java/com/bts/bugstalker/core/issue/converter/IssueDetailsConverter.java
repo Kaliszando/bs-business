@@ -74,6 +74,7 @@ public class IssueDetailsConverter implements TwoWayConverter<IssueDetailsDto, I
                 .reporter(userMapper.mapToDto(entity.getReporter()))
                 .assignee(userMapper.mapToDto(entity.getAssignee()))
                 .description(entity.getDescription())
+                .backlogList(entity.getBacklogList())
 
                 .daysOld((int) Duration.between(LocalDateTime.now(), entity.getCreatedDate()).toDays())
                 .hoursSpent(0);
