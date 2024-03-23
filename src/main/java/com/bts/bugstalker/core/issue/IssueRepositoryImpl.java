@@ -43,6 +43,14 @@ public class IssueRepositoryImpl extends BaseRepositoryImpl<IssueEntity, Long> i
                 .fetchOne();
     }
 
+    public IssueEntity getByTitle(String title) {
+        return queryFactory
+                .select(issue)
+                .from(issue)
+                .where(issue.name.eq(title))
+                .fetchOne();
+    }
+
     Page<IssueEntity> getAllByProjectIdPaged(IssuePageRequest request) {
         JPAQuery<IssueEntity> query = prepareBasePageQuery(request);
         addFilter(request.getFilter(), query.getMetadata());
@@ -50,12 +58,11 @@ public class IssueRepositoryImpl extends BaseRepositoryImpl<IssueEntity, Long> i
     }
 
     private JPAQuery<IssueEntity> prepareBasePageQuery(IssuePageRequest request) {
-        JPAQuery<IssueEntity> query = queryFactory
+        return queryFactory
                 .select(issue)
                 .from(issue)
                 .where(issue.project.id.eq(request.getProjectId()))
                 .orderBy(extractSortBy(request.getSortBy()));
-        return query;
     }
 
     private void addFilter(IssuePageFilter filter, QueryMetadata metadata) {

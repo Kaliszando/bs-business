@@ -29,14 +29,12 @@ public class IssueEndpoint implements IssueApi {
 
     private final IssueInfoConverter issueInfoConverter;
 
-    private final IssueManager issueManager;
-
     private final IssueService issueService;
 
     @Override
     @CheckPermission(permission = Permission.CAN_CREATE_NEW_ISSUE)
     public ResponseEntity<Void> createIssue(@Valid IssueDetailsDto issueDetails) {
-        issueManager.createIssue(issueDetailsConverter.convert(issueDetails));
+        issueService.createIssue(issueDetailsConverter.convert(issueDetails));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

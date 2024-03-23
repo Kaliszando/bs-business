@@ -1,6 +1,7 @@
 package com.bts.bugstalker.core.issue;
 
 import com.bts.bugstalker.api.model.IssuePageRequest;
+import com.bts.bugstalker.core.issue.exception.IssueNotFoundException;
 import com.bts.bugstalker.core.issue.exception.IssueOptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,7 @@ public class IssueService {
 
     private final IssueRepositoryImpl repository;
 
-    public IssueEntity save(IssueEntity issue) {
+    public IssueEntity createIssue(IssueEntity issue) {
         return repository.save(issue);
     }
 
@@ -29,7 +30,11 @@ public class IssueService {
 
     public IssueEntity getByTagId(String tagId) {
         String[] values = tagId.split("-");
-        return repository.getByProjectTagAndId(values[0], Long.valueOf(values[1]));
+        IssueEntity issue = repository.getByProjectTagAndId(values[0], Long.valueOf(values[1]));
+        if (issue == null) {
+            throw new IssueNotFoundException(tagId);
+        }
+        return issue;
     }
 
     public IssueEntity updateStatus(String tagId, String newStatus) {
@@ -53,7 +58,7 @@ public class IssueService {
         origin.setStatus(issue.getStatus());
         origin.setSeverity(issue.getSeverity());
         origin.setAssignee(issue.getAssignee());
-        return save(origin);
+        return createIssue(origin);
     }
 
     public IssueEntity partialUpdate(String tagId, String newStatus, String newBacklogList) {
