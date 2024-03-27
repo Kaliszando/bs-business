@@ -80,16 +80,24 @@ Endpoint definitions (interfaces for Spring controllers) and DTOs are generated 
 * AOP
 * Security (password encryption, user context, endpoint authorization)
 * Deployment on AWS platform
+* QueryDsl + Spring Data JPA
 
 ### UML Diagrams
 
-Vertical cross-section of the ```issue``` domain
+<details>
+<summary>Issue domain</summary>
 
+Vertical cross-section of the ```issue``` domain
 ![IssueDomain](src/main/resources/static/issue_package.png)
 
-Entity relationship diagram
+</details>
+
+<details>
+<summary>Entity relationship diagram</summary>
 
 ![ERD](src/main/resources/static/ERD.png)
+
+</details>
 
 
 <p align="right">(<a href="#-bugstalker">back to top</a>)</p>
@@ -99,78 +107,90 @@ Entity relationship diagram
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To develop a business application, you must first [build an API project](https://github.com/Kaliszando/bs-api-specification), which serves as an essential dependency for the backend.
+
+The API project contain models and services crucial for the application. Additionally, it automatically generates code for both backend and frontend projects.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+* Java 17+
+* Maven
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/Kaliszando/bs-business.git
    ```
-2. Build project
+2. [Build API project](https://github.com/Kaliszando/bs-api-specification)
+3. Build business project
    ```sh
-   npm install
+   mvn clean install
    ```
-3. Run backend application
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+4. Run backend application (dev-local and swagger profile)
+   ```sh
+   java -jar target/bs-business-X.X.X-SNAPSHOT.jar --spring.profiles.active=dev-local,swagger
    ```
+5. Open Swagger
+   http://localhost:8080/swagger-ui
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#-bugstalker">back to top</a>)</p>
 
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+to do
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#-bugstalker">back to top</a>)</p>
 
 
 
 <!-- ROADMAP -->
 ## Roadmap
+See the [open issues](https://github.com/users/Kaliszando/projects/8/views/1) for a full list of proposed features (and known issues).
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-  - [ ] Nested Feature
+[//]: # (- [ ] Feature 1)
+[//]: # (- [ ] Feature 2)
+[//]: # (- [ ] Feature 3)
+[//]: # (    - [ ] Nested Feature)
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+- [x] Multiple projects context
+- [x] Backlog view
+- [x] Kanban board
+- [x] List view (paging, query, filtering by fields)
+- [x] Summary screen (charts)
+- [ ] Permissions
+- [ ] Admin view
+- [ ] Community issues creation
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#-bugstalker">back to top</a>)</p>
 
 
 
-<!-- LICENSE -->
-## License
+[//]: # (<!-- LICENSE -->)
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+[//]: # (## License)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+[//]: # ()
+[//]: # (Distributed under the MIT License. See `LICENSE.txt` for more information.)
+
+[//]: # ()
+[//]: # (<p align="right">&#40;<a href="#-bugstalker">back to top</a>&#41;</p>)
 
 
 
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Adam Kalisz kaliszadam99+dev@gmail.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+LinkedIn [@adam-kalisz](https://www.linkedin.com/in/adam-kalisz/)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Other links [linktr.ee/kaliszando](https://linktr.ee/kaliszando)
+
+<p align="right">(<a href="#-bugstalker">back to top</a>)</p>
 
 
 
