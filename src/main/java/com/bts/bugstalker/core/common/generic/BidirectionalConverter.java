@@ -9,13 +9,13 @@ import java.util.List;
  * @param <S> source class to convert from
  * @param <T> target class to convert to
  */
-public interface TwoWayConverter<S, T> extends Converter<S, T> {
+public interface BidirectionalConverter<S, T> extends Converter<S, T> {
 
-    S reverseConvert(T target);
+    S convertBack(T target);
 
-    default List<S> reverseConvert(List<T> sourceList) {
+    default List<S> convertBack(List<T> sourceList) {
         return sourceList.stream()
-                .map(this::reverseConvert)
+                .map(this::convertBack)
                 .toList();
     }
 }

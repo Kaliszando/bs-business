@@ -5,9 +5,10 @@
 
 <p>
 BugStalker is a bug tracking system, that addresses the problem of ticket management in software development teams.
-It presents the design of a system that supports the implementation phase of the software development life cycle by
-streamlining the methods of presenting the status of issues, managing a large number of them and enabling the division 
-of labor and responsibilities. The system was implemented as a web application in a client-server architecture.
+It is a system that supports the implementation phase of the software development life cycle by
+streamlining the methods of presenting the status of issues.
+BugStalker allows you to manage a large number of tickets.
+The system was implemented as a web application in a client-server architecture.
 </p>
 
 ![BacklogScreenshot](https://github.com/Kaliszando/bs-web-client/blob/main/src/assets/img/backlog.png)
@@ -40,10 +41,7 @@ BugStalker consists of three, separate projects:
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -72,6 +70,7 @@ Endpoint definitions (interfaces for Spring controllers) and DTOs are generated 
 * JUnit 5, AssertJ, Rest Assured, Mockito
 * MapStruct
 * Swagger
+* QueryDsl
 
 ### Technological Challenges
 * JWT authorization
@@ -83,6 +82,7 @@ Endpoint definitions (interfaces for Spring controllers) and DTOs are generated 
 * QueryDsl + Spring Data JPA
 
 ### UML Diagrams
+_UML diagrams are outdated. See corresponding domains for current state._
 
 <details>
 <summary>Issue domain</summary>
@@ -109,7 +109,7 @@ Vertical cross-section of the ```issue``` domain
 
 To develop a business application, you must first [build an API project](https://github.com/Kaliszando/bs-api-specification), which serves as an essential dependency for the backend.
 
-The API project contain models and services crucial for the application. Additionally, it automatically generates code for both backend and frontend projects.
+The API project contain models and endpoints crucial for the application. Additionally, it automatically generates code for both backend and frontend.
 
 ### Prerequisites
 
@@ -122,17 +122,16 @@ The API project contain models and services crucial for the application. Additio
    ```sh
    git clone https://github.com/Kaliszando/bs-business.git
    ```
-2. [Build API project](https://github.com/Kaliszando/bs-api-specification)
-3. Build business project
+2. Build [API project](https://github.com/Kaliszando/bs-api-specification)
+3. Build bs-business project
    ```sh
    mvn clean install
    ```
-4. Run backend application (dev-local and swagger profile)
+4. Run `BsBusinessApplication` with `dev-local` and `swagger` profiles or execute jar file.
    ```sh
    java -jar target/bs-business-X.X.X-SNAPSHOT.jar --spring.profiles.active=dev-local,swagger
    ```
-5. Open Swagger
-   http://localhost:8080/swagger-ui
+5. Open [Swagger UI](http://localhost:8080/swagger-ui)
 
 <p align="right">(<a href="#-bugstalker">back to top</a>)</p>
 
@@ -141,7 +140,8 @@ The API project contain models and services crucial for the application. Additio
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-to do
+[//]: # (Add video link showing basic usages)
+[//]: # (//TODO)
 
 <p align="right">(<a href="#-bugstalker">back to top</a>)</p>
 
@@ -149,12 +149,7 @@ to do
 
 <!-- ROADMAP -->
 ## Roadmap
-See the [open issues](https://github.com/users/Kaliszando/projects/8/views/1) for a full list of proposed features (and known issues).
-
-[//]: # (- [ ] Feature 1)
-[//]: # (- [ ] Feature 2)
-[//]: # (- [ ] Feature 3)
-[//]: # (    - [ ] Nested Feature)
+See the [open issues](https://github.com/users/Kaliszando/projects/8/views/1) for a full list of proposed features and known issues.
 
 - [x] Multiple projects context
 - [x] Backlog view
@@ -163,23 +158,9 @@ See the [open issues](https://github.com/users/Kaliszando/projects/8/views/1) fo
 - [x] Summary screen (charts)
 - [ ] Permissions
 - [ ] Admin view
-- [ ] Community issues creation
+- [ ] Community issues
 
 <p align="right">(<a href="#-bugstalker">back to top</a>)</p>
-
-
-
-[//]: # (<!-- LICENSE -->)
-
-[//]: # (## License)
-
-[//]: # ()
-[//]: # (Distributed under the MIT License. See `LICENSE.txt` for more information.)
-
-[//]: # ()
-[//]: # (<p align="right">&#40;<a href="#-bugstalker">back to top</a>&#41;</p>)
-
-
 
 <!-- CONTACT -->
 ## Contact

@@ -5,7 +5,7 @@ import com.bts.bugstalker.api.model.IssuePartialUpdate;
 import com.bts.bugstalker.api.model.ProjectInfoDto;
 import com.bts.bugstalker.core.issue.IssueEntity;
 import com.bts.bugstalker.core.issue.IssueRepositoryImpl;
-import com.bts.bugstalker.core.issue.converter.IssueDetailsConverter;
+import com.bts.bugstalker.core.issue.converter.IssueConverter;
 import com.bts.bugstalker.core.membership.MembershipRepository;
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
@@ -44,7 +44,7 @@ public class IssueIntegrationTest {
     private IssueRepositoryImpl issueRepository;
 
     @Autowired
-    private IssueDetailsConverter issueDetailsConverter;
+    private IssueConverter converter;
 
     @LocalServerPort
     private int port;
@@ -201,7 +201,7 @@ public class IssueIntegrationTest {
     void shouldDoIssueDetailsUpdate() {
         IssueEntity issue = prepareIssue("DETAILS UPDATE");
         String tag = extractTag(issue);
-        var request = issueDetailsConverter.reverseConvert(issue);
+        var request = converter.toDetailsDto(issue);
         request.setName("updated name");
         request.setIssueType(IssueDetailsDto.IssueTypeEnum.BUG);
         request.setIssueSeverity(IssueDetailsDto.IssueSeverityEnum.CRITICAL);
