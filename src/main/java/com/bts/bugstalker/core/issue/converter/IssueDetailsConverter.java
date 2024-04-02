@@ -3,7 +3,7 @@ package com.bts.bugstalker.core.issue.converter;
 import com.bts.bugstalker.api.model.IssueDetailsDto;
 import com.bts.bugstalker.core.common.enums.IssueSeverity;
 import com.bts.bugstalker.core.common.enums.IssueType;
-import com.bts.bugstalker.core.common.generic.TwoWayConverter;
+import com.bts.bugstalker.core.common.generic.BidirectionalConverter;
 import com.bts.bugstalker.core.issue.IssueEntity;
 import com.bts.bugstalker.core.project.ProjectService;
 import com.bts.bugstalker.core.user.UserEntity;
@@ -19,7 +19,7 @@ import java.time.OffsetDateTime;
 
 @RequiredArgsConstructor
 @Component
-public class IssueDetailsConverter implements TwoWayConverter<IssueDetailsDto, IssueEntity> {
+class IssueDetailsConverter implements BidirectionalConverter<IssueDetailsDto, IssueEntity> {
 
     private final ProjectService projectService;
 
@@ -59,7 +59,7 @@ public class IssueDetailsConverter implements TwoWayConverter<IssueDetailsDto, I
     }
 
     @Override
-    public IssueDetailsDto reverseConvert(IssueEntity entity) {
+    public IssueDetailsDto convertBack(IssueEntity entity) {
         IssueDetailsDto issue = new IssueDetailsDto()
                 .id(entity.getId())
                 .issueType(IssueDetailsDto.IssueTypeEnum.fromValue(entity.getType().getCode()))

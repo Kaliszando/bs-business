@@ -1,16 +1,16 @@
 package com.bts.bugstalker.core.issue.converter;
 
 import com.bts.bugstalker.api.model.IssueInfoDto;
+import com.bts.bugstalker.core.common.generic.BidirectionalConverter;
 import com.bts.bugstalker.core.issue.IssueEntity;
 import com.bts.bugstalker.core.user.UserMapper;
-import com.bts.bugstalker.core.common.generic.TwoWayConverter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class IssueInfoConverter implements TwoWayConverter<IssueInfoDto, IssueEntity> {
+class IssueInfoConverter implements BidirectionalConverter<IssueInfoDto, IssueEntity> {
 
     private final UserMapper userMapper;
 
@@ -20,7 +20,7 @@ public class IssueInfoConverter implements TwoWayConverter<IssueInfoDto, IssueEn
     }
 
     @Override
-    public IssueInfoDto reverseConvert(IssueEntity entity) {
+    public IssueInfoDto convertBack(IssueEntity entity) {
         var dto = new IssueInfoDto();
         dto.setId(entity.getId());
         dto.setIssueType(IssueInfoDto.IssueTypeEnum.valueOf(entity.getType().getCode()));
