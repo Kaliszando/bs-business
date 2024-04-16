@@ -1,8 +1,8 @@
 package com.bts.bugstalker.core.user;
 
-import com.bts.bugstalker.api.model.UserInfoDto;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.openapitools.model.UserInfoDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

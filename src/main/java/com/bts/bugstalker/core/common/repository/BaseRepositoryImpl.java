@@ -1,9 +1,9 @@
 package com.bts.bugstalker.core.common.repository;
 
-import com.bts.bugstalker.api.model.PageRequest;
 import com.bts.bugstalker.core.common.exception.MandatoryEntityNotFoundException;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.openapitools.model.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

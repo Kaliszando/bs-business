@@ -1,9 +1,9 @@
 package com.bts.bugstalker.core.issue;
 
-import com.bts.bugstalker.api.model.IssuePageRequest;
 import com.bts.bugstalker.core.issue.exception.IssueNotFoundException;
 import com.bts.bugstalker.core.issue.exception.IssueOptimisticLockException;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.model.IssuePageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,8 @@
 package com.bts.bugstalker.fixtures;
 
-import com.bts.bugstalker.api.model.IssueDetailsDto;
-import com.bts.bugstalker.api.model.UserInfoDto;
 import com.bts.bugstalker.core.common.enums.UserRole;
+import org.openapitools.model.IssueDetailsDto;
+import org.openapitools.model.UserInfoDto;
 
 import java.util.List;
 
@@ -52,7 +52,6 @@ public class DtoMocks {
         public static final int HOURS_SPENT = 10;
         public static final List<String> LABELS = List.of("label1", "label2", "label3");
         public static final List<String> COMPONENTS = List.of("comp1", "comp2", "comp3");
-        public static final List<String> ATTACHMENTS = List.of("EjLFDFkbZf", "x0lbnWZUu0", "nSgD5Ookjw");
         public static final IssueDetailsDto.IssueSeverityEnum SEVERITY = IssueDetailsDto.IssueSeverityEnum.BLOCKER;
         public static final IssueDetailsDto.IssueTypeEnum TYPE = IssueDetailsDto.IssueTypeEnum.BUG;
         public static final UserInfoDto REPORTER;
@@ -77,7 +76,6 @@ public class DtoMocks {
                     .location(LOCATION)
                     .labels(LABELS)
                     .components(COMPONENTS)
-                    .attachments(ATTACHMENTS)
                     .issueSeverity(SEVERITY)
                     .issueType(TYPE)
                     .hoursSpent(HOURS_SPENT)
