@@ -1,7 +1,7 @@
 package com.bts.bugstalker.core.user;
 
-import com.bts.bugstalker.api.model.UserInfoDto;
 import org.mapstruct.Mapper;
+import org.openapitools.model.UserInfoDto;
 
 import java.util.List;
 

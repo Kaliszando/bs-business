@@ -1,11 +1,11 @@
 package com.bts.bugstalker.core.issue;
 
-import com.bts.bugstalker.api.model.IssuePageRequest;
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.fixtures.EntityMocks;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openapitools.model.IssuePageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;

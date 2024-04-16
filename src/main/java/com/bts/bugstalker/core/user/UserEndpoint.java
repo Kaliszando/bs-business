@@ -1,9 +1,9 @@
 package com.bts.bugstalker.core.user;
 
-import com.bts.bugstalker.api.UserApi;
-import com.bts.bugstalker.api.model.UserInfoDto;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.api.UserApi;
+import org.openapitools.model.UserInfoDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

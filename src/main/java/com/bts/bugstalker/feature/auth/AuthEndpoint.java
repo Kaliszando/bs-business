@@ -1,8 +1,8 @@
 package com.bts.bugstalker.feature.auth;
 
-import com.bts.bugstalker.api.AuthApi;
-import com.bts.bugstalker.api.model.LoginCredentialsDto;
 import com.bts.bugstalker.util.parameters.ApiPaths;
+import org.openapitools.api.AuthApi;
+import org.openapitools.model.LoginCredentialsDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

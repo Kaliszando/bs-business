@@ -1,6 +1,5 @@
 package com.bts.bugstalker.core.issue.converter;
 
-import com.bts.bugstalker.api.model.IssueDetailsDto;
 import com.bts.bugstalker.core.common.enums.IssueSeverity;
 import com.bts.bugstalker.core.common.enums.IssueType;
 import com.bts.bugstalker.core.common.generic.BidirectionalConverter;
@@ -11,6 +10,7 @@ import com.bts.bugstalker.core.user.UserMapper;
 import com.bts.bugstalker.core.user.UserService;
 import com.bts.bugstalker.feature.context.ContextProvider;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.model.IssueDetailsDto;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;

@@ -1,13 +1,13 @@
 package com.bts.bugstalker.core.issue;
 
-import com.bts.bugstalker.api.IssueApi;
-import com.bts.bugstalker.api.model.*;
 import com.bts.bugstalker.core.common.enums.Permission;
 import com.bts.bugstalker.core.issue.converter.IssueConverter;
 import com.bts.bugstalker.feature.aop.permission.CheckPermission;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.openapitools.api.IssueApi;
+import org.openapitools.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

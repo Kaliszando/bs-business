@@ -1,8 +1,5 @@
 package com.bts.bugstalker.integration;
 
-import com.bts.bugstalker.api.model.IssueDetailsDto;
-import com.bts.bugstalker.api.model.IssuePartialUpdate;
-import com.bts.bugstalker.api.model.ProjectInfoDto;
 import com.bts.bugstalker.core.issue.IssueEntity;
 import com.bts.bugstalker.core.issue.IssueRepositoryImpl;
 import com.bts.bugstalker.core.issue.converter.IssueConverter;
@@ -15,6 +12,9 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openapitools.model.IssueDetailsDto;
+import org.openapitools.model.IssuePartialUpdate;
+import org.openapitools.model.ProjectInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;

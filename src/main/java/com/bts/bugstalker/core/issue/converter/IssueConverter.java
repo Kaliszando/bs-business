@@ -1,9 +1,9 @@
 package com.bts.bugstalker.core.issue.converter;
 
-import com.bts.bugstalker.api.model.IssueDetailsDto;
-import com.bts.bugstalker.api.model.IssueInfoDto;
-import com.bts.bugstalker.api.model.IssuePageResponse;
 import com.bts.bugstalker.core.issue.IssueEntity;
+import org.openapitools.model.IssueDetailsDto;
+import org.openapitools.model.IssueInfoDto;
+import org.openapitools.model.IssuePageResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

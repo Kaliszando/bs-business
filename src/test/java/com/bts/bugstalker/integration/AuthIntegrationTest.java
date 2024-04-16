@@ -1,7 +1,5 @@
 package com.bts.bugstalker.integration;
 
-import com.bts.bugstalker.api.model.IssuePageRequest;
-import com.bts.bugstalker.api.model.LoginCredentialsDto;
 import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.core.user.UserRepositoryImpl;
 import com.bts.bugstalker.util.parameters.ApiPaths;
@@ -15,6 +13,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openapitools.model.IssuePageRequest;
+import org.openapitools.model.LoginCredentialsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;

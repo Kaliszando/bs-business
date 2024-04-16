@@ -1,6 +1,5 @@
 package com.bts.bugstalker.integration;
 
-import com.bts.bugstalker.api.model.ProjectInfoDto;
 import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
@@ -8,6 +7,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openapitools.model.ProjectInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;

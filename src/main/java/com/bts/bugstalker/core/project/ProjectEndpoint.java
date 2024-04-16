@@ -1,9 +1,9 @@
 package com.bts.bugstalker.core.project;
 
-import com.bts.bugstalker.api.ProjectApi;
-import com.bts.bugstalker.api.model.ProjectInfoDto;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.api.ProjectApi;
+import org.openapitools.model.ProjectInfoDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

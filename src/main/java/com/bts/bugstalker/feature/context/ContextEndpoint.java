@@ -1,12 +1,12 @@
 package com.bts.bugstalker.feature.context;
 
-import com.bts.bugstalker.api.ContextApi;
-import com.bts.bugstalker.api.model.UserInfoDto;
 import com.bts.bugstalker.core.user.UserEntity;
 import com.bts.bugstalker.core.user.UserMapper;
 import com.bts.bugstalker.core.user.UserService;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.api.ContextApi;
+import org.openapitools.model.UserInfoDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
