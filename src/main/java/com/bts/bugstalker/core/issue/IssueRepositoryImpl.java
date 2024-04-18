@@ -2,6 +2,7 @@ package com.bts.bugstalker.core.issue;
 
 import com.bts.bugstalker.core.common.enums.IssueSeverity;
 import com.bts.bugstalker.core.common.enums.IssueType;
+import com.bts.bugstalker.core.common.mapper.BasePageData;
 import com.bts.bugstalker.core.common.repository.BaseRepositoryImpl;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.OrderSpecifier;
@@ -9,7 +10,6 @@ import com.querydsl.jpa.impl.JPAQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.openapitools.model.IssuePageFilter;
 import org.openapitools.model.IssuePageRequest;
-import org.openapitools.model.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Repository;
@@ -53,13 +53,14 @@ public class IssueRepositoryImpl extends BaseRepositoryImpl<IssueEntity, Long> i
     }
 
     Page<IssueEntity> getAllByProjectIdPaged(IssuePageRequest request) {
-        JPAQuery<IssueEntity> query = prepareBasePageQuery(request);
-        addFilter(request.getFilter(), query.getMetadata());
-        PageRequest pageRequest = new PageRequest()
+        JPAQuery<IssueEntity> jpaQuery = prepareBasePageQuery(request);
+        addFilter(request.getFilter(), jpaQuery.getMetadata());
+        BasePageData pageData = BasePageData.builder()
                 .page(request.getPage())
                 .pageSize(request.getPageSize())
-                .sortBy(request.getSortBy());
-        return executePaging(pageRequest, query);
+                .sortBy(request.getSortBy())
+                .build();
+        return executePaging(pageData, jpaQuery);
     }
 
     private JPAQuery<IssueEntity> prepareBasePageQuery(IssuePageRequest request) {
