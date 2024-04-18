@@ -53,14 +53,14 @@ public class IssueRepositoryImpl extends BaseRepositoryImpl<IssueEntity, Long> i
     }
 
     Page<IssueEntity> getAllByProjectIdPaged(IssuePageRequest request) {
-        JPAQuery<IssueEntity> query = prepareBasePageQuery(request);
-        addFilter(request.getFilter(), query.getMetadata());
-        BasePageData pageRequest = BasePageData.builder()
+        JPAQuery<IssueEntity> jpaQuery = prepareBasePageQuery(request);
+        addFilter(request.getFilter(), jpaQuery.getMetadata());
+        BasePageData pageData = BasePageData.builder()
                 .page(request.getPage())
                 .pageSize(request.getPageSize())
                 .sortBy(request.getSortBy())
                 .build();
-        return executePaging(pageRequest, query);
+        return executePaging(pageData, jpaQuery);
     }
 
     private JPAQuery<IssueEntity> prepareBasePageQuery(IssuePageRequest request) {
