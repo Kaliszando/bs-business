@@ -1,9 +1,9 @@
 package com.bts.bugstalker.core.common.repository;
 
 import com.bts.bugstalker.core.common.exception.MandatoryEntityNotFoundException;
+import com.bts.bugstalker.core.common.mapper.BasePageData;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.openapitools.model.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +44,7 @@ public abstract class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, I
         return "%".concat(prompt).concat("%");
     }
 
-    protected Page<T> executePaging(PageRequest request, JPAQuery<T> query) {
+    protected Page<T> executePaging(BasePageData request, JPAQuery<T> query) {
         long totalElements = query.fetchCount();
         List<T> issues = query
                 .limit(request.getPageSize())
