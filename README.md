@@ -133,6 +133,20 @@ The API project contain models and endpoints crucial for the application. Additi
    ```
 5. Open [Swagger UI](http://localhost:8080/swagger-ui)
 
+### Working with Docker
+1. Build docker image based on `Dockerfile`
+   ```sh
+   docker build -t bugstalker:1.0.0-SNAPSHOT .
+   ```
+   Alternativelly you can use buildpack for building image 
+   ```sh
+   mvn spring-boot:build-image
+   ```
+2. Run image
+   ```sh
+   docker run -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=dev-local,swagger" --name bugstalker_terminal bs-business:1.0.0-SNAPSHOT
+   ```
+
 <p align="right">(<a href="#-bugstalker">back to top</a>)</p>
 
 
