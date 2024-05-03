@@ -10,6 +10,7 @@ import com.bts.bugstalker.core.membership.MembershipRepository;
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.core.user.UserEntity;
+import com.bts.bugstalker.core.user.UserRepository;
 import com.bts.bugstalker.core.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -31,8 +32,16 @@ public class AppDataInitiator implements CommandLineRunner {
 
     private final IssueRepository issueRepository;
 
+    private final UserRepository userRepository;
+
     @Override
     public void run(String... args) {
+        if (userRepository.count() == 0) {
+            prepareMockData();
+        }
+    }
+
+    private void prepareMockData() {
         UserEntity user1 = userService.create(UserEntity.builder()
                 .username("jantes")
                 .firstName("Jan")

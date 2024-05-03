@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    container_name: bs-business-db
+    environment:
+      POSTGRES_DB: bugstalker
+      POSTGRES_USER: bugstalker-user
+      POSTGRES_PASSWORD: 12345678
+    ports:
+      - "5432:5432"
+
+  spring-app:
+    image: bs-business:1.0.0-SNAPSHOT
+    container_name: bs-business-app
+    environment:
+      SPRING_PROFILES_ACTIVE: dev-local,swagger
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bugstalker
+      SPRING_DATASOURCE_USERNAME: bugstalker-user
+      SPRING_DATASOURCE_PASSWORD: 12345678
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
