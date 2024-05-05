@@ -60,16 +60,19 @@ Endpoint definitions (interfaces for Spring controllers) and DTOs are generated 
 
 ![Java-17][Java]
 ![Spring][Spring]
+![Maven][Maven]
+![Swagger][Swagger]
+![OpenApi][OpenAPI]
 ![SpringSecurity][SpringSecurity]
 ![Hibernate][Hibernate]
 ![JWT][JWT]
-![Maven][Maven]
+![Docker][Docker]
+![PostgreSQL][PostgreSQL]
 
 ### Additional Dependencies
 * Lombok
 * JUnit 5, AssertJ, Rest Assured, Mockito
 * MapStruct
-* Swagger
 * QueryDsl
 
 ### Technological Challenges
@@ -127,11 +130,12 @@ The API project contain models and endpoints crucial for the application. Additi
    ```sh
    mvn clean install
    ```
-4. Run `BsBusinessApplication` with `dev-local` and `swagger` profiles or execute jar file.
+4. Run Postgres database. (use `postgres` service defined in `docker-compose.yml`)
+5. Run `BsBusinessApplication` with `dev-local` and `swagger` profiles or execute jar file.
    ```sh
    java -jar target/bs-business-X.X.X-SNAPSHOT.jar --spring.profiles.active=dev-local,swagger
    ```
-5. Open [Swagger UI](http://localhost:8080/swagger-ui)
+6. Open [Swagger UI](http://localhost:8080/swagger-ui)
 
 ### Working with Docker
 1. Build docker image based on `Dockerfile`
@@ -195,8 +199,12 @@ Other links [linktr.ee/kaliszando](https://linktr.ee/kaliszando)
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [Java]: https://res.cloudinary.com/practicaldev/image/fetch/s--KR6jSVNe--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://img.shields.io/badge/Java-ED8B00%3Fstyle%3Dfor-the-badge%26logo%3Djava%26logoColor%3Dwhite
-[Spring]: https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white
+[Spring]: https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=fff&style=for-the-badge
 [SpringSecurity]: https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=Spring-Security&logoColor=white
 [JWT]: https://img.shields.io/badge/json%20web%20tokens-323330?style=for-the-badge&logo=json-web-tokens&logoColor=pink
 [Hibernate]: https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white
 [Maven]: https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white
+[Docker]: https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white
+[OpenAPI]: https://img.shields.io/badge/OpenAPI-6BA539?logo=openapiinitiative&logoColor=fff&style=for-the-badge
+[Swagger]: https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=000&style=for-the-badge
+[PostgreSQL]: https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=fff&style=for-the-badge
