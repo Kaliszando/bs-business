@@ -11,15 +11,15 @@ import java.util.Optional;
 @Repository
 public class UserRepositoryImpl extends BaseRepositoryImpl<UserEntity, Long> implements UserRepository {
 
-    private final QUserEntity user = QUserEntity.userEntity;
+    final QUserEntity user = QUserEntity.userEntity;
 
-    private final QMembershipEntity membership = QMembershipEntity.membershipEntity;
+    final QMembershipEntity membership = QMembershipEntity.membershipEntity;
 
-    public UserRepositoryImpl(EntityManager em) {
+    UserRepositoryImpl(EntityManager em) {
         super(UserEntity.class, em);
     }
 
-    public Optional<UserEntity> findByEmail(String email) {
+    Optional<UserEntity> findByEmail(String email) {
         return Optional.ofNullable(queryFactory
                 .select(user)
                 .from(user)
@@ -37,7 +37,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<UserEntity, Long> imp
         );
     }
 
-    public List<UserEntity> searchByQuery(String query) {
+    List<UserEntity> searchByQuery(String query) {
         String sqlQuery = addWildcards(query);
         return queryFactory
                 .select(user)
@@ -51,7 +51,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<UserEntity, Long> imp
                 .fetch();
     }
 
-    public List<UserEntity> findByProjectId(Long projectId) {
+    List<UserEntity> findByProjectId(Long projectId) {
         return queryFactory
                 .select(user)
                 .from(user)

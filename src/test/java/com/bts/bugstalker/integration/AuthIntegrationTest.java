@@ -1,5 +1,6 @@
 package com.bts.bugstalker.integration;
 
+import com.bts.bugstalker.config.BugStalkerIntegrationTest;
 import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.core.user.UserRepositoryImpl;
 import com.bts.bugstalker.util.parameters.ApiPaths;
@@ -16,9 +17,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.openapitools.model.IssuePageRequest;
 import org.openapitools.model.LoginCredentialsDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.stream.Stream;
 
@@ -26,8 +25,7 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 
-@ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@BugStalkerIntegrationTest
 public class AuthIntegrationTest {
 
     @Autowired

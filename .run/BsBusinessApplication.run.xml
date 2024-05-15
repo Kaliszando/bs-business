@@ -8,4 +8,20 @@
       <option name="Make" enabled="true" />
     </method>
   </configuration>
+  <configuration default="false" name="BsBusinessApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <envs>
+      <env name="--spring.profiles.active" value="dev-local,swagger" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.bts.bugstalker.BsBusinessApplication" />
+    <module name="bs-business" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.bts.bugstalker.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
 </component>

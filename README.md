@@ -68,6 +68,7 @@ Endpoint definitions (interfaces for Spring controllers) and DTOs are generated 
 ![JWT][JWT]
 ![Docker][Docker]
 ![PostgreSQL][PostgreSQL]
+![Redis Badge](https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=fff&style=for-the-badge)
 
 ### Additional Dependencies
 * Lombok
@@ -130,7 +131,7 @@ The API project contain models and endpoints crucial for the application. Additi
    ```sh
    mvn clean install
    ```
-4. Run Postgres database. (use `postgres` service defined in `docker-compose.yml`)
+4. Run database and cache (use `postgres` and `redis` services defined in `docker-compose.yml`)
 5. Run `BsBusinessApplication` with `dev-local` and `swagger` profiles or execute jar file.
    ```sh
    java -jar target/bs-business-X.X.X-SNAPSHOT.jar --spring.profiles.active=dev-local,swagger

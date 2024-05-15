@@ -12,12 +12,13 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class AuditBaseEntity {
+public class AuditBaseEntity implements Serializable {
 
     @Column(updatable = false)
     @CreatedDate
