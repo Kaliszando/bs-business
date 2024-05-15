@@ -1,5 +1,6 @@
 package com.bts.bugstalker.integration;
 
+import com.bts.bugstalker.config.BugStalkerIntegrationTest;
 import com.bts.bugstalker.core.issue.IssueEntity;
 import com.bts.bugstalker.core.issue.IssueRepositoryImpl;
 import com.bts.bugstalker.core.issue.converter.IssueConverter;
@@ -16,9 +17,7 @@ import org.openapitools.model.IssueDetailsDto;
 import org.openapitools.model.IssuePartialUpdate;
 import org.openapitools.model.ProjectInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.ActiveProfiles;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
@@ -27,8 +26,7 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-@ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@BugStalkerIntegrationTest
 public class IssueIntegrationTest {
 
     @Autowired

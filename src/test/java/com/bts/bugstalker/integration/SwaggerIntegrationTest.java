@@ -1,16 +1,16 @@
 package com.bts.bugstalker.integration;
 
+import com.bts.bugstalker.config.BugStalkerIntegrationTest;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 
 import static io.restassured.RestAssured.given;
 
 @ActiveProfiles({"test", "swagger"})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@BugStalkerIntegrationTest
 public class SwaggerIntegrationTest {
 
     @LocalServerPort

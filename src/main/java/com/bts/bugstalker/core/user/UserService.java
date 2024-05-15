@@ -5,6 +5,9 @@ import com.bts.bugstalker.core.user.exception.UserEmailAlreadyTakenException;
 import com.bts.bugstalker.core.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,16 +27,13 @@ public class UserService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
+    @Cacheable(value = "userByUsername", key = "#username")
     public UserEntity getByUsername(final String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
     }
 
-    public UserEntity getById(final Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-    }
-
+    @CachePut(value = "userByUsername", key = "#user.username")
     public UserEntity create(final UserEntity user) {
         if (!isEmailAvailable(user.getEmail())) {
             throw new UserEmailAlreadyTakenException(user.getEmail());
@@ -41,6 +41,11 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
+    }
+
+    @CacheEvict(value = "userByUsername", key = "#user.username")
+    public void delete(final UserEntity user) {
+        userRepository.delete(user);
     }
 
     public List<UserEntity> queryByParam(final String query, final Long projectId) {
@@ -59,6 +64,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
+    @Cacheable(value = "userByLogin", key = "#login")
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         return userRepository.findByUsername(login)
                 .or(() -> userRepository.findByEmail(login))
