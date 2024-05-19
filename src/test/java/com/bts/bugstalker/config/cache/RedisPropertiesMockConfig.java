@@ -1,4 +1,4 @@
-package com.bts.bugstalker.config;
+package com.bts.bugstalker.config.cache;
 
 import com.bts.bugstalker.util.properties.RedisProperties;
 import lombok.RequiredArgsConstructor;

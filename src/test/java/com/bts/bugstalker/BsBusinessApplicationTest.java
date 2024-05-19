@@ -1,9 +1,9 @@
 package com.bts.bugstalker;
 
-import com.bts.bugstalker.config.BugStalkerIntegrationTest;
+import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import org.junit.jupiter.api.Test;
 
-@BugStalkerIntegrationTest
+@BugStalkerApplicationTest
 class BsBusinessApplicationTest {
 
     @Test

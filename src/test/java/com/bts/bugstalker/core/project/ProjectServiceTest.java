@@ -1,20 +1,18 @@
 package com.bts.bugstalker.core.project;
 
+import com.bts.bugstalker.config.BugStalkerApplicationTest;
+import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
 import com.bts.bugstalker.fixtures.EntityMocks;
-import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
-@ActiveProfiles("test")
-@RequiredArgsConstructor
-@SpringBootTest
+@BugStalkerApplicationTest
 public class ProjectServiceTest {
 
     @Autowired
@@ -22,6 +20,15 @@ public class ProjectServiceTest {
 
     @Autowired
     private ProjectRepositoryImpl projectRepository;
+
+    @Autowired
+    private MembershipRepositoryImpl membershipRepository;
+
+    @BeforeEach
+    void setUp() {
+        membershipRepository.deleteAll();
+        projectRepository.deleteAll();
+    }
 
     @Test
     void shouldThrowExceptionWhenProjectNotFound() {

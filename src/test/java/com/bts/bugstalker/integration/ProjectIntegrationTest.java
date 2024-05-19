@@ -1,6 +1,6 @@
 package com.bts.bugstalker.integration;
 
-import com.bts.bugstalker.config.BugStalkerIntegrationTest;
+import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
@@ -18,7 +18,7 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 
-@BugStalkerIntegrationTest
+@BugStalkerApplicationTest
 public class ProjectIntegrationTest {
 
     @Autowired

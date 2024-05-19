@@ -1,6 +1,6 @@
 package com.bts.bugstalker.integration;
 
-import com.bts.bugstalker.config.BugStalkerIntegrationTest;
+import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static io.restassured.RestAssured.given;
 
 @ActiveProfiles({"test", "swagger"})
-@BugStalkerIntegrationTest
+@BugStalkerApplicationTest
 public class SwaggerIntegrationTest {
 
     @LocalServerPort
