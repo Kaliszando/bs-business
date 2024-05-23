@@ -1,6 +1,7 @@
 package com.bts.bugstalker.config.security;
 
 import com.bts.bugstalker.core.common.enums.UserRole;
+import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,6 +42,10 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     private final JwtProperties jwtProperties;
 
+    private final LogoutSuccessHandler logoutSuccessHandler;
+
+    private final JwtHelper jwtHelper;
+
     @Override
     public void configure(WebSecurity web) {
         web.debug(webSecurityDebug);
@@ -66,8 +71,14 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
+                .logout()
+                .logoutUrl(ApiPaths.SIGN_OUT)
+                .logoutSuccessHandler(logoutSuccessHandler)
+
+                .and()
                 .addFilter(loginAuthenticationFilter())
-                .addFilter(new JwtAuthFilter(authenticationManager(), userDetailsService, jwtProperties))
+                //todo define as bean?
+                .addFilter(new JwtAuthFilter(authenticationManager(), userDetailsService, jwtProperties, jwtHelper))
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 
@@ -76,10 +87,12 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LoginAuthFilter loginAuthenticationFilter() throws Exception {
+        // todo define as bean
         LoginAuthFilter filter = new LoginAuthFilter(objectMapper);
         filter.setFilterProcessesUrl(ApiPaths.SIGN_IN);
         filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+
         filter.setAuthenticationManager(super.authenticationManager());
         return filter;
     }

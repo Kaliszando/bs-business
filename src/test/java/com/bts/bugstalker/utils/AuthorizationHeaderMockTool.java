@@ -32,7 +32,7 @@ public class AuthorizationHeaderMockTool {
     public Header prepare(String username) {
         String token = AUTH_TOKEN_PREFIX.concat(JWT.create()
                 .withSubject(username)
-                .withExpiresAt(new Date(System.currentTimeMillis() + Long.parseLong(jwtProperties.getExpirationTimeMillis())))
+                .withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpirationTimeMillis()))
                 .sign(Algorithm.HMAC256(jwtProperties.getSecret())));
         assertThat(isJwtToken(token)).isTrue();
         return new Header(AUTH_HEADER_NAME, token);

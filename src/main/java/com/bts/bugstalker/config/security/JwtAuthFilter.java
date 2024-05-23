@@ -2,6 +2,7 @@ package com.bts.bugstalker.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,25 +19,25 @@ import java.io.IOException;
 
 public class JwtAuthFilter extends BasicAuthenticationFilter {
 
-    private final static String TOKEN_HEADER = "Authorization";
-
-    private final static String TOKEN_PREFIX = "Bearer ";
-
     private final UserDetailsService userDetailsService;
 
     private final JwtProperties jwtProperties;
 
+    private final JwtHelper jwtHelper;
+
     public JwtAuthFilter(AuthenticationManager authenticationManager,
-                         UserDetailsService userDetailsService, JwtProperties jwtProperties) {
+                         UserDetailsService userDetailsService,
+                         JwtProperties jwtProperties,
+                         JwtHelper jwtHelper) {
         super(authenticationManager);
         this.userDetailsService = userDetailsService;
         this.jwtProperties = jwtProperties;
+        this.jwtHelper = jwtHelper;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
         UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(request);
 
         if (authenticationToken == null) {
@@ -49,14 +50,19 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(TOKEN_HEADER);
-        if (token == null || !token.startsWith(TOKEN_PREFIX)) {
+        if (!jwtHelper.hasAuthToken(request)) {
+            return null;
+        }
+
+        String token = request.getHeader(JwtHelper.AUTH_HEADER_NAME)
+                .replace(JwtHelper.AUTH_TOKEN_PREFIX, "");
+        if (jwtHelper.isBlacklisted(token)) {
             return null;
         }
 
         String username = JWT.require(Algorithm.HMAC256(jwtProperties.getSecret()))
                 .build()
-                .verify(token.replace(TOKEN_PREFIX, ""))
+                .verify(token)
                 .getSubject();
         if (username == null) {
             return null;

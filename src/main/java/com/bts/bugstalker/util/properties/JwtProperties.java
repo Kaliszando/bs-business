@@ -14,4 +14,7 @@ public final class JwtProperties {
 
     private final String secret;
 
+    public Long getExpirationTimeMillis() {
+        return Long.parseLong(expirationTimeMillis);
+    }
 }

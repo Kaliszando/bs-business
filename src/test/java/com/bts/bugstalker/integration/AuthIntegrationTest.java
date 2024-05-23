@@ -3,17 +3,16 @@ package com.bts.bugstalker.integration;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.core.user.UserRepositoryImpl;
+import com.bts.bugstalker.feature.cache.jwt.JwtCache;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.*;
 import org.openapitools.model.IssuePageRequest;
 import org.openapitools.model.LoginCredentialsDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,9 @@ public class AuthIntegrationTest {
     @Autowired
     private AuthorizationHeaderMockTool headerMockTool;
 
+    @Autowired
+    private JwtCache jwtCache;
+
     @LocalServerPort
     private int port;
 
@@ -41,6 +43,11 @@ public class AuthIntegrationTest {
     void init() {
         RestAssured.port = port;
         assertThat(userRepository.count()).isEqualTo(3);
+    }
+
+    @AfterEach
+    void tearDown() {
+        jwtCache.deleteAll();
     }
 
     private static LoginCredentialsDto toCredentials(String password, String login) {
@@ -149,5 +156,34 @@ public class AuthIntegrationTest {
 
                 .then()
                 .statusCode(httpStatusCode);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"JohnDoe334", "JamesSmith678", "MariaMartinez645"})
+    void shouldSingOutUsersSuccessfully(String username) {
+        given().header(headerMockTool.prepare(username))
+                .post("/api/v1/auth/sign-out")
+
+                .then()
+                .statusCode(204);
+    }
+
+    @Test
+    void shouldFailSignOutWhenNoJwtToken() {
+        given().post("/api/v1/auth/sign-out")
+
+                .then()
+                .statusCode(401);
+    }
+
+    @Test
+    void shouldDenyApiCallsWithBlacklistedJwtToken() {
+        var token = headerMockTool.prepare("JohnDoe334");
+
+        given().header(token).get("api/v1/auth/ping").then().statusCode(204);
+
+        given().header(token).post("/api/v1/auth/sign-out").then().statusCode(204);
+
+        given().header(token).get("api/v1/auth/ping").then().statusCode(401);
     }
 }
