@@ -1,6 +1,6 @@
 package com.bts.bugstalker.integration;
 
-import com.bts.bugstalker.config.BugStalkerIntegrationTest;
+import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.issue.IssueEntity;
 import com.bts.bugstalker.core.issue.IssueRepositoryImpl;
 import com.bts.bugstalker.core.issue.converter.IssueConverter;
@@ -26,7 +26,7 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-@BugStalkerIntegrationTest
+@BugStalkerApplicationTest
 public class IssueIntegrationTest {
 
     @Autowired

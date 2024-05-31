@@ -12,6 +12,15 @@ public final class JwtProperties {
 
     private final String expirationTimeMillis;
 
+    private final String blacklistedTimeMillis;
+
     private final String secret;
 
+    public Long getExpirationTimeMillis() {
+        return Long.parseLong(expirationTimeMillis);
+    }
+
+    public Long getBlacklistedTimeMillis() {
+        return Long.parseLong(blacklistedTimeMillis);
+    }
 }

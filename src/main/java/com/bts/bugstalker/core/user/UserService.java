@@ -4,10 +4,12 @@ import com.bts.bugstalker.core.user.exception.UserLoginDoesNotMatchAnyResultExce
 import com.bts.bugstalker.core.user.exception.UserEmailAlreadyTakenException;
 import com.bts.bugstalker.core.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +20,7 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -46,6 +49,12 @@ public class UserService implements UserDetailsService {
     @CacheEvict(value = "userByUsername", key = "#user.username")
     public void delete(final UserEntity user) {
         userRepository.delete(user);
+    }
+
+    @CacheEvict(value = {"userByUsername", "userByLogin"}, allEntries = true)
+    @Scheduled(fixedRateString = "${cache.user.ttl}")
+    public void invalidateUserCache() {
+        log.info("Invalidating user cache");
     }
 
     public List<UserEntity> queryByParam(final String query, final Long projectId) {

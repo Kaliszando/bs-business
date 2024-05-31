@@ -1,5 +1,7 @@
 package com.bts.bugstalker.config;
 
+import com.bts.bugstalker.config.cache.RedisMockConfig;
+import com.bts.bugstalker.config.cache.RedisPropertiesMockConfig;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
@@ -15,7 +17,7 @@ import java.lang.annotation.Target;
 @Import({RedisPropertiesMockConfig.class, RedisMockConfig.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public @interface BugStalkerIntegrationTest {
+public @interface BugStalkerApplicationTest {
     @AliasFor(annotation = SpringBootTest.class, attribute = "classes")
     Class<?>[] classes() default {};
 }

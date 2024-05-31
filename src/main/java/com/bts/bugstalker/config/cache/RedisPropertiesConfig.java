@@ -11,7 +11,8 @@ public class RedisPropertiesConfig {
     @Bean
     public RedisProperties redisProperties(
             @Value("${spring.redis.port}") int redisPort,
-            @Value("${spring.redis.host}") String redisHost) {
-        return new RedisProperties(redisPort, redisHost);
+            @Value("${spring.redis.host}") String redisHost,
+            @Value("${spring.redis.password}") String password) {
+        return new RedisProperties(redisPort, redisHost, password);
     }
 }

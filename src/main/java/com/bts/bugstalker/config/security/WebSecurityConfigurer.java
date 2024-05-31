@@ -1,8 +1,8 @@
 package com.bts.bugstalker.config.security;
 
 import com.bts.bugstalker.core.common.enums.UserRole;
+import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
 import com.bts.bugstalker.util.parameters.ApiPaths;
-import com.bts.bugstalker.util.properties.JwtProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,8 +18,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 @RequiredArgsConstructor
 @Configuration
@@ -35,11 +33,13 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     private final ObjectMapper objectMapper;
 
-    private final SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler;
+    private final LoginSuccessHandler loginSuccessHandler;
 
-    private final SimpleUrlAuthenticationFailureHandler authenticationFailureHandler;
+    private final LoginFailureHandler loginFailureHandler;
 
-    private final JwtProperties jwtProperties;
+    private final LogoutSuccessHandler logoutSuccessHandler;
+
+    private final JwtHelper jwtHelper;
 
     @Override
     public void configure(WebSecurity web) {
@@ -66,8 +66,13 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
+                .logout()
+                .logoutUrl(ApiPaths.SIGN_OUT)
+                .logoutSuccessHandler(logoutSuccessHandler)
+
+                .and()
                 .addFilter(loginAuthenticationFilter())
-                .addFilter(new JwtAuthFilter(authenticationManager(), userDetailsService, jwtProperties))
+                .addFilter(jwtAuthFilter())
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 
@@ -78,9 +83,14 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     public LoginAuthFilter loginAuthenticationFilter() throws Exception {
         LoginAuthFilter filter = new LoginAuthFilter(objectMapper);
         filter.setFilterProcessesUrl(ApiPaths.SIGN_IN);
-        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
-        filter.setAuthenticationFailureHandler(authenticationFailureHandler);
-        filter.setAuthenticationManager(super.authenticationManager());
+        filter.setAuthenticationSuccessHandler(loginSuccessHandler);
+        filter.setAuthenticationFailureHandler(loginFailureHandler);
+        filter.setAuthenticationManager(authenticationManager());
         return filter;
+    }
+
+    @Bean
+    public JwtAuthFilter jwtAuthFilter() throws Exception {
+        return new JwtAuthFilter(authenticationManager(), userDetailsService, jwtHelper);
     }
 }

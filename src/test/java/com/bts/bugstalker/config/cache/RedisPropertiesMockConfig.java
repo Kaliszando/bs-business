@@ -1,4 +1,4 @@
-package com.bts.bugstalker.config;
+package com.bts.bugstalker.config.cache;
 
 import com.bts.bugstalker.util.properties.RedisProperties;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class RedisPropertiesMockConfig {
     @Bean
     @Primary
     public RedisProperties redisPropertiesMock() {
-        return new RedisProperties(findFreePort(), "localhost");
+        return new RedisProperties(findFreePort(), "localhost", "password");
     }
 
     private int findFreePort() {

@@ -33,6 +33,7 @@ public class LoginAuthFilter extends UsernamePasswordAuthenticationFilter {
             if (StringUtils.isBlank(loginCredentials.email()) || StringUtils.isBlank(loginCredentials.password())) {
                 throw new AuthInvalidSignInRequest(loginCredentials.toString());
             }
+
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     loginCredentials.email().trim(), loginCredentials.password().trim()
             );
