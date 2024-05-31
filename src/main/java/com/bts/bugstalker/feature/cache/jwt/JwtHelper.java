@@ -22,9 +22,24 @@ public class JwtHelper {
 
     private final JwtCache jwtCache;
 
+    public String createJwtToken(String username) {
+        return JWT.create()
+                .withSubject(username)
+                .withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpirationTimeMillis()))
+                .sign(Algorithm.HMAC256(jwtProperties.getSecret()));
+    }
+
+    public String createJwtTokenWithPrefix(String username) {
+        return AUTH_TOKEN_PREFIX.concat(createJwtToken(username));
+    }
+
     public void addToBlacklist(String token) {
         JwtEntity jwtEntity = createEntity(token);
         jwtCache.save(jwtEntity);
+    }
+
+    public boolean isBlacklisted(String token) {
+        return jwtCache.existsByToken(token);
     }
 
     public boolean hasAuthToken(HttpServletRequest request) {
@@ -37,23 +52,34 @@ public class JwtHelper {
             return Optional.empty();
         }
 
-        String token = getAuthHeader(request).replace(AUTH_TOKEN_PREFIX, "");
+        String token = getTokenContent(request);
         return Optional.of(token);
     }
 
-    public boolean isBlacklisted(String token) {
-        return jwtCache.existsByToken(token);
+    public String getTokenIfValid(HttpServletRequest request) {
+        if (!hasAuthToken(request)) {
+            return null;
+        }
+        String token = getTokenContent(request);
+        if (isBlacklisted(token)) {
+            return null;
+        }
+        return token;
     }
 
-    public String createToken(String username) {
-        return JWT.create()
-                .withSubject(username)
-                .withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpirationTimeMillis()))
-                .sign(Algorithm.HMAC256(jwtProperties.getSecret()));
+    public String extractUsernameFromToken(String token) {
+        return JWT.require(Algorithm.HMAC256(jwtProperties.getSecret()))
+                .build()
+                .verify(token)
+                .getSubject();
+    }
+
+    private static String getTokenContent(HttpServletRequest request) {
+        return getAuthHeader(request).replace(AUTH_TOKEN_PREFIX, "");
     }
 
     private JwtEntity createEntity(String token) {
-        return new JwtEntity(jwtProperties.getExpirationTimeMillis(), token);
+        return new JwtEntity(jwtProperties.getBlacklistedTimeMillis(), token);
     }
 
     private static String getAuthHeader(HttpServletRequest request) {

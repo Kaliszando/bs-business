@@ -7,8 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import redis.embedded.RedisServer;
 
@@ -32,6 +35,15 @@ public class RedisMockConfig {
         log.info("Starting embedded redis server on port: {}", redisProperties.getRedisPort());
         redisServer.start();
         return redisServer;
+    }
+
+    @Bean
+    @Primary
+    public LettuceConnectionFactory lettuceConnectionFactoryNoPassword(RedisProperties redisProperties,
+                                                                       LettuceClientConfiguration clientConfiguration) {
+        RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(
+                redisProperties.getRedisHost(), redisProperties.getRedisPort());
+        return new LettuceConnectionFactory(serverConfig, clientConfiguration);
     }
 
     @PreDestroy

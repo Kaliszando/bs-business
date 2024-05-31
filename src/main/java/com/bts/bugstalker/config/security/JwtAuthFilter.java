@@ -1,9 +1,6 @@
 package com.bts.bugstalker.config.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
-import com.bts.bugstalker.util.properties.JwtProperties;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,17 +18,13 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
 
     private final UserDetailsService userDetailsService;
 
-    private final JwtProperties jwtProperties;
-
     private final JwtHelper jwtHelper;
 
     public JwtAuthFilter(AuthenticationManager authenticationManager,
                          UserDetailsService userDetailsService,
-                         JwtProperties jwtProperties,
                          JwtHelper jwtHelper) {
         super(authenticationManager);
         this.userDetailsService = userDetailsService;
-        this.jwtProperties = jwtProperties;
         this.jwtHelper = jwtHelper;
     }
 
@@ -50,20 +43,12 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        if (!jwtHelper.hasAuthToken(request)) {
+        String token = jwtHelper.getTokenIfValid(request);
+        if (token == null) {
             return null;
         }
 
-        String token = request.getHeader(JwtHelper.AUTH_HEADER_NAME)
-                .replace(JwtHelper.AUTH_TOKEN_PREFIX, "");
-        if (jwtHelper.isBlacklisted(token)) {
-            return null;
-        }
-
-        String username = JWT.require(Algorithm.HMAC256(jwtProperties.getSecret()))
-                .build()
-                .verify(token)
-                .getSubject();
+        String username = jwtHelper.extractUsernameFromToken(token);
         if (username == null) {
             return null;
         }

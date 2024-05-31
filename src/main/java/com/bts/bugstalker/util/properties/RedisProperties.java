@@ -11,4 +11,5 @@ public class RedisProperties {
 
     private String redisHost;
 
+    private String redisPassword;
 }

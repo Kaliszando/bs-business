@@ -16,7 +16,7 @@ services:
       - "6379:6379"
     volumes:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
-    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    command: "redis-server /usr/local/etc/redis/redis.conf --requirepass 87654321"
 
   spring-app:
     image: bs-business:1.0.0-SNAPSHOT

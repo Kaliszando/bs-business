@@ -3,7 +3,6 @@ package com.bts.bugstalker.config.security;
 import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
 import com.bts.bugstalker.util.parameters.ApiPaths;
-import com.bts.bugstalker.util.properties.JwtProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,8 +18,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 @RequiredArgsConstructor
 @Configuration
@@ -36,11 +33,9 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     private final ObjectMapper objectMapper;
 
-    private final SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler;
+    private final LoginSuccessHandler loginSuccessHandler;
 
-    private final SimpleUrlAuthenticationFailureHandler authenticationFailureHandler;
-
-    private final JwtProperties jwtProperties;
+    private final LoginFailureHandler loginFailureHandler;
 
     private final LogoutSuccessHandler logoutSuccessHandler;
 
@@ -77,8 +72,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .addFilter(loginAuthenticationFilter())
-                //todo define as bean?
-                .addFilter(new JwtAuthFilter(authenticationManager(), userDetailsService, jwtProperties, jwtHelper))
+                .addFilter(jwtAuthFilter())
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 
@@ -87,13 +81,16 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LoginAuthFilter loginAuthenticationFilter() throws Exception {
-        // todo define as bean
         LoginAuthFilter filter = new LoginAuthFilter(objectMapper);
         filter.setFilterProcessesUrl(ApiPaths.SIGN_IN);
-        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
-        filter.setAuthenticationFailureHandler(authenticationFailureHandler);
-
-        filter.setAuthenticationManager(super.authenticationManager());
+        filter.setAuthenticationSuccessHandler(loginSuccessHandler);
+        filter.setAuthenticationFailureHandler(loginFailureHandler);
+        filter.setAuthenticationManager(authenticationManager());
         return filter;
+    }
+
+    @Bean
+    public JwtAuthFilter jwtAuthFilter() throws Exception {
+        return new JwtAuthFilter(authenticationManager(), userDetailsService, jwtHelper);
     }
 }

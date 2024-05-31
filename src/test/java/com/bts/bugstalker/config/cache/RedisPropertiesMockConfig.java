@@ -18,7 +18,7 @@ public class RedisPropertiesMockConfig {
     @Bean
     @Primary
     public RedisProperties redisPropertiesMock() {
-        return new RedisProperties(findFreePort(), "localhost");
+        return new RedisProperties(findFreePort(), "localhost", "password");
     }
 
     private int findFreePort() {
