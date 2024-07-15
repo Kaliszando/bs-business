@@ -5,15 +5,24 @@ import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.fixtures.EntityMocks;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.openapitools.model.IssuePageFilter;
 import org.openapitools.model.IssuePageRequest;
+import org.openapitools.model.IssueSeverity;
+import org.openapitools.model.IssueType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.openapitools.model.IssueSeverity.*;
+import static org.openapitools.model.IssueType.*;
 
 @DataJpaTest
 class IssueRepositoryTest {
@@ -53,15 +62,6 @@ class IssueRepositoryTest {
         assertThat(issueNamesPage2).contains("issue no. 20", "issue no. 39");
     }
 
-    private IssuePageRequest prepareRequest(Long projectId, int page, int pageSize, String sortBy) {
-        IssuePageRequest request = new IssuePageRequest();
-        request.projectId(projectId);
-        request.page(page);
-        request.pageSize(pageSize);
-        request.sortBy(sortBy);
-        return request;
-    }
-
     @Test
     void shouldChangePageSize() {
         Page<IssueEntity> page1 = issueRepository.getAllByProjectIdPaged(prepareRequest(projectId, 0, 50, "id"));
@@ -76,14 +76,103 @@ class IssueRepositoryTest {
         assertThat(page2.stream().toList()).hasSize(40);
     }
 
+    private static Stream<Arguments> provideTotalElementsByTypes() {
+        return Stream.of(
+                Arguments.of(TOTAL_ELEMENTS, List.of()),
+                Arguments.of(10, List.of(BUG)),
+                Arguments.of(TOTAL_ELEMENTS, List.of(BUG, TASK)),
+                Arguments.of(0, List.of(ENHANCEMENT, SUBTASK, EPIC))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTotalElementsByTypes")
+    void shouldFilterByTypes(int totalElements, List<IssueType> types) {
+        IssuePageRequest request = prepareRequest(projectId, 0, 50, "id");
+        IssuePageFilter filter = new IssuePageFilter();
+        filter.setTypes(types);
+        request.filter(filter);
+
+        Page<IssueEntity> page = issueRepository.getAllByProjectIdPaged(request);
+
+        assertThat(page.getTotalElements()).isEqualTo(totalElements);
+    }
+
+    private static Stream<Arguments> provideTotalElementsByStatuses() {
+        return Stream.of(
+                Arguments.of(TOTAL_ELEMENTS, List.of()),
+                Arguments.of(20, List.of("in progress")),
+                Arguments.of(TOTAL_ELEMENTS, List.of("in progress", "to do")),
+                Arguments.of(0, List.of("to test", "done"))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTotalElementsByStatuses")
+    void shouldFilterByStatuses(int totalElements, List<String> statuses) {
+        IssuePageRequest request = prepareRequest(projectId, 0, 50, "id");
+        IssuePageFilter filter = new IssuePageFilter();
+        filter.setStatuses(statuses);
+        request.filter(filter);
+
+        Page<IssueEntity> page = issueRepository.getAllByProjectIdPaged(request);
+
+        assertThat(page.getTotalElements()).isEqualTo(totalElements);
+    }
+
+    private static Stream<Arguments> provideTotalElementsBySeverities() {
+        return Stream.of(
+                Arguments.of(TOTAL_ELEMENTS, List.of()),
+                Arguments.of(50, List.of(MAJOR)),
+                Arguments.of(TOTAL_ELEMENTS, List.of(MAJOR, NORMAL)),
+                Arguments.of(0, List.of(TRIVIAL, MINOR))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTotalElementsBySeverities")
+    void shouldFilterBySeverities(int totalElements, List<IssueSeverity> severities) {
+        IssuePageRequest request = prepareRequest(projectId, 0, 50, "id");
+        IssuePageFilter filter = new IssuePageFilter();
+        filter.setSeverities(severities);
+        request.filter(filter);
+
+        Page<IssueEntity> page = issueRepository.getAllByProjectIdPaged(request);
+
+        assertThat(page.getTotalElements()).isEqualTo(totalElements);
+    }
+
+    private IssuePageRequest prepareRequest(Long projectId, int page, int pageSize, String sortBy) {
+        IssuePageRequest request = new IssuePageRequest();
+        request.projectId(projectId);
+        request.page(page);
+        request.pageSize(pageSize);
+        request.sortBy(sortBy);
+        return request;
+    }
+
     private List<IssueEntity> prepareIssues() {
         ProjectEntity project = projectRepository.save(EntityMocks.PROJECT.prepare());
         projectId = project.getId();
         List<IssueEntity> issues = new ArrayList<>();
         for (int i = 0; i < TOTAL_ELEMENTS; i++) {
-            issues.add(prepareIssue(project, i));
+            var issue = prepareIssue(project, i);
+            diversifyIssues(i, issue);
+            issues.add(issue);
         }
         return issues;
+    }
+
+    private void diversifyIssues(int i, IssueEntity issue) {
+        if (i % 10 == 0) {
+            issue.setType(com.bts.bugstalker.core.common.enums.IssueType.BUG);
+        }
+        if (i % 5 == 0) {
+            issue.setStatus("in progress");
+        }
+        if (i % 2 == 0) {
+            issue.setSeverity(com.bts.bugstalker.core.common.enums.IssueSeverity.MAJOR);
+        }
     }
 
     private IssueEntity prepareIssue(ProjectEntity project, int id) {

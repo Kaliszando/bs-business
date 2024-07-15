@@ -28,6 +28,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bugstalker
       SPRING_DATASOURCE_USERNAME: bugstalker-user
       SPRING_DATASOURCE_PASSWORD: 12345678
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PASSWORD: 87654321
     depends_on:
       - postgres
       - redis

@@ -13,9 +13,7 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openapitools.model.IssueDetailsDto;
-import org.openapitools.model.IssuePartialUpdate;
-import org.openapitools.model.ProjectInfoDto;
+import org.openapitools.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
@@ -83,8 +81,8 @@ public class IssueIntegrationTest {
     @Test
     void shouldCreateIssueSuccessfully() {
         var request = new IssueDetailsDto()
-                .issueSeverity(IssueDetailsDto.IssueSeverityEnum.NORMAL)
-                .issueType(IssueDetailsDto.IssueTypeEnum.TASK)
+                .severity(IssueSeverity.NORMAL)
+                .type(IssueType.TASK)
                 .name("My first issue")
                 .projectId(project.getId());
 
@@ -128,8 +126,8 @@ public class IssueIntegrationTest {
         assertThat(response.getTagId()).isEqualTo(tag);
         assertThat(response.getStatus()).isEqualTo("to do");
         assertThat(response.getName()).isEqualTo(issue.getName());
-        assertThat(response.getIssueSeverity()).isEqualTo(IssueDetailsDto.IssueSeverityEnum.NORMAL);
-        assertThat(response.getIssueType()).isEqualTo(IssueDetailsDto.IssueTypeEnum.TASK);
+        assertThat(response.getSeverity()).isEqualTo(IssueSeverity.NORMAL);
+        assertThat(response.getType()).isEqualTo(IssueType.TASK);
     }
 
     @Test
@@ -201,8 +199,8 @@ public class IssueIntegrationTest {
         String tag = extractTag(issue);
         var request = converter.toDetailsDto(issue);
         request.setName("updated name");
-        request.setIssueType(IssueDetailsDto.IssueTypeEnum.BUG);
-        request.setIssueSeverity(IssueDetailsDto.IssueSeverityEnum.CRITICAL);
+        request.setType(IssueType.BUG);
+        request.setSeverity(IssueSeverity.CRITICAL);
 
         given().body(request)
                 .accept(ContentType.JSON)
@@ -213,8 +211,8 @@ public class IssueIntegrationTest {
                 .then()
                 .statusCode(200)
                 .body("name", equalTo("updated name"))
-                .body("issueType", equalTo("BUG"))
-                .body("issueSeverity", equalTo("CRITICAL"));
+                .body("type", equalTo("BUG"))
+                .body("severity", equalTo("CRITICAL"));
     }
 
     private String extractTag(IssueEntity issue) {
@@ -223,8 +221,8 @@ public class IssueIntegrationTest {
 
     private IssueEntity prepareIssue(String title) {
         var request = new IssueDetailsDto()
-                .issueSeverity(IssueDetailsDto.IssueSeverityEnum.NORMAL)
-                .issueType(IssueDetailsDto.IssueTypeEnum.TASK)
+                .severity(IssueSeverity.NORMAL)
+                .type(IssueType.TASK)
                 .name(title)
                 .projectId(project.getId());
 

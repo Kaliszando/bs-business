@@ -81,14 +81,18 @@ public class IssueRepositoryImpl extends BaseRepositoryImpl<IssueEntity, Long> i
                     .or(issue.project.tag.concat("-").concat(issue.id.stringValue())
                             .likeIgnoreCase(addWildcards(filter.getQuery()))));
         }
-        if (filter.getIssueType() != null) {
-            metadata.addWhere(issue.type.eq(IssueType.valueOf(filter.getIssueType().name())));
+        if (filter.getTypes() != null && !filter.getTypes().isEmpty()) {
+            metadata.addWhere(issue.type.in(filter.getTypes().stream()
+                    .map(type -> IssueType.valueOf(type.getValue()))
+                    .toList()));
         }
-        if (filter.getIssueSeverity() != null) {
-            metadata.addWhere(issue.severity.eq(IssueSeverity.valueOf(filter.getIssueSeverity().name())));
+        if (filter.getSeverities() != null && !filter.getSeverities().isEmpty()) {
+            metadata.addWhere(issue.severity.in(filter.getSeverities().stream()
+                    .map(severity -> IssueSeverity.valueOf(severity.getValue()))
+                    .toList()));
         }
-        if (StringUtils.isNotBlank(filter.getStatus())) {
-            metadata.addWhere(issue.status.eq(filter.getStatus()));
+        if (filter.getStatuses() != null && !filter.getStatuses().isEmpty()) {
+            metadata.addWhere(issue.status.in(filter.getStatuses()));
         }
         if (filter.getReporterId() != null) {
             metadata.addWhere(issue.reporter.id.eq(filter.getReporterId()));

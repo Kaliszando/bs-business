@@ -6,6 +6,8 @@ import com.bts.bugstalker.core.user.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openapitools.model.IssueInfoDto;
+import org.openapitools.model.IssueSeverity;
+import org.openapitools.model.IssueType;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -23,8 +25,8 @@ class IssueInfoConverter implements BidirectionalConverter<IssueInfoDto, IssueEn
     public IssueInfoDto convertBack(IssueEntity entity) {
         var dto = new IssueInfoDto();
         dto.setId(entity.getId());
-        dto.setIssueType(IssueInfoDto.IssueTypeEnum.valueOf(entity.getType().getCode()));
-        dto.setIssueSeverity(IssueInfoDto.IssueSeverityEnum.valueOf(entity.getSeverity().getCode()));
+        dto.setType(IssueType.fromValue(entity.getType().getCode()));
+        dto.setSeverity(IssueSeverity.fromValue(entity.getSeverity().getCode()));
         dto.projectId(entity.getProject().getId());
         dto.tagId(entity.getProject().getTag().concat("-").concat(entity.getId().toString()));
         dto.status(entity.getStatus());
