@@ -27,8 +27,6 @@ public class ProjectManager {
     }
 
     public List<ProjectEntity> getAllByContext() {
-        Long userId = contextProvider.getUser().getId();
-        List<Long> projectIds = projectService.getAllIdsByUserId(userId);
-        return projectService.getAllByIds(projectIds);
+        return contextProvider.getProjects();
     }
 }

@@ -22,6 +22,12 @@ public class AuthorizationHeaderMockTool {
         return JWT_TOKEN.matcher(token).matches();
     }
 
+    public static String ADMIN_USERNAME = "JohnDoe334";
+
+    public static String USER_USERNAME = "JamesSmith678";
+
+    public static String GUEST_USERNAME = "MariaMartinez645";
+
     public Header prepare(String username) {
         String token = jwtHelper.createJwtTokenWithPrefix(username);
         assertThat(isJwtToken(token)).isTrue();
@@ -33,9 +39,9 @@ public class AuthorizationHeaderMockTool {
             return new Header(JwtHelper.AUTH_HEADER_NAME, "");
         }
         return switch (role) {
-            case ADMIN -> prepare("JohnDoe334");
-            case USER -> prepare("JamesSmith678");
-            case GUEST -> prepare("MariaMartinez645");
+            case ADMIN -> prepare(ADMIN_USERNAME);
+            case USER -> prepare(USER_USERNAME);
+            case GUEST -> prepare(GUEST_USERNAME);
         };
     }
 }
