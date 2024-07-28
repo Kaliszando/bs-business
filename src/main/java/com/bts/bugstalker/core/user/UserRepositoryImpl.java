@@ -37,11 +37,14 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<UserEntity, Long> imp
         );
     }
 
-    List<UserEntity> searchByQuery(String query) {
-        String sqlQuery = addWildcards(query);
+    List<UserEntity> searchByQuery(String query, Long projectId) {
+        String sqlQuery = query != null ? addWildcards(query) : "%";
         return queryFactory
                 .select(user)
                 .from(user)
+                .innerJoin(membership)
+                .on(membership.user.id.eq(user.id))
+                .where(membership.project.id.eq(projectId))
                 .where(user.email.likeIgnoreCase(sqlQuery)
                         .or(user.username.likeIgnoreCase(sqlQuery)
                         .or(user.lastName.likeIgnoreCase(sqlQuery)

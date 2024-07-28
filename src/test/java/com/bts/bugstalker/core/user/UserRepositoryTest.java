@@ -1,6 +1,11 @@
 package com.bts.bugstalker.core.user;
 
+import com.bts.bugstalker.core.membership.MembershipEntity;
+import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
+import com.bts.bugstalker.core.project.ProjectEntity;
+import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.fixtures.EntityMocks;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -18,6 +23,28 @@ public class UserRepositoryTest {
 
     @Autowired
     private UserRepositoryImpl userRepository;
+
+    @Autowired
+    private ProjectRepositoryImpl projectRepository;
+
+    @Autowired
+    private MembershipRepositoryImpl membershipRepository;
+
+    private ProjectEntity project;
+
+    @BeforeEach
+    void setUp() {
+        membershipRepository.deleteAll();
+        projectRepository.deleteAll();
+        project = projectRepository.save(EntityMocks.PROJECT.prepare());
+    }
+
+    private void addUserToProject(UserEntity user) {
+        membershipRepository.save(MembershipEntity.builder()
+                .project(project)
+                .user(user)
+                .build());
+    }
 
     private void persistUsers() {
         assertThat(userRepository.count()).isEqualTo(0);
@@ -110,8 +137,9 @@ public class UserRepositoryTest {
     void shouldFindByQuery(String query) {
         var user = EntityMocks.USER.prepare();
         userRepository.save(user);
+        addUserToProject(user);
 
-        var foundUsers = userRepository.searchByQuery(query);
+        var foundUsers = userRepository.searchByQuery(query, project.getId());
 
         assertThat(foundUsers).hasSize(1);
     }
@@ -121,8 +149,21 @@ public class UserRepositoryTest {
     void shouldNotFindByQuery(String query) {
         var user = EntityMocks.USER.prepare();
         userRepository.save(user);
+        addUserToProject(user);
 
-        var foundUsers = userRepository.searchByQuery(query);
+        var foundUsers = userRepository.searchByQuery(query, project.getId());
+
+        assertThat(foundUsers).hasSize(0);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"USERNAME", "USER@EMAIL.COM", "FIRSTNAME", "LASTNAME", "LASTNAMEFIRSTNAME", "FIRSTNAMELASTNAME"})
+    void shouldNotFindByQueryWithInvalidProjectId(String query) {
+        var user = EntityMocks.USER.prepare();
+        userRepository.save(user);
+        addUserToProject(user);
+
+        var foundUsers = userRepository.searchByQuery(query, -1L);
 
         assertThat(foundUsers).hasSize(0);
     }

@@ -58,14 +58,10 @@ public class UserService implements UserDetailsService {
     }
 
     public List<UserEntity> queryByParam(final String query, final Long projectId) {
-        if (StringUtils.isEmpty(query) && projectId == null) {
+        if (projectId == null) {
             return Collections.emptyList();
         }
-        //TODO refactor -> query available only when projectId specified
-        if (!StringUtils.isBlank(query)) {
-            return userRepository.searchByQuery(query);
-        }
-        return userRepository.findByProjectId(projectId);
+        return userRepository.searchByQuery(query, projectId);
     }
 
     public boolean isEmailAvailable(final String email) {

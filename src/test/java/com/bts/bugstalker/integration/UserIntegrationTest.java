@@ -2,7 +2,12 @@ package com.bts.bugstalker.integration;
 
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.common.enums.UserRole;
+import com.bts.bugstalker.core.membership.MembershipEntity;
+import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
+import com.bts.bugstalker.core.project.ProjectEntity;
+import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.core.user.UserRepositoryImpl;
+import com.bts.bugstalker.fixtures.EntityMocks;
 import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,21 +29,45 @@ public class UserIntegrationTest {
     private UserRepositoryImpl userRepository;
 
     @Autowired
+    private ProjectRepositoryImpl projectRepository;
+
+    @Autowired
+    private MembershipRepositoryImpl membershipRepository;
+
+    @Autowired
     private AuthorizationHeaderMockTool headerMockTool;
 
     @LocalServerPort
     private int port;
 
+    private ProjectEntity project;
+
     @BeforeEach
     void init() {
         RestAssured.port = port;
+        membershipRepository.deleteAll();
+        projectRepository.deleteAll();
+
         assertThat(userRepository.count()).isEqualTo(3);
+        assertThat(projectRepository.count()).isEqualTo(0);
+        assertThat(membershipRepository.count()).isEqualTo(0);
+
+        project = projectRepository.save(EntityMocks.PROJECT.prepare());
+        var users = userRepository.findAll();
+        for(var user : users) {
+            membershipRepository.save(MembershipEntity.builder()
+                    .project(project)
+                    .user(user)
+                    .build());
+        }
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"John", "Doe", "JohnDoe", "334", "john", "doe", "johndoe"})
     void shouldGetUsersByQuery(String query) {
-        var response = given().queryParam("query", query)
+        var response = given()
+                .queryParam("query", query)
+                .queryParam("projectId", project.getId())
                 .header(headerMockTool.prepare(UserRole.USER))
                 .get("/api/v1/user")
 
@@ -54,23 +83,26 @@ public class UserIntegrationTest {
     }
 
     @Test
-    void shouldNotReturnUsersWhenEmptyQuery() {
-        given().queryParam("query", "")
+    void shouldReturnUsersWhenEmptyQueryAndValidProjectId() {
+        given()
+                .queryParam("query", "")
+                .queryParam("projectId", project.getId())
                 .header(headerMockTool.prepare(UserRole.USER))
                 .get("/api/v1/user")
 
                 .then()
                 .statusCode(200)
-                .body("$", hasSize(0));
+                .body("$", hasSize(3));
     }
 
     @Test
-    void shouldNotReturnUsersWhenNoQueryParam() {
+    void shouldReturnUsersWhenNoQueryParam() {
         given().header(headerMockTool.prepare(UserRole.USER))
+                .queryParam("projectId", project.getId())
                 .get("/api/v1/user")
 
                 .then()
                 .statusCode(200)
-                .body("$", hasSize(0));
+                .body("$", hasSize(3));
     }
 }

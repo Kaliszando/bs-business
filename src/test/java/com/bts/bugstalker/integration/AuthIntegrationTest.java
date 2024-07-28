@@ -101,7 +101,7 @@ public class AuthIntegrationTest {
                 .then()
                 .statusCode(200);
 
-        given().queryParam("query", "John")
+        given().queryParam("projectId", 1L)
                 .header(headerMockTool.prepare(role))
                 .get("/api/v1/user")
 
