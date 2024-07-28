@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class UserEndpoint implements UserApi {
     private final UserMapper userMapper;
 
     @Override
-    public ResponseEntity<List<UserInfoDto>> getUsersByParam(@Valid String query, @Valid Long projectId) {
+    public ResponseEntity<List<UserInfoDto>> getUsersByParam(@NotNull @Valid Long projectId, @Valid String query) {
         return ResponseEntity.ok(userMapper.mapToDto(userService.queryByParam(query, projectId)));
     }
 }
