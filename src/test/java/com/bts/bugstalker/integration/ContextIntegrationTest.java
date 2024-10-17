@@ -1,9 +1,12 @@
 package com.bts.bugstalker.integration;
 
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
+import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
+import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.ContextData;
@@ -20,6 +23,12 @@ class ContextIntegrationTest {
     @Autowired
     private AuthorizationHeaderMockTool headerMockTool;
 
+    @Autowired
+    private ProjectRepositoryImpl projectRepository;
+
+    @Autowired
+    private MembershipRepositoryImpl membershipRepository;
+
     @LocalServerPort
     private int port;
 
@@ -27,6 +36,16 @@ class ContextIntegrationTest {
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
+        membershipRepository.deleteAll();
+        projectRepository.deleteAll();
+        assertThat(projectRepository.count()).isEqualTo(0);
+        assertThat(membershipRepository.count()).isEqualTo(0);
+    }
+
+    @AfterEach
+    void tearDown() {
+        membershipRepository.deleteAll();
+        projectRepository.deleteAll();
     }
 
     @Test
