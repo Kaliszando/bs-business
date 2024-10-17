@@ -6,6 +6,7 @@ import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.ProjectInfoDto;
@@ -40,6 +41,12 @@ public class ProjectIntegrationTest {
         projectRepository.deleteAll();
         assertThat(projectRepository.count()).isEqualTo(0);
         assertThat(membershipRepository.count()).isEqualTo(0);
+    }
+
+    @AfterEach
+    void tearDown() {
+        membershipRepository.deleteAll();
+        projectRepository.deleteAll();
     }
 
     private void createProjectForUser(String username, String tag) {
