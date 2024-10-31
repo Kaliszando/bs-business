@@ -1,11 +1,10 @@
 package com.bts.bugstalker.core.user;
 
-import com.bts.bugstalker.core.user.exception.UserLoginDoesNotMatchAnyResultException;
 import com.bts.bugstalker.core.user.exception.UserEmailAlreadyTakenException;
+import com.bts.bugstalker.core.user.exception.UserLoginDoesNotMatchAnyResultException;
 import com.bts.bugstalker.core.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -51,7 +50,7 @@ public class UserService implements UserDetailsService {
         userRepository.delete(user);
     }
 
-    @CacheEvict(value = {"userByUsername", "userByLogin"}, allEntries = true)
+    @CacheEvict(value = {"userByUsername"}, allEntries = true)
     @Scheduled(fixedRateString = "${cache.user.ttl}")
     public void invalidateUserCache() {
         log.info("Invalidating user cache");
@@ -69,7 +68,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    @Cacheable(value = "userByLogin", key = "#login")
+    @Cacheable(value = "userByUsername", key = "#login")
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         return userRepository.findByUsername(login)
                 .or(() -> userRepository.findByEmail(login))
