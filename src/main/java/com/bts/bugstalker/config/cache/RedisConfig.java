@@ -1,6 +1,5 @@
 package com.bts.bugstalker.config.cache;
 
-import com.bts.bugstalker.feature.cache.jwt.JwtCache;
 import com.bts.bugstalker.util.properties.RedisProperties;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
@@ -10,17 +9,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
 
 @EnableAutoConfiguration(exclude = RedisRepositoriesAutoConfiguration.class)
-@EnableRedisRepositories(basePackageClasses = JwtCache.class)
 @EnableCaching
 @Configuration
 public class RedisConfig {
+
+    @Bean
+    public Jedis jedisClient(RedisProperties redisProperties) {
+        return new Jedis(redisProperties.getRedisHost(), redisProperties.getRedisPort());
+    }
 
     @Bean
     public JedisPoolConfig jedisPoolConfig() {
@@ -45,14 +45,5 @@ public class RedisConfig {
         RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(
                 redisProperties.getRedisHost(), redisProperties.getRedisPort());
         return new JedisConnectionFactory(serverConfig, clientConfiguration);
-    }
-
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(JedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(connectionFactory);
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        return template;
     }
 }

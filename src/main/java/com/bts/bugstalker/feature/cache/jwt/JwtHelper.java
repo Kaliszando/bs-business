@@ -5,9 +5,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.params.SetParams;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -18,15 +20,21 @@ public class JwtHelper {
 
     public static final String AUTH_TOKEN_PREFIX = "Bearer ";
 
+    public static final String JWT_BLACKLIST = "jwtBlacklist:";
+
     private final JwtProperties jwtProperties;
 
-    private final JwtCache jwtCache;
+    private final Jedis jedis;
 
     public String createJwtToken(String username) {
         return JWT.create()
                 .withSubject(username)
-                .withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpirationTimeMillis()))
+                .withExpiresAt(currentTimePlus(jwtProperties.getExpirationTime()))
                 .sign(Algorithm.HMAC256(jwtProperties.getSecret()));
+    }
+
+    public Date currentTimePlus(Long minutes) {
+        return new Date(System.currentTimeMillis() + minutes * 60 * 1000);
     }
 
     public String createJwtTokenWithPrefix(String username) {
@@ -34,12 +42,14 @@ public class JwtHelper {
     }
 
     public void addToBlacklist(String token) {
-        JwtEntity jwtEntity = createEntity(token);
-        jwtCache.save(jwtEntity);
+        SetParams params = new SetParams()
+                .nx()
+                .ex(jwtProperties.getJwtCacheTtl() * 60);
+        jedis.set(JWT_BLACKLIST + token, "1", params);
     }
 
     public boolean isBlacklisted(String token) {
-        return jwtCache.existsByToken(token);
+        return jedis.exists("jwtBlacklist:" + token);
     }
 
     public boolean hasAuthToken(HttpServletRequest request) {
@@ -74,12 +84,12 @@ public class JwtHelper {
                 .getSubject();
     }
 
-    private static String getTokenContent(HttpServletRequest request) {
-        return getAuthHeader(request).replace(AUTH_TOKEN_PREFIX, "");
+    public static String stripOfPrefix(String token) {
+        return token.replace(AUTH_TOKEN_PREFIX, "");
     }
 
-    private JwtEntity createEntity(String token) {
-        return new JwtEntity(jwtProperties.getBlacklistedTimeMillis(), token);
+    private static String getTokenContent(HttpServletRequest request) {
+        return getAuthHeader(request).replace(AUTH_TOKEN_PREFIX, "");
     }
 
     private static String getAuthHeader(HttpServletRequest request) {

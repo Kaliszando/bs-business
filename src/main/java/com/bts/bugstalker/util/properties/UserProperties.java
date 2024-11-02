@@ -8,14 +8,11 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 
 @Getter @RequiredArgsConstructor
 @ConstructorBinding
-@ConfigurationProperties(prefix = "jwt")
-public final class JwtProperties {
+@ConfigurationProperties(prefix = "user")
+public final class UserProperties {
 
-    private final String secret;
+    public final static String USER_BY_USERNAME = "userByUsername";
 
-    @Value("${jwt.expiration.min:15}")
-    private final Long expirationTime;
-
-    @Value("${jwt.cache.ttl.min:16}")
-    private final Long jwtCacheTtl;
+    @Value("${user.cache.ttl.min:16}")
+    public final Long userCacheTtl;
 }
