@@ -3,11 +3,12 @@ package com.bts.bugstalker.integration;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.core.user.UserRepositoryImpl;
-import com.bts.bugstalker.feature.cache.jwt.JwtCache;
+import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.http.Header;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.openapitools.model.IssuePageRequest;
 import org.openapitools.model.LoginCredentialsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import redis.clients.jedis.Jedis;
 
 import java.util.stream.Stream;
 
@@ -34,7 +36,7 @@ public class AuthIntegrationTest {
     private AuthorizationHeaderMockTool headerMockTool;
 
     @Autowired
-    private JwtCache jwtCache;
+    private Jedis jedis;
 
     @LocalServerPort
     private int port;
@@ -47,7 +49,7 @@ public class AuthIntegrationTest {
 
     @AfterEach
     void tearDown() {
-        jwtCache.deleteAll();
+        jedis.flushDB();
     }
 
     private static LoginCredentialsDto toCredentials(String password, String login) {
@@ -161,11 +163,16 @@ public class AuthIntegrationTest {
     @ParameterizedTest
     @ValueSource(strings = {"JohnDoe334", "JamesSmith678", "MariaMartinez645"})
     void shouldSingOutUsersSuccessfully(String username) {
-        given().header(headerMockTool.prepare(username))
+        Header authorizationHeader = headerMockTool.prepare(username);
+        String token = JwtHelper.stripOfPrefix(authorizationHeader.getValue());
+        assertThat(jedis.exists(JwtHelper.JWT_BLACKLIST + JwtHelper.hashToken(token))).isFalse();
+
+        given().header(authorizationHeader)
                 .post("/api/v1/auth/sign-out")
 
                 .then()
                 .statusCode(204);
+        assertThat(jedis.exists(JwtHelper.JWT_BLACKLIST + JwtHelper.hashToken(token))).isTrue();
     }
 
     @Test
