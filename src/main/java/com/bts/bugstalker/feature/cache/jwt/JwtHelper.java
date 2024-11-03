@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.params.SetParams;
@@ -45,11 +46,15 @@ public class JwtHelper {
         SetParams params = new SetParams()
                 .nx()
                 .ex(jwtProperties.getJwtCacheTtl() * 60);
-        jedis.set(JWT_BLACKLIST + token, "1", params);
+        jedis.set(JWT_BLACKLIST + hashToken(token), "1", params);
     }
 
     public boolean isBlacklisted(String token) {
-        return jedis.exists("jwtBlacklist:" + token);
+        return jedis.exists(JWT_BLACKLIST + hashToken(token));
+    }
+
+    public static String hashToken(String token) {
+        return DigestUtils.sha256Hex(token);
     }
 
     public boolean hasAuthToken(HttpServletRequest request) {

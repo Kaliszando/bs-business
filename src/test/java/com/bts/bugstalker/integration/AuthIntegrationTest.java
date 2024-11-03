@@ -165,14 +165,14 @@ public class AuthIntegrationTest {
     void shouldSingOutUsersSuccessfully(String username) {
         Header authorizationHeader = headerMockTool.prepare(username);
         String token = JwtHelper.stripOfPrefix(authorizationHeader.getValue());
-        assertThat(jedis.exists("jwtBlacklist:" + token)).isFalse();
+        assertThat(jedis.exists(JwtHelper.JWT_BLACKLIST + JwtHelper.hashToken(token))).isFalse();
 
         given().header(authorizationHeader)
                 .post("/api/v1/auth/sign-out")
 
                 .then()
                 .statusCode(204);
-        assertThat(jedis.exists("jwtBlacklist:" + token)).isTrue();
+        assertThat(jedis.exists(JwtHelper.JWT_BLACKLIST + JwtHelper.hashToken(token))).isTrue();
     }
 
     @Test
