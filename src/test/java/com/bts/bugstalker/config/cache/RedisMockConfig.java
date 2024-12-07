@@ -21,7 +21,7 @@ public class RedisMockConfig {
     @Primary
     public RedisProperties redisPropertiesMock() {
         redisContainer.start();
-        log.info("Redis container started on port: {}", redisContainer.getFirstMappedPort());
+        LOGGER.info("Redis container started on port: {}", redisContainer.getFirstMappedPort());
         return new RedisProperties(redisContainer.getRedisPort(), redisContainer.getHost(), "password");
     }
 }
