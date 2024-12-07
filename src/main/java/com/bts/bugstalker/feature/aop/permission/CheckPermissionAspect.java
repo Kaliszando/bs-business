@@ -29,7 +29,7 @@ public class CheckPermissionAspect {
         if (permissionManager.contextUserHasPermission(annotation.permission())) {
             return joinPoint.proceed();
         }
-        log.warn("User has no permission ".concat(annotation.permission().getName()));
+        LOGGER.warn("User has no permission ".concat(annotation.permission().getName()));
         return ResponseEntity.status(403).build();
     }
 }

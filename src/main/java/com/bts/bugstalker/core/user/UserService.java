@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService {
     @CacheEvict(value = {UserProperties.USER_BY_USERNAME}, allEntries = true)
     @Scheduled(fixedRateString = "${user.cache.ttl.min}", timeUnit = TimeUnit.MINUTES)
     public void invalidateUserCache() {
-        log.info("Invalidating user cache");
+        LOGGER.info("Invalidating user cache");
     }
 
     public List<UserEntity> queryByParam(final String query, final Long projectId) {
