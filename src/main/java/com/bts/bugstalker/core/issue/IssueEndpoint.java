@@ -3,6 +3,9 @@ package com.bts.bugstalker.core.issue;
 import com.bts.bugstalker.core.common.enums.Permission;
 import com.bts.bugstalker.core.issue.converter.IssueConverter;
 import com.bts.bugstalker.feature.aop.permission.CheckPermission;
+import com.bts.bugstalker.feature.aop.throttling.ApiThrottle;
+import com.bts.bugstalker.feature.aop.throttling.ThrottlingAlgorithm;
+import com.bts.bugstalker.feature.aop.throttling.ThrottlingScope;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +45,7 @@ public class IssueEndpoint implements IssueApi {
     }
 
     @Override
+    @ApiThrottle(algorithm = ThrottlingAlgorithm.FIXED_WINDOW_COUNTER, limit = 23, scope = ThrottlingScope.PER_USER)
     public ResponseEntity<IssuePageResponse> getIssuePage(@Valid IssuePageRequest request) {
         Page<IssueEntity> page = issueService.getIssuesPaged(request);
         return ResponseEntity.ok(converter.toPageResponse(page));

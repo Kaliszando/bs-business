@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class PermissionAspect {
+public class CheckPermissionAspect {
 
     private final PermissionManager permissionManager;
 
@@ -30,6 +30,6 @@ public class PermissionAspect {
             return joinPoint.proceed();
         }
         log.warn("User has no permission ".concat(annotation.permission().getName()));
-        return ResponseEntity.unprocessableEntity().build();
+        return ResponseEntity.status(403).build();
     }
 }
