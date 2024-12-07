@@ -18,15 +18,15 @@ public class AuthorizationHeaderMockTool {
 
     private final JwtHelper jwtHelper;
 
-    public static boolean isJwtToken(String token) {
-        return JWT_TOKEN.matcher(token).matches();
-    }
-
     public static String ADMIN_USERNAME = "JohnDoe334";
 
     public static String USER_USERNAME = "JamesSmith678";
 
     public static String GUEST_USERNAME = "MariaMartinez645";
+
+    public static boolean isJwtToken(String token) {
+        return JWT_TOKEN.matcher(token).matches();
+    }
 
     public Header prepare(String username) {
         String token = jwtHelper.createJwtTokenWithPrefix(username);

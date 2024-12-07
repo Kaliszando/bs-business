@@ -18,7 +18,7 @@ public class ContextProvider {
 
     private final ProjectService projectService;
 
-    private static String getUsernameInContext() {
+    public static String getUsernameInContext() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 

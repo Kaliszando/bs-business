@@ -1,0 +1,41 @@
+package com.bts.bugstalker.feature.aop.throttling;
+
+import com.bts.bugstalker.core.common.exception.MaxApiCallsReachedException;
+import com.bts.bugstalker.core.throttling.ThrottlingService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
+
+@Slf4j
+@RequiredArgsConstructor
+@Aspect
+@Component
+public class ApiThrottleAspect {
+
+    private final ThrottlingService throttlingService;
+
+    @Around("@annotation(ApiThrottle)")
+    public Object throttleApiCall(ProceedingJoinPoint joinPoint) throws Throwable {
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+        ApiThrottle annotation = method.getAnnotation(ApiThrottle.class);
+
+        String className = joinPoint.getTarget().getClass().getName();
+        String methodName = signature.getName();
+
+        try {
+            throttlingService.incrementApiCall(className, methodName, annotation);
+        } catch (MaxApiCallsReachedException e) {
+            return ResponseEntity.status(422).body(e.getMessage());
+        }
+
+        return joinPoint.proceed();
+    }
+}
