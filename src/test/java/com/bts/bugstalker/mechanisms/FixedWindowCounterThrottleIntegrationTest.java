@@ -2,6 +2,7 @@ package com.bts.bugstalker.mechanisms;
 
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.common.enums.UserRole;
+import com.bts.bugstalker.feature.cache.CacheRepository;
 import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -14,7 +15,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.openapitools.model.IssuePageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import redis.clients.jedis.Jedis;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -32,7 +32,7 @@ public class FixedWindowCounterThrottleIntegrationTest {
     private int port;
 
     @Autowired
-    private Jedis jedis;
+    private CacheRepository cacheRepository;
 
     private static final int MAX_PAGES_CALL = 23;
 
@@ -45,7 +45,7 @@ public class FixedWindowCounterThrottleIntegrationTest {
 
     @AfterEach
     void tearDown() {
-        jedis.flushDB();
+        cacheRepository.deleteAll();
     }
 
     static Stream<Integer> inRangeApiCallsLimit() {
