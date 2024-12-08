@@ -104,7 +104,8 @@ public class IssueIntegrationTest {
                 .get("/api/v1/issue/MPR-12")
 
                 .then()
-                .statusCode(404);
+                .statusCode(404)
+                .body("code", equalTo("issue.issue-not-found"));
     }
 
     @Test

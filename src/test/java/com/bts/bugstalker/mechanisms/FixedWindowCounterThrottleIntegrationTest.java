@@ -20,6 +20,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
 @BugStalkerApplicationTest
 public class FixedWindowCounterThrottleIntegrationTest {
@@ -34,6 +35,8 @@ public class FixedWindowCounterThrottleIntegrationTest {
     private Jedis jedis;
 
     private static final int MAX_PAGES_CALL = 23;
+
+    private static final String ERROR_CODE = "core.api-call-limit-reached";
 
     @BeforeEach
     void init() {
@@ -52,37 +55,34 @@ public class FixedWindowCounterThrottleIntegrationTest {
     @ParameterizedTest
     @MethodSource("inRangeApiCallsLimit")
     public void shouldNotLimitInRangeApiCalls(int timesCalled) {
-        callIssuesPageByTimes(timesCalled, 200);
+        callIssuesPageByTimes(timesCalled, 200, null);
     }
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3, 4, 5})
     public void shouldLimitAllApiCallsAboveLimit(int timesCalled) {
-        callIssuesPageByTimes(MAX_PAGES_CALL, 200);
+        callIssuesPageByTimes(MAX_PAGES_CALL, 200, null);
 
-        callIssuesPageByTimes(timesCalled, 422);
+        callIssuesPageByTimes(timesCalled, 422, ERROR_CODE);
     }
 
     @Test
     public void shouldPreserveApiCallLimitPerUser() {
-        callIssuesPageByTimes(MAX_PAGES_CALL, 200);
-        callIssuesPage(422, UserRole.ADMIN);
+        callIssuesPageByTimes(MAX_PAGES_CALL, 200, null);
 
-        callIssuesPage(200, UserRole.USER);
-        callIssuesPage(200, UserRole.GUEST);
+        callIssuesPage(422, UserRole.ADMIN, ERROR_CODE);
+
+        callIssuesPage(200, UserRole.USER, null);
+        callIssuesPage(200, UserRole.GUEST, null);
     }
 
-    private void callIssuesPageByTimes(int timesCalled, int expectedStatus) {
+    private void callIssuesPageByTimes(int timesCalled, int expectedStatus, String errorCode) {
         for (int i = 0; i < timesCalled; i++) {
-            callIssuesPage(expectedStatus);
+            callIssuesPage(expectedStatus, UserRole.ADMIN, errorCode);
         }
     }
 
-    private void callIssuesPage(int expectedStatus) {
-        callIssuesPage(expectedStatus, UserRole.ADMIN);
-    }
-
-    private void callIssuesPage(int expectedStatus, UserRole userRole) {
+    private void callIssuesPage(int expectedStatus, UserRole userRole, String errorCode) {
         var issueRequest = new IssuePageRequest().projectId(1L).page(1).pageSize(10);
         given().body(issueRequest)
                 .header(headerMockTool.prepare(userRole))
@@ -90,6 +90,7 @@ public class FixedWindowCounterThrottleIntegrationTest {
                 .contentType(ContentType.JSON)
                 .post("/api/v1/issue/page")
                 .then()
-                .statusCode(expectedStatus);
+                .statusCode(expectedStatus)
+                .body("code", equalTo(errorCode));
     }
 }
