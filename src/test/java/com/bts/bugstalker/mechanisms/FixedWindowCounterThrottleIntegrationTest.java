@@ -15,6 +15,7 @@ import org.openapitools.model.IssuePageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -31,6 +32,8 @@ public class FixedWindowCounterThrottleIntegrationTest {
     private int port;
 
     @Autowired
+    private JedisPool jedisPool;
+
     private Jedis jedis;
 
     private static final int MAX_PAGES_CALL = 23;
@@ -38,6 +41,9 @@ public class FixedWindowCounterThrottleIntegrationTest {
     @BeforeEach
     void init() {
         RestAssured.port = port;
+        try (Jedis jedis = jedisPool.getResource()) {
+            this.jedis = jedis;
+        }
     }
 
     @AfterEach
