@@ -2,12 +2,11 @@ package com.bts.bugstalker.feature.cache.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.bts.bugstalker.feature.cache.CacheRepository;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.params.SetParams;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -25,7 +24,7 @@ public class JwtHelper {
 
     private final JwtProperties jwtProperties;
 
-    private final Jedis jedis;
+    private final CacheRepository cacheRepository;
 
     public String createJwtToken(String username) {
         return JWT.create()
@@ -43,14 +42,12 @@ public class JwtHelper {
     }
 
     public void addToBlacklist(String token) {
-        SetParams params = new SetParams()
-                .nx()
-                .ex(jwtProperties.getJwtCacheTtl() * 60);
-        jedis.set(JWT_BLACKLIST + hashToken(token), "1", params);
+        String key = JWT_BLACKLIST.concat(hashToken(token));
+        cacheRepository.setValue(key, "1", jwtProperties.getJwtCacheTtl() * 60);
     }
 
     public boolean isBlacklisted(String token) {
-        return jedis.exists(JWT_BLACKLIST + hashToken(token));
+        return cacheRepository.exists(JWT_BLACKLIST.concat(hashToken(token)));
     }
 
     public static String hashToken(String token) {

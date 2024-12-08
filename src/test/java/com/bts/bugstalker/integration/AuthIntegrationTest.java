@@ -3,6 +3,7 @@ package com.bts.bugstalker.integration;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.core.user.UserRepositoryImpl;
+import com.bts.bugstalker.feature.cache.CacheRepository;
 import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
@@ -18,7 +19,6 @@ import org.openapitools.model.IssuePageRequest;
 import org.openapitools.model.LoginCredentialsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import redis.clients.jedis.Jedis;
 
 import java.util.stream.Stream;
 
@@ -35,11 +35,11 @@ public class AuthIntegrationTest {
     @Autowired
     private AuthorizationHeaderMockTool headerMockTool;
 
-    @Autowired
-    private Jedis jedis;
-
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private CacheRepository cacheRepository;
 
     @BeforeEach
     void init() {
@@ -49,7 +49,7 @@ public class AuthIntegrationTest {
 
     @AfterEach
     void tearDown() {
-        jedis.flushDB();
+        cacheRepository.deleteAll();
     }
 
     private static LoginCredentialsDto toCredentials(String password, String login) {
@@ -165,14 +165,15 @@ public class AuthIntegrationTest {
     void shouldSingOutUsersSuccessfully(String username) {
         Header authorizationHeader = headerMockTool.prepare(username);
         String token = JwtHelper.stripOfPrefix(authorizationHeader.getValue());
-        assertThat(jedis.exists(JwtHelper.JWT_BLACKLIST + JwtHelper.hashToken(token))).isFalse();
+        String key = JwtHelper.JWT_BLACKLIST + JwtHelper.hashToken(token);
+        assertThat(cacheRepository.exists(key)).isFalse();
 
         given().header(authorizationHeader)
                 .post("/api/v1/auth/sign-out")
 
                 .then()
                 .statusCode(204);
-        assertThat(jedis.exists(JwtHelper.JWT_BLACKLIST + JwtHelper.hashToken(token))).isTrue();
+        assertThat(cacheRepository.exists(key)).isTrue();
     }
 
     @Test
