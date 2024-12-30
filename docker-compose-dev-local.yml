@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: 12345678
 
   redis-stack:
-    image: redis/redis-stack:6.2
+    image: redis/redis-stack
     container_name: redis-stack
     ports:
       - "6379:6379"
