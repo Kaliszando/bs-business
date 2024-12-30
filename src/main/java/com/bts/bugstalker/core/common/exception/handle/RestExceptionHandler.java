@@ -1,10 +1,10 @@
 package com.bts.bugstalker.core.common.exception.handle;
 
 import com.bts.bugstalker.core.common.exception.base.BusinessException;
-import com.bts.bugstalker.core.common.model.GeneralErrorResponse;
 import com.bts.bugstalker.core.issue.exception.IssueNotFoundException;
 import com.bts.bugstalker.core.issue.exception.IssueOptimisticLockException;
 import lombok.extern.slf4j.Slf4j;
+import org.openapitools.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,24 +16,27 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IssueNotFoundException.class)
-    private ResponseEntity<GeneralErrorResponse> handleNotFoundException(BusinessException e) {
+    private ResponseEntity<ErrorResponse> handleNotFoundException(BusinessException e) {
         LOGGER.warn(e.getMessage());
-        return prepareResponse(e, HttpStatus.NOT_FOUND);
+        return mapToResponse(e, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IssueOptimisticLockException.class)
-    private ResponseEntity<GeneralErrorResponse> handleOptimisticLockException(BusinessException e) {
+    private ResponseEntity<ErrorResponse> handleOptimisticLockException(BusinessException e) {
         LOGGER.warn(e.getMessage());
-        return prepareResponse(e, HttpStatus.CONFLICT);
+        return mapToResponse(e, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(BusinessException.class)
-    private ResponseEntity<GeneralErrorResponse> handleBusinessException(BusinessException e) {
+    private ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
         LOGGER.warn(e.getMessage());
-        return prepareResponse(e, HttpStatus.UNPROCESSABLE_ENTITY);
+        return mapToResponse(e, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    private static ResponseEntity<GeneralErrorResponse> prepareResponse(BusinessException e, HttpStatus status) {
-        return new ResponseEntity<>(new GeneralErrorResponse(e.getCode().getValue()), status);
+    private static ResponseEntity<ErrorResponse> mapToResponse(BusinessException e, HttpStatus status) {
+        var response = new ErrorResponse()
+                .code(e.getCode().getValue())
+                .message(e.getMessage());
+        return new ResponseEntity<>(response, status);
     }
 }
