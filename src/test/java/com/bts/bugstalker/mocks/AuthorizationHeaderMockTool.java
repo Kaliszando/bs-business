@@ -1,7 +1,8 @@
-package com.bts.bugstalker.utils;
+package com.bts.bugstalker.mocks;
 
 import com.bts.bugstalker.core.common.enums.UserRole;
-import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
+import com.bts.bugstalker.feature.jwt.JwtFactory;
+import com.bts.bugstalker.feature.jwt.JwtUtility;
 import io.restassured.http.Header;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ public class AuthorizationHeaderMockTool {
 
     public final static Pattern JWT_TOKEN = Pattern.compile("^Bearer ([a-zA-Z0-9_=]+).([a-zA-Z0-9_=]+).([a-zA-Z0-9_\\-+/=]*)");
 
-    private final JwtHelper jwtHelper;
+    private final JwtFactory jwtFactory;
 
     public static String ADMIN_USERNAME = "JohnDoe334";
 
@@ -29,14 +30,14 @@ public class AuthorizationHeaderMockTool {
     }
 
     public Header prepare(String username) {
-        String token = jwtHelper.createJwtTokenWithPrefix(username);
+        String token = jwtFactory.createJwtTokenWithPrefix(username);
         assertThat(isJwtToken(token)).isTrue();
-        return new Header(JwtHelper.AUTH_HEADER_NAME, token);
+        return new Header(JwtUtility.AUTH_HEADER_NAME, token);
     }
 
     public Header prepare(UserRole role) {
         if (role == null) {
-            return new Header(JwtHelper.AUTH_HEADER_NAME, "");
+            return new Header(JwtUtility.AUTH_HEADER_NAME, "");
         }
         return switch (role) {
             case ADMIN -> prepare(ADMIN_USERNAME);

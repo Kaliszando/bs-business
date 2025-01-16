@@ -1,6 +1,7 @@
 package com.bts.bugstalker.config.security;
 
-import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
+import com.bts.bugstalker.feature.jwt.JwtFactory;
+import com.bts.bugstalker.feature.jwt.JwtUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -15,12 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final JwtHelper jwtHelper;
+    private final JwtFactory jwtFactory;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
-        response.addHeader(JwtHelper.AUTH_HEADER_NAME, jwtHelper.createJwtTokenWithPrefix(principal.getUsername()));
+        response.addHeader(JwtUtility.AUTH_HEADER_NAME, jwtFactory.createJwtTokenWithPrefix(principal.getUsername()));
         response.setStatus(HttpStatus.NO_CONTENT.value());
     }
 }

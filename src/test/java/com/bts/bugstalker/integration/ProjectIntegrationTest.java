@@ -3,7 +3,7 @@ package com.bts.bugstalker.integration;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
-import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
+import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;

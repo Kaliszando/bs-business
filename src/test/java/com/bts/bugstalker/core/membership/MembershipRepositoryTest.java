@@ -2,7 +2,7 @@ package com.bts.bugstalker.core.membership;
 
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.core.user.UserRepositoryImpl;
-import com.bts.bugstalker.fixtures.EntityMocks;
+import com.bts.bugstalker.mocks.fixtures.EntityMocks;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

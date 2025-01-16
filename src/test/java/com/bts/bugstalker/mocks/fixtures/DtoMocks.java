@@ -1,4 +1,4 @@
-package com.bts.bugstalker.fixtures;
+package com.bts.bugstalker.mocks.fixtures;
 
 import com.bts.bugstalker.core.common.enums.UserRole;
 import org.openapitools.model.IssueDetailsDto;

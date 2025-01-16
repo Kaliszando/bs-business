@@ -4,9 +4,9 @@ import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.core.user.UserRepositoryImpl;
 import com.bts.bugstalker.feature.cache.CacheRepository;
-import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
+import com.bts.bugstalker.feature.jwt.JwtUtility;
 import com.bts.bugstalker.util.parameters.ApiPaths;
-import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
+import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
@@ -70,7 +70,7 @@ public class AuthIntegrationTest {
                 .when()
                 .post(ApiPaths.SIGN_IN);
         assertThat(response.statusCode()).isEqualTo(204);
-        assertThat(response.header("Authorization")).matches(AuthorizationHeaderMockTool.JWT_TOKEN);
+        assertThat(response.header(JwtUtility.AUTH_HEADER_NAME)).matches(AuthorizationHeaderMockTool.JWT_TOKEN);
     }
 
     @ParameterizedTest
@@ -86,7 +86,7 @@ public class AuthIntegrationTest {
                 .post(ApiPaths.SIGN_IN)
 
                 .then()
-                .headers("Authorization", nullValue())
+                .headers(JwtUtility.AUTH_HEADER_NAME, nullValue())
                 .statusCode(401);
     }
 
@@ -164,8 +164,8 @@ public class AuthIntegrationTest {
     @ValueSource(strings = {"JohnDoe334", "JamesSmith678", "MariaMartinez645"})
     void shouldSingOutUsersSuccessfully(String username) {
         Header authorizationHeader = headerMockTool.prepare(username);
-        String token = JwtHelper.stripOfPrefix(authorizationHeader.getValue());
-        String key = JwtHelper.JWT_BLACKLIST + JwtHelper.hashToken(token);
+        String token = JwtUtility.stripOfPrefix(authorizationHeader.getValue());
+        String key = JwtUtility.createBlacklistCacheKey(token);
         assertThat(cacheRepository.exists(key)).isFalse();
 
         given().header(authorizationHeader)

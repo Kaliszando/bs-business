@@ -1,7 +1,7 @@
 package com.bts.bugstalker.core.issue;
 
 import com.bts.bugstalker.core.issue.converter.IssueMapper;
-import com.bts.bugstalker.fixtures.DtoMocks;
+import com.bts.bugstalker.mocks.fixtures.DtoMocks;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 

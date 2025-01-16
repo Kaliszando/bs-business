@@ -1,27 +1,13 @@
 package com.bts.bugstalker.util.parameters;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
-@RequiredArgsConstructor
-@Component
+@UtilityClass
 public class DateProvider {
 
-    private static final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-
-    private static final SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-
-    private static final SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    public static Timestamp getCurrentTimeStamp() {
-        return new Timestamp(System.currentTimeMillis());
+    public static Date currentTimePlusMinutes(Long minutes) {
+        return new Date(System.currentTimeMillis() + minutes * 60 * 1000);
     }
-
-    public static  String getCurrentTimeStampString() {
-        return sdf2.format(getCurrentTimeStamp());
-    }
-
 }

@@ -1,5 +1,6 @@
 package com.bts.bugstalker.config.security;
 
+import com.bts.bugstalker.feature.jwt.JwtUtility;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -13,6 +14,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
-                .exposedHeaders("authorization");
+                .exposedHeaders(JwtUtility.AUTH_HEADER_NAME);
     }
 }

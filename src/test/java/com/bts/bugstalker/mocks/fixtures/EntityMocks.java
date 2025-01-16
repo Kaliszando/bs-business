@@ -1,4 +1,4 @@
-package com.bts.bugstalker.fixtures;
+package com.bts.bugstalker.mocks.fixtures;
 
 import com.bts.bugstalker.core.common.enums.IssueSeverity;
 import com.bts.bugstalker.core.common.enums.IssueType;
