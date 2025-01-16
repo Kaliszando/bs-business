@@ -1,6 +1,7 @@
 package com.bts.bugstalker.config.security;
 
-import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
+import com.bts.bugstalker.feature.jwt.JwtService;
+import com.bts.bugstalker.feature.jwt.JwtUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -14,18 +15,18 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
-    private final JwtHelper jwtHelper;
+    private final JwtService jwtService;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        jwtHelper.extractToken(request).ifPresentOrElse(
+        jwtService.extractToken(JwtUtility.getAuthHeaderContent(request)).ifPresentOrElse(
                 token -> onSuccess(token, response),
                 () -> onError(response)
         );
     }
 
     private void onSuccess(String token, HttpServletResponse response) {
-        jwtHelper.addToBlacklist(token);
+        jwtService.addToBlacklist(token);
         response.setStatus(HttpStatus.NO_CONTENT.value());
     }
 

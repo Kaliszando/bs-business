@@ -2,7 +2,7 @@ package com.bts.bugstalker.core.issue;
 
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
-import com.bts.bugstalker.fixtures.EntityMocks;
+import com.bts.bugstalker.mocks.fixtures.EntityMocks;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

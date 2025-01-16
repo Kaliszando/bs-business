@@ -2,7 +2,7 @@ package com.bts.bugstalker.core.project;
 
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
-import com.bts.bugstalker.fixtures.EntityMocks;
+import com.bts.bugstalker.mocks.fixtures.EntityMocks;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

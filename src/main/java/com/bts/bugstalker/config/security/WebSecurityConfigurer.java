@@ -1,7 +1,7 @@
 package com.bts.bugstalker.config.security;
 
 import com.bts.bugstalker.core.common.enums.UserRole;
-import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
+import com.bts.bugstalker.feature.jwt.JwtService;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     private final LogoutSuccessHandler logoutSuccessHandler;
 
-    private final JwtHelper jwtHelper;
+    private final JwtService jwtService;
 
     @Override
     public void configure(WebSecurity web) {
@@ -91,6 +91,6 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Bean
     public JwtAuthFilter jwtAuthFilter() throws Exception {
-        return new JwtAuthFilter(authenticationManager(), userDetailsService, jwtHelper);
+        return new JwtAuthFilter(authenticationManager(), userDetailsService, jwtService);
     }
 }

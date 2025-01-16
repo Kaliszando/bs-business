@@ -1,9 +1,9 @@
-package com.bts.bugstalker.mechanisms;
+package com.bts.bugstalker.performance;
 
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.feature.cache.CacheRepository;
-import com.bts.bugstalker.utils.AuthorizationHeaderMockTool;
+import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;

@@ -1,6 +1,7 @@
 package com.bts.bugstalker.config.security;
 
-import com.bts.bugstalker.feature.cache.jwt.JwtHelper;
+import com.bts.bugstalker.feature.jwt.JwtService;
+import com.bts.bugstalker.feature.jwt.JwtUtility;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,14 +19,14 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
 
     private final UserDetailsService userDetailsService;
 
-    private final JwtHelper jwtHelper;
+    private final JwtService jwtService;
 
     public JwtAuthFilter(AuthenticationManager authenticationManager,
                          UserDetailsService userDetailsService,
-                         JwtHelper jwtHelper) {
+                         JwtService jwtService) {
         super(authenticationManager);
         this.userDetailsService = userDetailsService;
-        this.jwtHelper = jwtHelper;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -43,12 +44,16 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = jwtHelper.getTokenIfValid(request);
+        String token = jwtService.extractToken(JwtUtility.getAuthHeaderContent(request)).orElse(null);
         if (token == null) {
             return null;
         }
 
-        String username = jwtHelper.extractUsernameFromToken(token);
+        if (jwtService.isBlacklisted(token)) {
+            return null;
+        }
+
+        String username = jwtService.extractUsernameFromToken(token);
         if (username == null) {
             return null;
         }
