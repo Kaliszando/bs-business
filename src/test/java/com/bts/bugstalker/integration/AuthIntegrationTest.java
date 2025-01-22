@@ -1,14 +1,13 @@
 package com.bts.bugstalker.integration;
 
+import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.core.user.UserRepositoryImpl;
 import com.bts.bugstalker.feature.cache.CacheRepository;
 import com.bts.bugstalker.feature.jwt.JwtUtility;
-import com.bts.bugstalker.util.parameters.ApiPaths;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
+import com.bts.bugstalker.util.parameters.ApiPaths;
 import io.restassured.http.Header;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +17,6 @@ import org.junit.jupiter.params.provider.*;
 import org.openapitools.model.IssuePageRequest;
 import org.openapitools.model.LoginCredentialsDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.util.stream.Stream;
 
@@ -27,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 
 @BugStalkerApplicationTest
-public class AuthIntegrationTest {
+public class AuthIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private UserRepositoryImpl userRepository;
@@ -35,15 +33,11 @@ public class AuthIntegrationTest {
     @Autowired
     private AuthorizationHeaderMockTool headerMockTool;
 
-    @LocalServerPort
-    private int port;
-
     @Autowired
     private CacheRepository cacheRepository;
 
     @BeforeEach
-    void init() {
-        RestAssured.port = port;
+    void setUp() {
         assertThat(userRepository.count()).isEqualTo(3);
     }
 
@@ -94,10 +88,8 @@ public class AuthIntegrationTest {
     @EnumSource(UserRole.class)
     public void shouldAllowAccessToAuthEndpointForAuthorizedUser(UserRole role) {
         var issueRequest = new IssuePageRequest().projectId(1L).page(1).pageSize(10);
-        given().body(issueRequest)
+        givenJson().body(issueRequest)
                 .header(headerMockTool.prepare(role))
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
                 .post("/api/v1/issue/page")
 
                 .then()
@@ -120,9 +112,7 @@ public class AuthIntegrationTest {
     @Test
     public void shouldDenyAccessToAuthEndpointForUnauthorizedUser() {
         var issueRequest = new IssuePageRequest().projectId(1L).page(1).pageSize(10);
-        given().body(issueRequest)
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
+        givenJson().body(issueRequest)
                 .post("/api/v1/issue/page")
 
                 .then()

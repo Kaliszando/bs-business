@@ -1,24 +1,21 @@
 package com.bts.bugstalker.integration;
 
+import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.ContextData;
 import org.openapitools.model.ProjectInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @BugStalkerApplicationTest
-class ContextIntegrationTest {
+class ContextIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private AuthorizationHeaderMockTool headerMockTool;
@@ -29,13 +26,8 @@ class ContextIntegrationTest {
     @Autowired
     private MembershipRepositoryImpl membershipRepository;
 
-    @LocalServerPort
-    private int port;
-
-
     @BeforeEach
     void setUp() {
-        RestAssured.port = port;
         membershipRepository.deleteAll();
         projectRepository.deleteAll();
         assertThat(projectRepository.count()).isEqualTo(0);
@@ -51,9 +43,7 @@ class ContextIntegrationTest {
     @Test
     void shouldReturnNoProjectsWhenNoProjectsAreAssigned() {
         String username = AuthorizationHeaderMockTool.ADMIN_USERNAME;
-        var context = given().header(headerMockTool.prepare(username))
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
+        var context = givenJson().header(headerMockTool.prepare(username))
                 .get("/api/v1/context")
 
                 .then()
@@ -70,9 +60,7 @@ class ContextIntegrationTest {
         String username = AuthorizationHeaderMockTool.ADMIN_USERNAME;
         createProjectForUser(username, "TEST1");
         createProjectForUser(username, "TEST2");
-        var context = given().header(headerMockTool.prepare(username))
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
+        var context = givenJson().header(headerMockTool.prepare(username))
                 .get("/api/v1/context")
 
                 .then()
@@ -90,10 +78,8 @@ class ContextIntegrationTest {
                 .tag(tag)
                 .description(tag + " project description");
 
-        given().body(createProjectRequest)
+        givenJson().body(createProjectRequest)
                 .header(headerMockTool.prepare(username))
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
                 .post("/api/v1/project")
 
                 .then()

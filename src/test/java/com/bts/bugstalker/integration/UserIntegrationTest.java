@@ -1,5 +1,6 @@
 package com.bts.bugstalker.integration;
 
+import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.core.membership.MembershipEntity;
@@ -7,23 +8,21 @@ import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
 import com.bts.bugstalker.core.project.ProjectEntity;
 import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.core.user.UserRepositoryImpl;
-import com.bts.bugstalker.mocks.fixtures.EntityMocks;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
-import io.restassured.RestAssured;
+import com.bts.bugstalker.mocks.fixtures.EntityMocks;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.openapitools.model.UserInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
 @BugStalkerApplicationTest
-public class UserIntegrationTest {
+public class UserIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private UserRepositoryImpl userRepository;
@@ -37,14 +36,10 @@ public class UserIntegrationTest {
     @Autowired
     private AuthorizationHeaderMockTool headerMockTool;
 
-    @LocalServerPort
-    private int port;
-
     private ProjectEntity project;
 
     @BeforeEach
-    void init() {
-        RestAssured.port = port;
+    void setUp() {
         membershipRepository.deleteAll();
         projectRepository.deleteAll();
 

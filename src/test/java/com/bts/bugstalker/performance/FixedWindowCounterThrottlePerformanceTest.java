@@ -1,35 +1,28 @@
 package com.bts.bugstalker.performance;
 
+import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.core.common.enums.UserRole;
 import com.bts.bugstalker.feature.cache.CacheRepository;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.openapitools.model.IssuePageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 @BugStalkerApplicationTest
-public class FixedWindowCounterThrottleIntegrationTest {
+public class FixedWindowCounterThrottlePerformanceTest extends BaseIntegrationTest {
 
     @Autowired
     private AuthorizationHeaderMockTool headerMockTool;
-
-    @LocalServerPort
-    private int port;
 
     @Autowired
     private CacheRepository cacheRepository;
@@ -37,11 +30,6 @@ public class FixedWindowCounterThrottleIntegrationTest {
     private static final int MAX_PAGES_CALL = 23;
 
     private static final String ERROR_CODE = "core.api-call-limit-reached";
-
-    @BeforeEach
-    void init() {
-        RestAssured.port = port;
-    }
 
     @AfterEach
     void tearDown() {
@@ -84,10 +72,8 @@ public class FixedWindowCounterThrottleIntegrationTest {
 
     private void callIssuesPage(int expectedStatus, UserRole userRole, String errorCode) {
         var issueRequest = new IssuePageRequest().projectId(1L).page(1).pageSize(10);
-        given().body(issueRequest)
+        givenJson().body(issueRequest)
                 .header(headerMockTool.prepare(userRole))
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
                 .post("/api/v1/issue/page")
                 .then()
                 .statusCode(expectedStatus)
