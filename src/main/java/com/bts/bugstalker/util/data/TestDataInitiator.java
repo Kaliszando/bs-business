@@ -1,8 +1,8 @@
 package com.bts.bugstalker.util.data;
 
-import com.bts.bugstalker.core.common.enums.UserRole;
-import com.bts.bugstalker.core.user.UserEntity;
-import com.bts.bugstalker.core.user.UserService;
+import com.bts.bugstalker.common.enums.UserRole;
+import com.bts.bugstalker.feature.user.UserEntity;
+import com.bts.bugstalker.feature.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;

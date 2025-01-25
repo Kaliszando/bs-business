@@ -1,25 +1,15 @@
 package com.bts.bugstalker.integration;
 
+import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
-import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 
 import static io.restassured.RestAssured.given;
 
 @ActiveProfiles({"test", "swagger"})
 @BugStalkerApplicationTest
-public class SwaggerIntegrationTest {
-
-    @LocalServerPort
-    private int port;
-
-    @BeforeEach
-    void init() {
-        RestAssured.port = port;
-    }
+public class SwaggerIntegrationTest extends BaseIntegrationTest {
 
     @Test
     void swaggerEndpointShouldRespond() {

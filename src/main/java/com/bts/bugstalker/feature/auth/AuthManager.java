@@ -1,7 +1,7 @@
 package com.bts.bugstalker.feature.auth;
 
-import com.bts.bugstalker.core.user.UserEntity;
-import com.bts.bugstalker.core.user.UserService;
+import com.bts.bugstalker.feature.user.UserEntity;
+import com.bts.bugstalker.feature.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

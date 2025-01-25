@@ -1,21 +1,19 @@
 package com.bts.bugstalker.integration;
 
+import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
-import com.bts.bugstalker.core.issue.IssueEntity;
-import com.bts.bugstalker.core.issue.IssueRepositoryImpl;
-import com.bts.bugstalker.core.issue.converter.IssueConverter;
-import com.bts.bugstalker.core.membership.MembershipRepository;
-import com.bts.bugstalker.core.project.ProjectEntity;
-import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
+import com.bts.bugstalker.feature.issue.IssueEntity;
+import com.bts.bugstalker.feature.issue.IssueRepositoryImpl;
+import com.bts.bugstalker.feature.issue.converter.IssueConverter;
+import com.bts.bugstalker.feature.membership.MembershipRepository;
+import com.bts.bugstalker.feature.project.ProjectEntity;
+import com.bts.bugstalker.feature.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
@@ -25,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @BugStalkerApplicationTest
-public class IssueIntegrationTest {
+public class IssueIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private ProjectRepositoryImpl projectRepository;
@@ -42,14 +40,10 @@ public class IssueIntegrationTest {
     @Autowired
     private IssueConverter converter;
 
-    @LocalServerPort
-    private int port;
-
     private ProjectEntity project;
 
     @BeforeEach
     void setUp() {
-        RestAssured.port = port;
         prepareProject();
     }
 
@@ -66,9 +60,7 @@ public class IssueIntegrationTest {
                 .tag("TEST")
                 .description("JHNDOPR project description");
 
-        given().body(createProjectRequest)
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
+        givenJson().body(createProjectRequest)
                 .header(headerMockTool.prepare("JohnDoe334"))
                 .post("/api/v1/project")
 
@@ -86,9 +78,7 @@ public class IssueIntegrationTest {
                 .name("My first issue")
                 .projectId(project.getId());
 
-        given().body(request)
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
+        givenJson().body(request)
                 .header(headerMockTool.prepare("JohnDoe334"))
                 .post("/api/v1/issue")
 
@@ -159,9 +149,7 @@ public class IssueIntegrationTest {
                 .tagId(extractTag(issue))
                 .status("done");
 
-        given().body(request)
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
+        givenJson().body(request)
                 .header(headerMockTool.prepare("JohnDoe334"))
                 .post("/api/v1/issue/update")
 
@@ -180,9 +168,7 @@ public class IssueIntegrationTest {
                 .tagId(extractTag(issue))
                 .backlog("active");
 
-        given().body(request)
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
+        givenJson().body(request)
                 .header(headerMockTool.prepare("JohnDoe334"))
                 .post("/api/v1/issue/update")
 
@@ -203,9 +189,7 @@ public class IssueIntegrationTest {
         request.setType(IssueType.BUG);
         request.setSeverity(IssueSeverity.CRITICAL);
 
-        given().body(request)
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
+        givenJson().body(request)
                 .header(headerMockTool.prepare("JohnDoe334"))
                 .post("/api/v1/issue/" + tag)
 
@@ -227,9 +211,7 @@ public class IssueIntegrationTest {
                 .name(title)
                 .projectId(project.getId());
 
-        given().body(request)
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
+        givenJson().body(request)
                 .header(headerMockTool.prepare("JohnDoe334"))
                 .post("/api/v1/issue")
 

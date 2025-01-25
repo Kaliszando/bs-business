@@ -1,17 +1,15 @@
 package com.bts.bugstalker.integration;
 
+import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
-import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
-import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
+import com.bts.bugstalker.feature.membership.MembershipRepositoryImpl;
+import com.bts.bugstalker.feature.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.ProjectInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 import javax.transaction.Transactional;
 
@@ -20,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @BugStalkerApplicationTest
-public class ProjectIntegrationTest {
+public class ProjectIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private AuthorizationHeaderMockTool headerMockTool;
@@ -31,12 +29,8 @@ public class ProjectIntegrationTest {
     @Autowired
     private MembershipRepositoryImpl membershipRepository;
 
-    @LocalServerPort
-    private int port;
-
     @BeforeEach
-    void init() {
-        RestAssured.port = port;
+    void setUp() {
         membershipRepository.deleteAll();
         projectRepository.deleteAll();
         assertThat(projectRepository.count()).isEqualTo(0);
@@ -55,10 +49,8 @@ public class ProjectIntegrationTest {
                 .tag(tag)
                 .description(tag + " project description");
 
-        given().body(createProjectRequest)
+        givenJson().body(createProjectRequest)
                 .header(headerMockTool.prepare(username))
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
                 .post("/api/v1/project")
 
                 .then()
