@@ -1,7 +1,7 @@
 package com.bts.bugstalker.feature.auth.exception;
 
-import com.bts.bugstalker.core.common.exception.base.BusinessException;
-import com.bts.bugstalker.core.common.exception.base.ExceptionCode;
+import com.bts.bugstalker.common.exception.base.BusinessException;
+import com.bts.bugstalker.common.exception.base.ExceptionCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

@@ -2,8 +2,8 @@ package com.bts.bugstalker.integration;
 
 import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
-import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
-import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
+import com.bts.bugstalker.feature.membership.MembershipRepositoryImpl;
+import com.bts.bugstalker.feature.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

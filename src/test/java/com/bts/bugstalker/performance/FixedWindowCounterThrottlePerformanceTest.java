@@ -2,8 +2,8 @@ package com.bts.bugstalker.performance;
 
 import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
-import com.bts.bugstalker.core.common.enums.UserRole;
-import com.bts.bugstalker.feature.cache.CacheRepository;
+import com.bts.bugstalker.common.enums.UserRole;
+import com.bts.bugstalker.core.cache.CacheRepository;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;

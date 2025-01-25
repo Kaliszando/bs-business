@@ -1,7 +1,7 @@
 package com.bts.bugstalker.config.security;
 
-import com.bts.bugstalker.core.common.enums.UserRole;
-import com.bts.bugstalker.feature.jwt.JwtService;
+import com.bts.bugstalker.common.enums.UserRole;
+import com.bts.bugstalker.core.jwt.JwtService;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

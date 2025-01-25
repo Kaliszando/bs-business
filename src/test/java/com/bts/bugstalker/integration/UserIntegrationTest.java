@@ -2,12 +2,12 @@ package com.bts.bugstalker.integration;
 
 import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
-import com.bts.bugstalker.core.common.enums.UserRole;
-import com.bts.bugstalker.core.membership.MembershipEntity;
-import com.bts.bugstalker.core.membership.MembershipRepositoryImpl;
-import com.bts.bugstalker.core.project.ProjectEntity;
-import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
-import com.bts.bugstalker.core.user.UserRepositoryImpl;
+import com.bts.bugstalker.common.enums.UserRole;
+import com.bts.bugstalker.feature.membership.MembershipEntity;
+import com.bts.bugstalker.feature.membership.MembershipRepositoryImpl;
+import com.bts.bugstalker.feature.project.ProjectEntity;
+import com.bts.bugstalker.feature.project.ProjectRepositoryImpl;
+import com.bts.bugstalker.feature.user.UserRepositoryImpl;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
 import com.bts.bugstalker.mocks.fixtures.EntityMocks;
 import org.junit.jupiter.api.BeforeEach;

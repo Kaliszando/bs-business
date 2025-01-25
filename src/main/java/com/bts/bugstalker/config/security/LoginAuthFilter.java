@@ -1,6 +1,6 @@
 package com.bts.bugstalker.config.security;
 
-import com.bts.bugstalker.core.common.model.LoginCredentials;
+import com.bts.bugstalker.common.model.LoginCredentials;
 import com.bts.bugstalker.feature.auth.exception.AuthInvalidSignInRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

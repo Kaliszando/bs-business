@@ -1,11 +1,11 @@
 package com.bts.bugstalker.mocks.fixtures;
 
-import com.bts.bugstalker.core.common.enums.IssueSeverity;
-import com.bts.bugstalker.core.common.enums.IssueType;
-import com.bts.bugstalker.core.issue.IssueEntity;
-import com.bts.bugstalker.core.project.ProjectEntity;
-import com.bts.bugstalker.core.user.UserEntity;
-import com.bts.bugstalker.core.common.enums.UserRole;
+import com.bts.bugstalker.common.enums.IssueSeverity;
+import com.bts.bugstalker.common.enums.IssueType;
+import com.bts.bugstalker.feature.issue.IssueEntity;
+import com.bts.bugstalker.feature.project.ProjectEntity;
+import com.bts.bugstalker.feature.user.UserEntity;
+import com.bts.bugstalker.common.enums.UserRole;
 
 public class EntityMocks {
 

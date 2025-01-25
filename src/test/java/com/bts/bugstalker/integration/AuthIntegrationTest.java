@@ -2,10 +2,10 @@ package com.bts.bugstalker.integration;
 
 import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
-import com.bts.bugstalker.core.common.enums.UserRole;
-import com.bts.bugstalker.core.user.UserRepositoryImpl;
-import com.bts.bugstalker.feature.cache.CacheRepository;
-import com.bts.bugstalker.feature.jwt.JwtUtility;
+import com.bts.bugstalker.common.enums.UserRole;
+import com.bts.bugstalker.feature.user.UserRepositoryImpl;
+import com.bts.bugstalker.core.cache.CacheRepository;
+import com.bts.bugstalker.core.jwt.JwtUtility;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
 import com.bts.bugstalker.util.parameters.ApiPaths;
 import io.restassured.http.Header;

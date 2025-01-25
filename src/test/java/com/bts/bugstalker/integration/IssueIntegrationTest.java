@@ -2,12 +2,12 @@ package com.bts.bugstalker.integration;
 
 import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
-import com.bts.bugstalker.core.issue.IssueEntity;
-import com.bts.bugstalker.core.issue.IssueRepositoryImpl;
-import com.bts.bugstalker.core.issue.converter.IssueConverter;
-import com.bts.bugstalker.core.membership.MembershipRepository;
-import com.bts.bugstalker.core.project.ProjectEntity;
-import com.bts.bugstalker.core.project.ProjectRepositoryImpl;
+import com.bts.bugstalker.feature.issue.IssueEntity;
+import com.bts.bugstalker.feature.issue.IssueRepositoryImpl;
+import com.bts.bugstalker.feature.issue.converter.IssueConverter;
+import com.bts.bugstalker.feature.membership.MembershipRepository;
+import com.bts.bugstalker.feature.project.ProjectEntity;
+import com.bts.bugstalker.feature.project.ProjectRepositoryImpl;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

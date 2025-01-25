@@ -1,7 +1,7 @@
 package com.bts.bugstalker.config.security;
 
-import com.bts.bugstalker.feature.jwt.JwtFactory;
-import com.bts.bugstalker.feature.jwt.JwtUtility;
+import com.bts.bugstalker.core.jwt.JwtFactory;
+import com.bts.bugstalker.core.jwt.JwtUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
