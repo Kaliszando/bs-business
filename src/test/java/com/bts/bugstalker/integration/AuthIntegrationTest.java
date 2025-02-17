@@ -4,7 +4,7 @@ import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.common.enums.UserRole;
 import com.bts.bugstalker.feature.user.UserRepositoryImpl;
-import com.bts.bugstalker.core.cache.CacheRepository;
+import com.bts.bugstalker.core.cache.CacheService;
 import com.bts.bugstalker.core.jwt.JwtUtility;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
 import com.bts.bugstalker.util.parameters.ApiPaths;
@@ -34,7 +34,7 @@ public class AuthIntegrationTest extends BaseIntegrationTest {
     private AuthorizationHeaderMockTool headerMockTool;
 
     @Autowired
-    private CacheRepository cacheRepository;
+    private CacheService cacheService;
 
     @BeforeEach
     void setUp() {
@@ -43,7 +43,7 @@ public class AuthIntegrationTest extends BaseIntegrationTest {
 
     @AfterEach
     void tearDown() {
-        cacheRepository.deleteAll();
+        cacheService.deleteAll();
     }
 
     private static LoginCredentialsDto toCredentials(String password, String login) {
@@ -156,14 +156,14 @@ public class AuthIntegrationTest extends BaseIntegrationTest {
         Header authorizationHeader = headerMockTool.prepare(username);
         String token = JwtUtility.stripOfPrefix(authorizationHeader.getValue());
         String key = JwtUtility.createBlacklistCacheKey(token);
-        assertThat(cacheRepository.exists(key)).isFalse();
+        assertThat(cacheService.exists(key)).isFalse();
 
         given().header(authorizationHeader)
                 .post("/api/v1/auth/sign-out")
 
                 .then()
                 .statusCode(204);
-        assertThat(cacheRepository.exists(key)).isTrue();
+        assertThat(cacheService.exists(key)).isTrue();
     }
 
     @Test

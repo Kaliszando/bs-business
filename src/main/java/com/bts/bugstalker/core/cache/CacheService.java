@@ -7,7 +7,7 @@ import redis.clients.jedis.JedisPool;
 
 @RequiredArgsConstructor
 @Service
-public class CacheRepository {
+public class CacheService {
 
     private final JedisPool jedisPool;
 

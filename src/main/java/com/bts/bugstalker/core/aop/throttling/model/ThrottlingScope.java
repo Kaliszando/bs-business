@@ -1,4 +1,4 @@
-package com.bts.bugstalker.core.aop.throttling;
+package com.bts.bugstalker.core.aop.throttling.model;
 
 public enum ThrottlingScope {
 

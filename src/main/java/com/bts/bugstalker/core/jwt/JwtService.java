@@ -2,7 +2,7 @@ package com.bts.bugstalker.core.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.bts.bugstalker.core.cache.CacheRepository;
+import com.bts.bugstalker.core.cache.CacheService;
 import com.bts.bugstalker.util.properties.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,15 +17,15 @@ public class JwtService {
 
     private final JwtProperties jwtProperties;
 
-    private final CacheRepository cacheRepository;
+    private final CacheService cacheService;
 
     public void addToBlacklist(String token) {
         String key = createBlacklistCacheKey(token);
-        cacheRepository.setValue(key, "1", jwtProperties.getJwtCacheTtl() * 60);
+        cacheService.setValue(key, "1", jwtProperties.getJwtCacheTtl() * 60);
     }
 
     public boolean isBlacklisted(String token) {
-        return cacheRepository.exists(createBlacklistCacheKey(token));
+        return cacheService.exists(createBlacklistCacheKey(token));
     }
 
     public Optional<String> extractToken(String possibleToken) {
