@@ -3,7 +3,7 @@ package com.bts.bugstalker.performance;
 import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
 import com.bts.bugstalker.common.enums.UserRole;
-import com.bts.bugstalker.core.cache.CacheRepository;
+import com.bts.bugstalker.core.cache.CacheService;
 import com.bts.bugstalker.mocks.AuthorizationHeaderMockTool;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ public class FixedWindowCounterThrottlePerformanceTest extends BaseIntegrationTe
     private AuthorizationHeaderMockTool headerMockTool;
 
     @Autowired
-    private CacheRepository cacheRepository;
+    private CacheService cacheService;
 
     private static final int MAX_PAGES_CALL = 23;
 
@@ -33,7 +33,7 @@ public class FixedWindowCounterThrottlePerformanceTest extends BaseIntegrationTe
 
     @AfterEach
     void tearDown() {
-        cacheRepository.deleteAll();
+        cacheService.deleteAll();
     }
 
     static Stream<Integer> inRangeApiCallsLimit() {

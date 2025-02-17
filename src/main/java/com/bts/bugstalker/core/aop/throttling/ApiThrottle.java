@@ -1,5 +1,8 @@
 package com.bts.bugstalker.core.aop.throttling;
 
+import com.bts.bugstalker.core.aop.throttling.model.ThrottlingAlgorithm;
+import com.bts.bugstalker.core.aop.throttling.model.ThrottlingScope;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
