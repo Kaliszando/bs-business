@@ -1,5 +1,6 @@
 package com.bts.bugstalker.common.exception.handler;
 
+import com.bts.bugstalker.common.exception.MaxApiCallsReachedException;
 import com.bts.bugstalker.common.exception.base.BusinessException;
 import com.bts.bugstalker.feature.issue.exception.IssueNotFoundException;
 import com.bts.bugstalker.feature.issue.exception.IssueOptimisticLockException;
@@ -17,23 +18,26 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IssueNotFoundException.class)
     private ResponseEntity<ErrorResponse> handleNotFoundException(BusinessException e) {
-        LOGGER.warn(e.getMessage());
-        return mapToResponse(e, HttpStatus.NOT_FOUND);
+        return handleException(e, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IssueOptimisticLockException.class)
     private ResponseEntity<ErrorResponse> handleOptimisticLockException(BusinessException e) {
-        LOGGER.warn(e.getMessage());
-        return mapToResponse(e, HttpStatus.CONFLICT);
+        return handleException(e, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(BusinessException.class)
     private ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
-        LOGGER.warn(e.getMessage());
-        return mapToResponse(e, HttpStatus.UNPROCESSABLE_ENTITY);
+        return handleException(e, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    private static ResponseEntity<ErrorResponse> mapToResponse(BusinessException e, HttpStatus status) {
+    @ExceptionHandler(MaxApiCallsReachedException.class)
+    private ResponseEntity<ErrorResponse> handleMaxApiCallsReachedException(BusinessException e) {
+        return handleException(e, HttpStatus.TOO_MANY_REQUESTS);
+    }
+
+    private static ResponseEntity<ErrorResponse> handleException(BusinessException e, HttpStatus status) {
+        LOGGER.warn(e.getMessage());
         var response = new ErrorResponse()
                 .code(e.getCode().getValue())
                 .message(e.getMessage());
