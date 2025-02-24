@@ -5,7 +5,7 @@ import com.bts.bugstalker.common.exception.base.ExceptionCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+@ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
 public class MaxApiCallsReachedException extends BusinessException {
 
     private static final String MAX_API_CALLS_REACHED = "Reached max api call limit of %d for %s";

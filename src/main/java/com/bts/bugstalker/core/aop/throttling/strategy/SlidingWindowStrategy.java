@@ -22,7 +22,7 @@ public class SlidingWindowStrategy implements ApiThrottleStrategy {
         int counter = (value != null) ? Integer.parseInt(value) : 0;
 
         if (counter >= limit) {
-            throw new MaxApiCallsReachedException(key, limit);
+            maxLimitReached(key, limit);
         }
         cacheService.incrementOrSet(key, SLIDING_WINDOW_BLOCK_PERIOD);
     }

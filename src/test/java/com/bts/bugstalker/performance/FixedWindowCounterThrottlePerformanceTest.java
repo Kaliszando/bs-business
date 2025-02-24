@@ -51,14 +51,14 @@ public class FixedWindowCounterThrottlePerformanceTest extends BaseIntegrationTe
     public void shouldLimitAllApiCallsAboveLimit(int timesCalled) {
         callIssuesPageByTimes(MAX_PAGES_CALL, 200, null);
 
-        callIssuesPageByTimes(timesCalled, 422, ERROR_CODE);
+        callIssuesPageByTimes(timesCalled, 429, ERROR_CODE);
     }
 
     @Test
     public void shouldPreserveApiCallLimitPerUser() {
         callIssuesPageByTimes(MAX_PAGES_CALL, 200, null);
 
-        callIssuesPage(422, UserRole.ADMIN, ERROR_CODE);
+        callIssuesPage(429, UserRole.ADMIN, ERROR_CODE);
 
         callIssuesPage(200, UserRole.USER, null);
         callIssuesPage(200, UserRole.GUEST, null);
