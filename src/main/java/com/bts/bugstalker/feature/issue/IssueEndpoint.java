@@ -45,7 +45,6 @@ public class IssueEndpoint implements IssueApi {
     }
 
     @Override
-    @ApiThrottle(algorithm = ThrottlingAlgorithm.FIXED_WINDOW_COUNTER, limit = 23, scope = ThrottlingScope.PER_USER)
     public ResponseEntity<IssuePageResponse> getIssuePage(@Valid IssuePageRequest request) {
         Page<IssueEntity> page = issueService.getIssuesPaged(request);
         return ResponseEntity.ok(converter.toPageResponse(page));

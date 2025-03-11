@@ -26,6 +26,4 @@ public class ThrottlingService {
             case SLIDING_WINDOW_COUNTER -> slidingWindowStrategy.apply(className, methodName, limit, perUser);
         }
     }
-
-
 }
