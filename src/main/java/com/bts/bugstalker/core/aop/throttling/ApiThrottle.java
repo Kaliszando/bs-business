@@ -24,6 +24,6 @@ public @interface ApiThrottle {
 
     ThrottlingScope scope() default ThrottlingScope.PER_USER;
 
-    int limit() default 60;
+    int limit() default 100;
 
 }

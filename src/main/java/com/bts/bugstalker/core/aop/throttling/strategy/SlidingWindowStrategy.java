@@ -5,13 +5,15 @@ import com.bts.bugstalker.core.aop.throttling.model.ThrottlingAlgorithm;
 import com.bts.bugstalker.core.cache.CacheService;
 import com.bts.bugstalker.core.context.ContextProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class SlidingWindowStrategy implements ApiThrottleStrategy {
 
-    private static final long SLIDING_WINDOW_BLOCK_PERIOD = 30;
+    @Value("${throttle.sliding-window-counter.block-period.sec}")
+    private long SLIDING_WINDOW_BLOCK_PERIOD_SEC;
 
     private final CacheService cacheService;
 
@@ -24,7 +26,7 @@ public class SlidingWindowStrategy implements ApiThrottleStrategy {
         if (counter >= limit) {
             maxLimitReached(key, limit);
         }
-        cacheService.incrementOrSet(key, SLIDING_WINDOW_BLOCK_PERIOD);
+        cacheService.incrementOrSet(key, SLIDING_WINDOW_BLOCK_PERIOD_SEC);
     }
 
     public String generateKey(ThrottlingAlgorithm algorithm, String className, String methodName, boolean perUser) {

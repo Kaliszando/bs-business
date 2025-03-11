@@ -5,6 +5,7 @@ import com.bts.bugstalker.core.aop.throttling.model.ThrottlingAlgorithm;
 import com.bts.bugstalker.core.cache.CacheService;
 import com.bts.bugstalker.core.context.ContextProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,8 @@ import java.time.LocalDateTime;
 @Service
 public class FixedWindowCounterStrategy implements ApiThrottleStrategy {
 
-    private final static long EXPIRY_SECONDS = 120;
+    @Value("${throttle.fixed-window-counter.key-expiry.sec}")
+    private long CACHE_KEY_EXPIRY_SECONDS = 120;
 
     private final CacheService cacheService;
 
@@ -27,7 +29,7 @@ public class FixedWindowCounterStrategy implements ApiThrottleStrategy {
             maxLimitReached(key, limit);
         }
 
-        cacheService.incrementOrSet(key, EXPIRY_SECONDS);
+        cacheService.incrementOrSet(key, CACHE_KEY_EXPIRY_SECONDS);
     }
 
     public String generateKey(ThrottlingAlgorithm algorithm, String className, String methodName, boolean perUser) {
