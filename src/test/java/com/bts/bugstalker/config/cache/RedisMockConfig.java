@@ -1,11 +1,11 @@
 package com.bts.bugstalker.config.cache;
 
 import com.bts.bugstalker.util.properties.RedisProperties;
-import com.redis.testcontainers.RedisContainer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import redis.clients.jedis.JedisPoolConfig;
@@ -16,14 +16,15 @@ import redis.clients.jedis.JedisPoolConfig;
 public class RedisMockConfig {
 
     @Container
-    public static RedisContainer redisContainer = new RedisContainer("redis:6.2");
+    public static GenericContainer<?> redisContainer = new GenericContainer<>("redis:6.2")
+            .withExposedPorts(6379);
 
     @Bean
     @Primary
     public RedisProperties redisPropertiesMock() {
         redisContainer.start();
         LOGGER.info("Redis container started on port: {}", redisContainer.getFirstMappedPort());
-        return new RedisProperties(redisContainer.getRedisPort(), redisContainer.getHost(), "password");
+        return new RedisProperties(redisContainer.getFirstMappedPort(), redisContainer.getHost(), "password");
     }
 
     @Primary
