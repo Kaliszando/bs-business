@@ -3,9 +3,7 @@ package com.bts.bugstalker.performance;
 import com.bts.bugstalker.common.enums.UserRole;
 import com.bts.bugstalker.config.BaseIntegrationTest;
 import com.bts.bugstalker.config.BugStalkerApplicationTest;
-import com.bts.bugstalker.core.cache.CacheService;
 import com.bts.bugstalker.mocks.PerfHttpCaller;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,9 +20,6 @@ import java.util.stream.Stream;
 public class SlidingWindowCounterThrottlePerformanceTest extends BaseIntegrationTest {
 
     @Autowired
-    private CacheService cacheService;
-
-    @Autowired
     private PerfHttpCaller http;
 
     @Value("${throttle.sliding-window-counter.block-period.sec}")
@@ -39,11 +34,6 @@ public class SlidingWindowCounterThrottlePerformanceTest extends BaseIntegration
     @BeforeEach
     void setUp() {
         http.setPath(FAKE_GET_PATH);
-    }
-
-    @AfterEach
-    void tearDown() {
-        cacheService.deleteAll();
     }
 
     static Stream<Integer> inRangeApiCallsLimit() {

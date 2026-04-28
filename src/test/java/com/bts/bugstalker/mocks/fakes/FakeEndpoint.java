@@ -32,9 +32,9 @@ public class FakeEndpoint {
         return ResponseEntity.ok(new FakeResponse("limited-per-user"));
     }
 
-    @ApiThrottle(limit = 3, scope = ThrottlingScope.PER_APP)
-    @GetMapping("/limited-per-app")
-    public ResponseEntity<FakeResponse> perApp() {
-        return ResponseEntity.ok(new FakeResponse("limited-per-app"));
+    @ApiThrottle(limit = 3, scope = ThrottlingScope.PER_ENDPOINT)
+    @GetMapping("/limited-per-endpoint")
+    public ResponseEntity<FakeResponse> perEndpoint() {
+        return ResponseEntity.ok(new FakeResponse("limited-per-endpoint"));
     }
 }
