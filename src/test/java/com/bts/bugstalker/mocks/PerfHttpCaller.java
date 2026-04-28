@@ -31,6 +31,12 @@ public class PerfHttpCaller {
         }
     }
 
+    public void callByTimes(String path, int timesCalled, int expectedStatus, String errorCode, UserRole userRole) {
+        for (int i = 0; i < timesCalled; i++) {
+            call(path, expectedStatus, userRole, errorCode);
+        }
+    }
+
     public void call(int expectedStatus, UserRole userRole, String errorCode) {
         validatePath();
         call(path, expectedStatus, userRole, errorCode);

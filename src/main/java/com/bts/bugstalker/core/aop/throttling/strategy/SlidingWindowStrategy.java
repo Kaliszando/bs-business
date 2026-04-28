@@ -6,16 +6,21 @@ import com.bts.bugstalker.core.cache.CacheService;
 import com.bts.bugstalker.core.context.ContextProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
-@Service
+@Component
 public class SlidingWindowStrategy implements ApiThrottleStrategy {
 
     @Value("${throttle.sliding-window-counter.block-period.sec}")
     private long SLIDING_WINDOW_BLOCK_PERIOD_SEC;
 
     private final CacheService cacheService;
+
+    @Override
+    public ThrottlingAlgorithm getAlgorithm() {
+        return ThrottlingAlgorithm.SLIDING_WINDOW_COUNTER;
+    }
 
     public void apply(String className, String methodName, int limit, boolean perUser) throws MaxApiCallsReachedException {
         String key = generateKey(ThrottlingAlgorithm.SLIDING_WINDOW_COUNTER, className, methodName, perUser);
